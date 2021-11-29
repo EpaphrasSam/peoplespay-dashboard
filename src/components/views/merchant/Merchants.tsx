@@ -1,105 +1,106 @@
-import React,{useEffect,useState, ChangeEvent} from 'react'
-import transactionsService from '../../../services/transactions.service';
-import MerchantTransactionsTable from '../../tables/MerchantTransactionsTable'
-import MerchantTransationDetailsTable from '../../tables/MerchantTransationDetailsTable';
-import SearchForm from '../../forms/SearchForm';
+import React,{ChangeEvent} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTransactions,setSelected, transactionsSelector } from '../../../state/transactions.state';
+import { merchantsSelector, setMerchants } from '../../../state/merchant.state';
+import MerchantsService from '../../../services/merchant.service'
+
+import MerchantDetailsTable from '../../tables/MerchantsDetailsTable';
+import MerchantsTable from '../../tables/MerchantsTable';
 import Spinner from '../layout/Spinner';
+import { setSelected } from '../../../state/merchant.state';
+import SearchForm from '../../forms/SearchForm';
 
+function Merchants(){
 
-export default function MerchantTransaction() {
+    const dispatch = useDispatch()
 
-        const dispatch = useDispatch()
-
-        const {loading} = useSelector(transactionsSelector);
-
-        const [searchQuery, setSearchQuery] = useState('')
-
-        const [isLoading, setIsLoading] = useState(false)
-        const [currentIndex, setCurrentIndex] = useState(1)
-        const [rowsPerPage] = useState(10)
-
-        useEffect(()=>{ 
-        
-              async function run(){
-                  try{
-                    const response =  await transactionsService.transactions()
-                   
-                    if(!response.success){
-                        alert(response.message)
-                    }
-
-                    let transactions= response.data.map((t:any) => t)
-                    dispatch(setTransactions(transactions))
-
-                    setIsLoading(loading)
-                  }catch(err:any){
-                    alert(err.message)
-                  }
-              }
-              run();
-             
-         },
-         [loading])
-
-         const {transactions} = useSelector(transactionsSelector);
-         //console.log(transactions)
-         
-         const filterResults = transactions.filter((tr)=>{
-             if(tr.merchantId?.name.toLowerCase().includes(searchQuery)){
-                return tr;
-             }
-         })
-
+    const {loading} = useSelector(merchantsSelector)
     
-         const results:any[] = filterResults.length == 0 ? transactions : filterResults
-         
-        //Get Current rows
-        const indexOfLastRow:number = currentIndex * rowsPerPage;
-        const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-        const currentRows = results.slice(indexOfFirstRow,indexOfLastRow) 
-        
-       
-        //button actions
-        const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
-        const paginateBack = () => setCurrentIndex(currentIndex - 1)
+    const [searchQuery, setSearchQuery] = React.useState('')
+    const [isLoading, setIsLoading] = React.useState(loading)
+    const [currentIndex, setCurrentIndex] = React.useState(1)
+    const [rowsPerPage] = React.useState(10)
 
-        const handleSelectedId:Function = async (id:string) => {
+    React.useEffect(()=>{ 
+
+        const response = async()=>{
             try{
-                console.log(id);
-                const response =  await transactionsService.getMerchantTransaction(id)
-                
-                if(!response.success){
-                    throw Error(response.message)
+                const res = await MerchantsService.getMerchants();
+                if(!res.success){
+                    throw Error( res.message )
                 }
+                console.log(response)
+                let merchants = res.data.map((t:any) => t)
+                dispatch(setMerchants(merchants))
+                setIsLoading(loading)
                 
-                console.log(response.data)
-                return  dispatch(setSelected(response.data))
-               
             }catch(err:any){
-                alert(err.message)
+              alert(err.message)
             }
-            
+        }
+
+        response();
+        },
+     [loading])
+
+    const {merchants} = useSelector(merchantsSelector)
+    
+    const filterResults = merchants.filter((mr:any)=>{
+        if(mr?.name.toLowerCase().includes(searchQuery)){
+           return mr;
+        }
+    })
+
+ const results:any[] = filterResults.length == 0 ? merchants : filterResults
+
+//Get Current rows
+const indexOfLastRow:number = currentIndex * rowsPerPage;
+const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
+const currentRows = results.slice(indexOfFirstRow,indexOfLastRow)
+
+//buttonactions
+const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
+const paginateBack = () => setCurrentIndex(currentIndex - 1)
+
+const handleSelectedId:Function = async (id:string) => {
+    try{
+        console.log(id);
+        const response =  await MerchantsService.getMerchantDetail(id)
+        
+        if(!response.success){
+            throw Error(response.message)
         }
         
-        //const {selected} = useSelector(transactionsSelector)
-       // console.log(`selected ${selected}`)
+        console.log(response.data)
+        return  dispatch(setSelected(response.data))
+       
+    }catch(err:any){
+        alert(err.message)
+    }
+    
+}
 
     return (
-     <div className="relative md:pt-28 pb-10  w-full mb-12">
-         <div>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Merchant Transactions</h2>
+        <div className="relative md:pt-28 pb-10  w-full mb-12">
+          <div className='mb-20'>
+            <h2 className="text-2xl font-semibold leading-tight text-red-800">Merchants</h2>
         </div>
-            <div className='flex flex-wrap'>
-                <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-                
+        {/**date picker */}
+          <div className="flex items-center">
+            <div className="relative">
+             <input name="start" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date start" />
+             </div>
+             <span className="mx-4 text-gray-500">to</span>
+             <div className="relative">
+             <input name="end" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date end" />
+         </div>
+        </div>
+            <div className='flex flex-wrap -mt-24'>
+                <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">  
                 <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
-                    {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
+           <div className="my-2 flex sm:flex-row flex-col mt-0 pt-0">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
-                <select
+                        <select
                             className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option>5</option>
                             <option>10</option>
@@ -127,9 +128,9 @@ export default function MerchantTransaction() {
                     </div>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by merchant name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by company name ...'/>
         </div>
-        <div
+            <div
                 className=
                 "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white"
             >
@@ -138,10 +139,10 @@ export default function MerchantTransaction() {
                         <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                             <h3
                                 className=
-                                "font-semibold text-lg text-blueGray-700 font-sans"
+                                "font-semibold text-lg text-blueGray-700"
 
                             >
-                                All Merchant Transactions
+                                All Merchants
                             </h3>
                         </div>
                     </div>
@@ -155,39 +156,27 @@ export default function MerchantTransaction() {
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    data created
+                                    date created
                                 </th>
                                 <th
                                     className={
                                         "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                     }
                                 >
-                                    Time
+                                   Company Name
                                 </th>
                                 <th
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
 
                                 >
-                                    sender account
+                                    Category
                                 </th>
                                 <th
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    Merchant name
-                                </th>
-                                <th
-                                    className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                >
-                                    Tracking Number
-                                </th>
-                                <th
-                                    className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                >
-                                    status
+                                 status
                                 </th>
                             </tr>
                         </thead>
@@ -197,14 +186,14 @@ export default function MerchantTransaction() {
                             ? 
                            <Spinner/>
                            :
-                           <MerchantTransactionsTable transactions={currentRows} handleSelectedId={handleSelectedId}/>  
-                       }       
-                                                   
+                           <MerchantsTable merchants={currentRows} handleSelectedId={handleSelectedId}/>
+                       }     
+                                            
                         </tbody>
                     </table>
-                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{transactions.length}</span>{' '}Entries
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{merchants.length}</span>{' '}Entries
                     </span>
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
@@ -228,15 +217,16 @@ export default function MerchantTransaction() {
                             Next
                         </button>
                     </div>
-                </div>
+                </div>   
                 </div>
             </div>
         </div>
                 </div>
             <div className="w-full xl:w-4/12 px-4">
-                 <MerchantTransationDetailsTable/>
+                 <MerchantDetailsTable/>
              </div>
          </div>
      </div>
-    )  
+    )
 }
+export default Merchants;

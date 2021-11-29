@@ -9,7 +9,7 @@ export default function MerchantsDropdown() {
     <Menu as={React.Fragment}>
       <i className='fas fa-hand-holding-usd mr-5 text-sm text-red-900'></i>
       <Menu.Button>
-        <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer'>Merchants</span>
+        <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer font-sans'>Merchants</span>
       </Menu.Button>
       
            <Transition
@@ -27,7 +27,7 @@ export default function MerchantsDropdown() {
               {() => (
             <Link
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              to="/account-settings"
+              to="/admin/merchants"
                 >
               <i className='fas fa-eye mr-2'/>
               View Merchants
@@ -51,7 +51,7 @@ export default function MerchantsDropdown() {
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
               to="/admin/merchant-categories"
                 >
-             <i className='fas fa-coins mr-2'/>
+             <i className='fas fa-list-alt mr-2'/>
               Merchant categories
             </Link>
           )}

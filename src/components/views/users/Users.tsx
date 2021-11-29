@@ -1,105 +1,59 @@
-import React,{useEffect,useState, ChangeEvent} from 'react'
-import transactionsService from '../../../services/transactions.service';
-import MerchantTransactionsTable from '../../tables/MerchantTransactionsTable'
-import MerchantTransationDetailsTable from '../../tables/MerchantTransationDetailsTable';
-import SearchForm from '../../forms/SearchForm';
+import React,{useEffect,useState} from 'react'
+import { usersSelector,setUsers } from '../../../state/users.state';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTransactions,setSelected, transactionsSelector } from '../../../state/transactions.state';
-import Spinner from '../layout/Spinner';
+import UsersService from '../../../services/users.service'
 
+import UsersTable from '../../tables/UsersTable'
+import AddUserForm from '../../forms/AddUserForm';
+import Spinner from '../layout/Spinner';
 
 export default function MerchantTransaction() {
 
-        const dispatch = useDispatch()
+    const dispatch = useDispatch()
+   
+    const {loading} = useSelector(usersSelector);
 
-        const {loading} = useSelector(transactionsSelector);
+    const [isLoading, setIsLoading] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(1)
+    const [rowsPerPage] = useState(10)
 
-        const [searchQuery, setSearchQuery] = useState('')
-
-        const [isLoading, setIsLoading] = useState(false)
-        const [currentIndex, setCurrentIndex] = useState(1)
-        const [rowsPerPage] = useState(10)
-
-        useEffect(()=>{ 
+    useEffect(()=>{ 
         
-              async function run(){
-                  try{
-                    const response =  await transactionsService.transactions()
-                   
-                    if(!response.success){
-                        alert(response.message)
-                    }
+        const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
 
-                    let transactions= response.data.map((t:any) => t)
-                    dispatch(setTransactions(transactions))
+        response.then(data=> {
+                let users= data.map((d:any) => d)
+                 dispatch(setUsers(users))
+                 setIsLoading(loading)
+        })
+     },
+     [loading])
 
-                    setIsLoading(loading)
-                  }catch(err:any){
-                    alert(err.message)
-                  }
-              }
-              run();
-             
-         },
-         [loading])
+     const {users} = useSelector(usersSelector)
+     console.log(users)
 
-         const {transactions} = useSelector(transactionsSelector);
-         //console.log(transactions)
-         
-         const filterResults = transactions.filter((tr)=>{
-             if(tr.merchantId?.name.toLowerCase().includes(searchQuery)){
-                return tr;
-             }
-         })
-
+     //Get Current rows
+    const indexOfLastRow:number = currentIndex * rowsPerPage;
+    const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
+    const currentRows = users.slice(indexOfFirstRow,indexOfLastRow)
     
-         const results:any[] = filterResults.length == 0 ? transactions : filterResults
-         
-        //Get Current rows
-        const indexOfLastRow:number = currentIndex * rowsPerPage;
-        const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-        const currentRows = results.slice(indexOfFirstRow,indexOfLastRow) 
-        
-       
-        //button actions
-        const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
-        const paginateBack = () => setCurrentIndex(currentIndex - 1)
+    //buttonactions
+    const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
+    const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
-        const handleSelectedId:Function = async (id:string) => {
-            try{
-                console.log(id);
-                const response =  await transactionsService.getMerchantTransaction(id)
-                
-                if(!response.success){
-                    throw Error(response.message)
-                }
-                
-                console.log(response.data)
-                return  dispatch(setSelected(response.data))
-               
-            }catch(err:any){
-                alert(err.message)
-            }
-            
-        }
-        
-        //const {selected} = useSelector(transactionsSelector)
-       // console.log(`selected ${selected}`)
 
     return (
      <div className="relative md:pt-28 pb-10  w-full mb-12">
-         <div>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Merchant Transactions</h2>
+          <div>
+            <h2 className="text-2xl font-semibold leading-tight text-red-800">Users</h2>
         </div>
             <div className='flex flex-wrap'>
-                <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-                
+                <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">  
                 <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
-                    {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
+           <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
-                <select
+                        <select
                             className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option>5</option>
                             <option>10</option>
@@ -127,9 +81,19 @@ export default function MerchantTransaction() {
                     </div>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by merchant name ...'/>
+            <div className="block relative">
+                <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current text-gray-500">
+                        <path
+                            d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z">
+                        </path>
+                    </svg>
+                </span>
+                <input placeholder="Search"
+                    className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
+            </div>
         </div>
-        <div
+            <div
                 className=
                 "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white"
             >
@@ -138,10 +102,10 @@ export default function MerchantTransaction() {
                         <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                             <h3
                                 className=
-                                "font-semibold text-lg text-blueGray-700 font-sans"
+                                "font-semibold text-lg text-blueGray-700"
 
                             >
-                                All Merchant Transactions
+                                All Users
                             </h3>
                         </div>
                     </div>
@@ -155,39 +119,39 @@ export default function MerchantTransaction() {
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    data created
+                                    date created
                                 </th>
                                 <th
                                     className={
                                         "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                     }
                                 >
-                                    Time
+                                    Name
                                 </th>
                                 <th
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
 
                                 >
-                                    sender account
+                                    Email
                                 </th>
                                 <th
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    Merchant name
+                                 Profile
                                 </th>
                                 <th
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    Tracking Number
+                                    Account active
                                 </th>
                                 <th
                                     className=
                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    status
+                                 phone verified
                                 </th>
                             </tr>
                         </thead>
@@ -197,14 +161,13 @@ export default function MerchantTransaction() {
                             ? 
                            <Spinner/>
                            :
-                           <MerchantTransactionsTable transactions={currentRows} handleSelectedId={handleSelectedId}/>  
-                       }       
-                                                   
+                           <UsersTable users={currentRows}/>
+                       }                        
                         </tbody>
                     </table>
-                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{transactions.length}</span>{' '}Entries
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{users.length}</span>{' '}Entries
                     </span>
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
@@ -234,7 +197,7 @@ export default function MerchantTransaction() {
         </div>
                 </div>
             <div className="w-full xl:w-4/12 px-4">
-                 <MerchantTransationDetailsTable/>
+                 <AddUserForm/>
              </div>
          </div>
      </div>

@@ -1,8 +1,74 @@
-import React from "react";
-
-// components
+import React,{useState,useEffect, ChangeEvent,useMemo} from "react";
+import merchantService from "../../services/merchant.service";
+import InputForm from "./Input";
+import SelectCitiesFormInput from "./SelectCitiesInput";
 
 export default function CreateMerchantForm() {
+    
+    const getActivities = async () => {
+       const res =  await merchantService.getActivities();
+       if(!res.success){
+           throw Error('count not load activities')
+       }
+       let options = res.map((ac:any) => ac?.name)
+        
+    }
+
+    const getCities = async () => {
+        const res =  await merchantService.getCities();
+        if(!res.success){
+            throw Error('count not load activities')
+        }
+        let options = res.map((c:any) => c?.name)
+         
+     }
+    
+
+ 
+    const [formData, setFormData] = useState({
+        title : '',
+        first_name: '',
+        last_name : '',
+        gender : '',
+        email : '',
+        phone : '',
+        name : '',
+        merchant_tradename : '',
+        registration_number : '',
+        region_name : '',
+        city_name : '',
+        postal : '',
+        vat_number : '',
+        acceptor_pointname : '',
+        acceptor_pointlocation : '',
+        category : '',
+        activity: '',
+        contact_person :''     
+     })
+ 
+    const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+        setFormData({...formData,[e.target.name]: e.target.value})
+    }
+    const {title,
+           first_name,
+           last_name,
+           gender,
+           email,
+           phone,
+           name,
+           merchant_tradename,
+           registration_number,
+           region_name,
+           city_name,
+           postal,
+           vat_number,
+           acceptor_pointname,
+           acceptor_pointlocation,
+           category,
+           activity,
+           contact_person
+        } = formData
+    
     return (
         <div className='relative md:pt-28 pb-10 p-2'>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0">
@@ -25,89 +91,32 @@ export default function CreateMerchantForm() {
                         <div className="flex flex-wrap">
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Title
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                    />
+                                <InputForm label='title' type='text' value={title} name='title' onChange={onChange} /> 
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        First Name
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                    />
+                                <InputForm label='first name' type='text' value={first_name} name='firt_name' onChange={onChange} />  
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Last Name
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                    />
+                                <InputForm label='last name' type='text' value={last_name} name='last_name' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Gender
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='gender' type='text' value={gender} name='gender' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='email' type='email' value={email} name='email' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Mobile Number
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='Phone Number' type='text' value={phone} name='phone' onChange={onChange} />
                                 </div>
                             </div>
                         </div>
@@ -120,181 +129,67 @@ export default function CreateMerchantForm() {
                         <div className="flex flex-wrap">
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Company Name
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        
-                                    />
+                                <InputForm label='company name' type='text' value={name} name='name' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Merchant Trade Name
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                    />
+                                <InputForm label='merchant trade name' type='text' value={merchant_tradename} name='merchant_tradename' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Business registration number
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='business registration number' type='text' value={registration_number} name='registration_number' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Select Region
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <SelectCitiesFormInput 
+                                   label='select region' 
+                                   name='select_region' 
+                                   value={region_name}
+                                   onChange={onChange}/>
+                                   onClick={}
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-600 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Select city
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                    <SelectFormInput label='select city' name='select_city' value={city_name} onChange={onChange}/>
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Postal address
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='Postal address' type='text' value={postal} name='postal' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Vat number
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                 <InputForm label='vat number' type='text' value={vat_number} name='vat_number' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-600 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Accepter point name
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='Acceptor point name' type='text' value={acceptor_pointname} name='acceptor_pointname' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Acceptor point location
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='Acceptor point location   ' type='text' value={title} name='title' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Merchant category
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='Merchant category' type='text' value={category} name='category' onChange={onChange} />
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Merchant Activity
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <SelectFormInput label='Merchant activity' name='select_city' value={city_name} onChange={onChange}/>
                                 </div>
                             </div>
                             <div className="w-full lg:w-4/12 px-4">
                                 <div className="relative w-full mb-3">
-                                    <label
-                                        className="block uppercase text-gray-600 text-xs font-semibold mb-2"
-                                        htmlFor="grid-password"
-                                    >
-                                        Contact person name
-                                    </label>
-                                    <input
-                                        type="email"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        defaultValue=""
-                                    />
+                                <InputForm label='Contact Person Name' type='text' value={contact_person} name='contact_person' onChange={onChange} />
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import {Link} from 'react-router-dom';
 
 
 
@@ -8,7 +9,7 @@ export default function UsersDropdown() {
     <Menu as={React.Fragment}>
       <i className='fas fa-users mr-5  text-sm text-red-900'></i>
       <Menu.Button>
-              <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer'>users</span>
+              <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer font-sans'>users</span>
       </Menu.Button>
       
            <Transition
@@ -24,24 +25,25 @@ export default function UsersDropdown() {
        <div className='bg-red-700'>
         <Menu.Item>
               {() => (
-            <a
-              className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              href="/account-settings"
-                >
+            <Link to='/admin/user-transactions'
+                  className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
+            >      
               <i className='fas fa-dollar-sign mr-2'/>
               user transactions
-            </a>
+            </Link>
           )}
         </Menu.Item>
         <Menu.Item>
          {() => (
-            <a
+            <Link to='/admin/users'>
+              <a
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
               href="/account-settings"
                 >
                   <i className='fas fa-eye mr-2'/>
               view users
             </a>
+            </Link>
           )}
             </Menu.Item>
           </div>

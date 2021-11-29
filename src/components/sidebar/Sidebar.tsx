@@ -70,11 +70,11 @@ export default function Sidebar() {
                         {/* Navigation */}
 
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-                            <li className="items-center py-3">
+                            <li className="items-center py-7">
                                 <Link
                                     className={
-                                        "text-xs uppercase py-3 font-semibold block" +
-                                        (window.location.href.indexOf("/admin-dashboard") !== -1
+                                        "text-xs uppercase py-3 font-semibold block font-sans" +
+                                        (window.location.href.indexOf("/admin/dashboard") !== -1
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
@@ -91,14 +91,14 @@ export default function Sidebar() {
                                     Dashboard
                                 </Link>
                             </li>
-                            <li className="items-center py-3">
+                            <li className="items-center py-7">
                                 <MerchantDropdown />
                             </li>                          
-                            <li className="items-center py-3 -ml-7">
+                            <li className="items-center py-7 -ml-7">
                                 <UserDropdown />
                             </li>
 
-                            <li className="items-center py-3 text-red-800 ml-2">
+                            <li className="items-center py-7 text-red-800 ml-2">
                                  <Link
                                     className={
                                         "text-xs uppercase py-3 font-semibold text-red-800" +
@@ -106,11 +106,11 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/admin/dashboard"
+                                    to="/admin/agents"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={
-                                            "fas fa-eye                                                                                                                             mr-2 text-sm" +
+                                            "fas fa-user                                                                                                                             mr-2 text-sm" +
                                             (window.location.href.indexOf("/admin/dashboard") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                                                 ? "text-red-800"
                                                 : "text-red-800")
@@ -119,7 +119,7 @@ export default function Sidebar() {
                                     view agents
                                 </Link>
                             </li>
-                            <li className="items-center py-3 text-red-800 -ml-1">
+                            <li className="items-center py-7 text-red-800 -ml-1">
                                  <Link
                                     className={
                                         "text-xs uppercase py-3 font-semibold text-red-800" +
@@ -127,11 +127,11 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/admin/dashboard"
+                                    to="/admin/referals"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={
-                                            "fas fa-eye                                                                                                                             mr-2 text-sm" +
+                                            "fas fa-registered                                                                                                                            mr-2 text-sm" +
                                             (window.location.href.indexOf("/admin/dashboard") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                                                 ? "text-red-800"
                                                 : "text-red-800")
@@ -140,7 +140,7 @@ export default function Sidebar() {
                                     referrals
                                 </Link>
                             </li>
-                            <li className="items-center py-3 text-red-800 -ml-5">
+                            <li className="items-center py-7 text-red-800 -ml-5">
                                  <Link
                                     className={
                                         "text-xs uppercase py-3 font-semibold text-red-800" +
@@ -148,12 +148,12 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/admin/dashboard"
+                                    to="/admin/wallets"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={
                                             "fas fa-wallet                                                                                                                             mr-2 text-sm" +
-                                            (window.location.href.indexOf("/admin/dashboard") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                            (window.location.href.indexOf("/admin/wallets") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                                                 ? "text-red-800"
                                                 : "text-red-800")
                                         }
@@ -162,37 +162,13 @@ export default function Sidebar() {
                                 </Link>
                             </li>
                         </ul>
-
-                        {/* Divider */}
-                        <hr className="my-4 md:min-w-full" />
-                        {/* Heading */}
-                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Documentation
-                        </h6>
-                        {/* Navigation */}
-                        <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-                            <li className="inline-flex">
-                                <a
-                                    href="https://www.creative-tim.com/learning-lab/tailwind/react/colors/notus"
-                                    target="_blank"
-                                    className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                >
-                                    <i className="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
-                                    Styles
-                                </a>
-                            </li>
-
-                            <li className="inline-flex">
-                                <a
-                                    href="https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus"
-                                    target="_blank"
-                                    className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                >
-                                    <i className="fab fa-css3-alt mr-2 text-blueGray-300 text-base"></i>
-                                    CSS Components
-                                </a>
-                            </li>
-                         </ul>
+                         {/* Divider */}
+                         <hr className="my-4 md:min-w-full" />
+                         <button className='uppercase leading-tight font-semibold font-sans bg-red-900 text-white py-3 shadow hover:shadow-inner rounded '
+                         onClick={() => {window.localStorage.clear();window.location.href = '/'}}
+                         >
+                             LOGOUT
+                             </button>
                     </div>
                 </div>
             </nav>

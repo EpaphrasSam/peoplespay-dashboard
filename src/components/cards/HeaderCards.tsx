@@ -14,10 +14,10 @@ export default function HeaderStats() {
             {/* Card stats */}
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-6/12 px-4">
-                <HeaderCard/>
+                <HeaderCard title='TOTAL AMOUNT PAID' amount='231' icon='fas fa-hand-holding-usd'/>
               </div>
               <div className="w-full lg:w-6/12 xl:w-6/12 px-4">
-                <HeaderCard/>
+                <HeaderCard title='TOTAL AMOUNT FAILED' amount='231' icon='fas fa-coins'/>
               </div>
             </div>
           </div>

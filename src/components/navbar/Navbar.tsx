@@ -1,7 +1,5 @@
 import React from "react";
 
-
-
 export default function Navbar() {
     return (
         
@@ -9,11 +7,11 @@ export default function Navbar() {
                 <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
                     {/* Brand */}
                     <a
-                        className="text-2xl uppercase hidden lg:inline-block font-semibold"
+                        className="text-2xl hidden lg:inline-block font-semibold font-sans text-red-800"
                         href="#pablo"
                         onClick={(e) => e.preventDefault()}
                     >
-                        Welcome
+                        Dashboard
                     </a>
                     {/* Form */}
                     <svg className="h-10 rounded-full text-red-800 w-5 text-gray-300 md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3" fill="currentColor" viewBox="0 0 24 24">
