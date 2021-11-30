@@ -121,7 +121,7 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                      </div>
                      <div className='mb-2'>
                          <h3 className='text-red-800'>Payment Account Name</h3>
-                            <h5>{t._id}</h5>
+                            <h5>{t.paymentName}</h5>
                      </div>
                      <div className='mb-2'>
                          <h3 className='text-red-800'>Amount</h3>
@@ -150,6 +150,10 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                      <div className='mb-2'>
                          <h3 className='text-red-800'>Status</h3>
                             <h5>{t.status}</h5>
+                     </div>
+                     <div className='mb-2'>
+                         <h3 className='text-red-800'>Payment Issuer</h3>
+                            <h5>{t.paymentIssuer}</h5>
                      </div>
                     </div>
                 </div>

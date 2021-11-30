@@ -23,6 +23,9 @@ export class ReportModel {
     description : string;
 
 
+
+
+
     constructor(report:any){
         this._id=report._id;
         this.createdAt=moment(report.createdAt).format('YYYY/MM/DD');
@@ -42,10 +45,7 @@ export class ReportModel {
         this.paymentIssuer = report.payment_account_issuer_name;
         this.status = report.status;
         this.getStatus(report.status);
-        this.description = report.description
-        
-        // this.getIssuerName(report.recipient_account_issuer,issuers);
-         //this.getPaymentIssuer(report.payment_account_issuer,issuers);
+        this.description = report.description;
     };
 
     getStatus(status:string){

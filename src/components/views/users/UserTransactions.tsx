@@ -6,6 +6,7 @@ import {ReportModel} from '../../../models/report.model'
 import ReportService from '../../../services/reports.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
+import {CSVLink} from "react-csv"
 
 function UserTransactions(){
    
@@ -37,6 +38,27 @@ function UserTransactions(){
  
 const {transactions} = useSelector(reportSelector)
 
+const headers = [
+    { label: "TRANSACTION ID", key: "_id" },
+    { label: "CUSTOMER REFERENCE", key: "reference" },
+    { label: "TRANSACTION DATE", key: "createdAt" },
+    { label: "TRANSACTION TIME", key: "time" },
+    { label: "TRANSACTION TYPE", key: "transaction_type" },
+    { label: "CUSTOMER NAME", key: "customerName" },
+    { label: "CUSTOMER PHONE NUMBER", key: "customerPhone" },
+    { label: "PAYMENT ACCOUNT NUMBER", key: "paymentNumber" },
+    { label: "PAYMENT ACCOUNT ISSUER", key: "paymentIssuer" },
+    { label: "AMOUNT", key: "actualAmount" },
+    { label: "CHARGES", key: "charges" },
+    { label: "TOTAL AMOUNT", key: "amount" },
+    { label: "RECIPIENT NAME", key: "recipientName" },
+    { label: "RECIPIENT ISSUER", key: "recipientIssuer" },
+    { label: "STATUS", key: "status" }
+    ]
+
+
+
+
 const filterResults = transactions.filter((tr)=>{
     if(tr?.customerName?.toLowerCase().includes(searchQuery)){
        return tr;
@@ -59,7 +81,15 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
            <div>
             <h2 className="text-2xl font-semibold leading-tight text-red-800">User Transactions</h2>
         </div>
-        <button className='float-right py-3 px-7 bg-green-100 text-green-700 font-semibold rounded'>Download CSV</button>
+
+        {/**download button */}
+        <CSVLink 
+            headers = {headers}
+            data = {transactions}
+            filename={'report.csv'}
+            className='float-right py-3 px-7 bg-green-100 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150'>
+                Download CSV
+        </CSVLink>
        
         {/**date picker */}
         <div className="flex items-center">
