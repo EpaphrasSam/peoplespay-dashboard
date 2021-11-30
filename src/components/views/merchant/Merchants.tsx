@@ -9,6 +9,7 @@ import Spinner from '../layout/Spinner';
 import { setSelected } from '../../../state/merchant.state';
 import SearchForm from '../../forms/SearchForm';
 
+
 function Merchants(){
 
     const dispatch = useDispatch()
@@ -40,7 +41,7 @@ function Merchants(){
 
         response();
         },
-     [loading])
+     [loading,dispatch])
 
     const {merchants} = useSelector(merchantsSelector)
     
@@ -50,7 +51,7 @@ function Merchants(){
         }
     })
 
- const results:any[] = filterResults.length == 0 ? merchants : filterResults
+ const results:any[] = filterResults.length === 0 ? merchants : filterResults
 
 //Get Current rows
 const indexOfLastRow:number = currentIndex * rowsPerPage;

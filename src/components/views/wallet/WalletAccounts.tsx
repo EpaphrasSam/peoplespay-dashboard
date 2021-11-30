@@ -30,7 +30,7 @@ function Wallets(){
                  setIsLoading(loading)
         })
      },
-     [loading])
+     [loading,dispatch])
 
      const {wallets} = useSelector(reportSelector)
      

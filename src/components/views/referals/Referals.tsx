@@ -1,6 +1,5 @@
 import React from 'react'
 import ReferalsTable from '../../tables/ReferalsTable';
-import AllReferals from '../../tables/ReferalsTable'
 
 function Wallets(){
 

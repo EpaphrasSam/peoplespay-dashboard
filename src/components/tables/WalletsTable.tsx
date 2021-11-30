@@ -1,8 +1,6 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import moment from "moment"
 
-
-const swal = require('@sweetalert/with-react');
 
 type AppProps = any[]
 

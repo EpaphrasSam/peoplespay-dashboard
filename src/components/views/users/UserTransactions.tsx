@@ -33,7 +33,7 @@ function UserTransactions(){
             setIsLoading(loading)
         }
         response();
-    },[loading]) 
+    },[loading,dispatch]) 
  
 const {transactions} = useSelector(reportSelector)
 
@@ -43,7 +43,7 @@ const filterResults = transactions.filter((tr)=>{
     }
 })
 
-const results:any[] = filterResults.length == 0 ? transactions : filterResults
+const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
  //Get Current rows
  const indexOfLastRow:number = currentIndex * rowsPerPage;

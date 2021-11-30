@@ -32,7 +32,7 @@ const getMerchant = (id : string) => fetch(
         method : 'GET',
         headers : {
             'Content-type' : 'Application/json',
-            'Authroization' :Utils. AuthToken()
+            'Authroization': Utils. AuthToken()
         }
     }
 ).then(res => res.json());
@@ -70,7 +70,7 @@ const createMerchant = (merchant:any) => fetch(
     },
     body : JSON.stringify(merchant)
     }
-)
+).then(res => res.json())
 
  const getCities = () => fetch(
     `${BASE_URL}/merchants/cities/get`,
@@ -177,16 +177,16 @@ const getCategories = () => fetch(
 // )
 
 
-// const getRegions = () => fetch(
-//     `${BASE_URL}/merchants/regions/get`,
-//     {
-//         method : 'GET',
-//         headers : {
-//             'Content-type' : 'Application/json',
-//            // 'Authroization' : AuthToken()
-//     }
-//     }
-// )
+const getRegions = () => fetch(
+    `${BASE_URL}/merchants/regions/get`,
+    {
+        method : 'GET',
+        headers : {
+            'Content-type' : 'Application/json',
+            'Authorization' : Utils.AuthToken()
+    }
+    }
+).then(res=> res.json())
 
 const summary = () => fetch(
     `${BASE_URL}/merchants/summary`,
@@ -206,5 +206,7 @@ export default {
     getMerchant,
     getMerchantDetail,
     getActivities,
-    getCities
+    getCities,
+    getRegions,
+    createMerchant
 }

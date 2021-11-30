@@ -13,7 +13,9 @@ const setAuthToken = (token:any)=>{
     return ;
 } 
 
-export default {
+const Utils = {
     AuthToken,
     setAuthToken
 };
+
+export default Utils;

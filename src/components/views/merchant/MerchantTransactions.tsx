@@ -41,7 +41,7 @@ export default function MerchantTransaction() {
               run();
              
          },
-         [loading])
+         [loading,dispatch])
 
          const {transactions} = useSelector(transactionsSelector);
          //console.log(transactions)
@@ -53,7 +53,7 @@ export default function MerchantTransaction() {
          })
 
     
-         const results:any[] = filterResults.length == 0 ? transactions : filterResults
+         const results:any[] = filterResults.length === 0 ? transactions : filterResults
          
         //Get Current rows
         const indexOfLastRow:number = currentIndex * rowsPerPage;

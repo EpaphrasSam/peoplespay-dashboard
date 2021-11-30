@@ -1,7 +1,7 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ReportService from '../../services/reports.service';
-import reportState, {reportSelector, setReferals} from '../../state/report.state' 
+import  {reportSelector, setReferals} from '../../state/report.state' 
 import moment from "moment"
 
 
@@ -19,7 +19,7 @@ import moment from "moment"
                     let referals= data.map((d:any) => d)
                      dispatch(setReferals(referals))
             })
-    },[])
+    },[dispatch])
 
   const {referals} = useSelector(reportSelector)
   console.log(referals)

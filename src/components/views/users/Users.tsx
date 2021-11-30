@@ -27,7 +27,7 @@ export default function MerchantTransaction() {
                  setIsLoading(loading)
         })
      },
-     [loading])
+     [loading,dispatch])
 
      const {users} = useSelector(usersSelector)
      console.log(users)

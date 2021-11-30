@@ -33,7 +33,7 @@ export default function MerchantCategories() {
         }
         run() 
      },
-     [loading])
+     [loading,dispatch])
 
      const {categories} = useSelector(merchantsSelector)
      console.log(categories)

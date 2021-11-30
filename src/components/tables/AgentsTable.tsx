@@ -19,7 +19,7 @@ import moment from "moment"
                     let referals= data.map((d:any) => d)
                      dispatch(setAgents(referals))
             })
-    },[])
+    },[dispatch])
 
   const {agents} = useSelector(reportSelector)
   console.log(agents)
