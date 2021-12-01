@@ -100,6 +100,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         <div className="relative">
         <input name="end" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date end" />
        </div>
+       <button className='rounded-full bg-red-800 text-gray-200 py-1 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow ease-linear transition-all duration-150'>Filter</button>
      </div>
 
 {/**filters */}

@@ -56,7 +56,7 @@ const state=createSlice(
                     agents : action.payload,
                     loading : false
                 } 
-            }
+            },
         }
     }
 )

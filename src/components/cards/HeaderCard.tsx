@@ -11,7 +11,7 @@ import React from "react";
              {title}
            </h5>
            <span className="font-bold text-xl text-blueGray-700">
-            GH¢ {amount}
+            GH¢ {Number.parseFloat(amount).toFixed(2)}
            </span>
          </div>
          <div className="relative w-auto pl-4 flex-initial">
