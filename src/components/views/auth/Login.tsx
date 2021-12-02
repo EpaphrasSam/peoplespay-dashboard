@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthService from "../../../services/auth.service";
 import { authSelector, setAuth } from '../../../state/auth.state';
-import AuthToken from '../../../utils/AuthToken'
+import Utils from '../../../utils/AuthToken'
 
 
 
@@ -13,7 +13,7 @@ function Login() {
     useEffect(()=>
     {
         if(isAuthenticated){
-            window.location.href = '/dashboard'
+            window.location.href = '/'
         }
     },[])
 
@@ -44,12 +44,12 @@ function Login() {
                 )
             };
             setLoading(false);
-            AuthToken.setAuthToken(response.token)
+            Utils.setAuthToken(response.token)
             dispatch(
                 setAuth(response.data)
             )
            
-            window.location.href ='/dashboard'
+            window.location.href ='/'
             
             
         } catch (err:any) {

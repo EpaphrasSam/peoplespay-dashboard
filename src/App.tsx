@@ -1,7 +1,8 @@
-import  React from 'react';
+import  React,{useEffect} from 'react';
 import {Provider} from 'react-redux';
-import { BrowserRouter as Router, Route,Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route,Routes,Navigate} from 'react-router-dom';
 import state from './state/state';
+
 
 
 import Login from './components/views/auth/Login';
@@ -24,15 +25,24 @@ import './App.css';
 function App() {
 
 
+  useEffect(()=>
+  {
+    if (!localStorage.token) {
+  
+      <Navigate to='/login' />
+    }
+  },[])
+
   return (
     <Provider store = {state}>
       <Router>
           <div className='App'>
               <Routes>
-              <Route  path='/' element={<Login/>} />
-                  <Route  path='/dashboard' element={<Layout/>}>
+                  <Route  path='/login' element={<Login/>} />
+                 
+                  <Route  path='/' element={<Layout/>}>
 
-                        <Route path="/dashboard"  element={<Dashboard/>}/>
+                        <Route path="/"  element={<Dashboard/>}/>
                           {/**merchants routes*/}
                         <Route path="merchant-categories"  element={<MerchantCategories/>} />
                         <Route path="merchant-transactions"  element={<MerchantTransactions/>} />

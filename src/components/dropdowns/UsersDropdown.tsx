@@ -25,7 +25,7 @@ export default function UsersDropdown() {
        <div className='bg-red-700'>
         <Menu.Item>
               {() => (
-            <Link to='/dashboard/user-transactions'
+            <Link to='/user-transactions'
                   className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
             >      
               <i className='fas fa-dollar-sign mr-2'/>
@@ -35,7 +35,7 @@ export default function UsersDropdown() {
         </Menu.Item>
         <Menu.Item>
          {() => (
-            <Link to='/dashboard/users'>
+            <Link to='/users'>
               <a
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
               href="#"

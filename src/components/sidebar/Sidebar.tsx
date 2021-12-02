@@ -78,7 +78,7 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/dashboard"
+                                    to="/"
                                 >
                                     <i
                                         className={
@@ -106,7 +106,7 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/dashboard/agents"
+                                    to="/agents"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={
@@ -127,7 +127,7 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/dashboard/referals"
+                                    to="/referals"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={
@@ -148,7 +148,7 @@ export default function Sidebar() {
                                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                                             : "text-blueGray-700 hover:text-blueGray-500")
                                     }
-                                    to="/dashboard/wallets"
+                                    to="/wallets"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={

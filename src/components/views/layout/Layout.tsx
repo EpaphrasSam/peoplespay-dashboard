@@ -15,7 +15,7 @@ export default function Admin() {
 
     const { isAuthenticated} = useSelector(authSelector)
     if(isAuthenticated === false){
-        return <Navigate to='/' />
+        return <Navigate to='/login' />
     }
 
     return (
