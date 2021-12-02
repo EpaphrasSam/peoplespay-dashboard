@@ -16,10 +16,10 @@ import React from "react";
          </div>
          <div className="relative w-auto pl-4 flex-initial">
            <i
-             className={`${icon} inline-flex items-center justify-center h-60`}
+             className={`${icon} inline-flex items-center justify-center`}
            >
            </i>
-         </div>
+        </div>
        </div>
      </div>
    </div>
