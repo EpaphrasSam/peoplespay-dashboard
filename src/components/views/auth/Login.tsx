@@ -13,7 +13,7 @@ function Login() {
     useEffect(()=>
     {
         if(isAuthenticated){
-            window.location.href = '/admin'
+            window.location.href = '/dashboard'
         }
     },[])
 
@@ -49,7 +49,7 @@ function Login() {
                 setAuth(response.data)
             )
            
-            window.location.href ='/admin'
+            window.location.href ='/dashboard'
             
             
         } catch (err:any) {

@@ -27,7 +27,7 @@ export default function MerchantsDropdown() {
               {() => (
             <Link
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              to="/admin/merchants"
+              to="/dashboard/merchants"
                 >
               <i className='fas fa-eye mr-2'/>
               View Merchants
@@ -38,7 +38,7 @@ export default function MerchantsDropdown() {
          {() => (
             <Link
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              to="/admin/merchant-transactions"
+              to="/dashboard/merchant-transactions"
                 >
              <i className='fas fa-coins mr-2'/>
               Merchant transactions
@@ -49,7 +49,7 @@ export default function MerchantsDropdown() {
          {() => (
             <Link
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              to="/admin/merchant-categories"
+              to="/dashboard/merchant-categories"
                 >
              <i className='fas fa-list-alt mr-2'/>
               Merchant categories
@@ -60,7 +60,7 @@ export default function MerchantsDropdown() {
          {() => (
             <Link
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              to="/admin/create-merchant"
+              to="/dashboard/create-merchant"
                 >
                 <i className='fas fa-coins mr-2'/>
               create merchant

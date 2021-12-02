@@ -105,10 +105,9 @@ function Dashboard() {
           <BodyCard title='TOTAL NUMBER OF MERCHANTS' value={data.merchantsNumb} icon='fas fa-list-ol'/>
           </div>
           <div className="w-full lg:w-4/12 xl:w-4/12 px-4">
-          <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${data.paidCharges}`} icon='fas fa-coins' />
+          <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${Number.parseFloat(data.paidCharges).toFixed(2)}`} icon='fas fa-coins' />
           </div>
-      </div>
-      
+      </div>      
   </>
   )
 }

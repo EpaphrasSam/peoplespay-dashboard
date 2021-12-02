@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect} from 'react-router-dom'
+import {Navigate} from 'react-router-dom'
 import { useSelector } from "react-redux";
 import { authSelector } from "../../state/auth.state";
 
@@ -10,7 +10,7 @@ export default function CreateMerchantForm() {
     const {isAuthenticated} = useSelector(authSelector)
     
     if(!isAuthenticated){
-      return <Redirect to='/'/>
+      return <Navigate to='/'/>
     }
 
     return (
