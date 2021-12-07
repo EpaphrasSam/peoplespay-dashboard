@@ -52,11 +52,24 @@ const getAgents = () => fetch(
     }
 ).then(res => res.json())
 
+const dateFilter = (startDate:string, endDate :string) =>fetch(
+    `${BASE_URL}/transactions/date/filter?startDate=${startDate}&endDate=${endDate}`,
+    {
+        method:'GET',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' : Utils.AuthToken()
+        }
+    }
+).then(res => res.json())
+
+
 
 export default {
 summaryReport,
 getTransactions,
 getWallets,
 getReferals,
-getAgents
+getAgents,
+dateFilter
 }

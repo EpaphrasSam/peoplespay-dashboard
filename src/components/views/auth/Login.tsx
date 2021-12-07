@@ -48,6 +48,7 @@ function Login() {
             dispatch(
                 setAuth(response.data)
             )
+            console.log(response.data);
            
             window.location.href ='/'
             

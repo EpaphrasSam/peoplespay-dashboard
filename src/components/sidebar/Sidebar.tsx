@@ -91,11 +91,11 @@ export default function Sidebar() {
                                     Dashboard
                                 </Link>
                             </li>
-                            <li className="items-center py-7">
-                                <MerchantDropdown />
-                            </li>                          
                             <li className="items-center py-7 -ml-7">
                                 <UserDropdown />
+                            </li>                          
+                            <li className="items-center py-7 ">
+                                <MerchantDropdown />
                             </li>
 
                             <li className="items-center py-7 text-red-800 ml-2">

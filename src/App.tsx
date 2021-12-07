@@ -1,6 +1,6 @@
 import  React,{useEffect} from 'react';
 import {Provider} from 'react-redux';
-import { BrowserRouter as Router, Route,Routes,Navigate} from 'react-router-dom';
+import { HashRouter, Route,Routes,Navigate} from 'react-router-dom';
 import state from './state/state';
 
 
@@ -35,7 +35,7 @@ function App() {
 
   return (
     <Provider store = {state}>
-      <Router>
+      <HashRouter>
           <div className='App'>
               <Routes>
                   <Route  path='/login' element={<Login/>} />
@@ -64,7 +64,7 @@ function App() {
                  </Route>
               </Routes>
           </div>
-      </Router>
+      </HashRouter>
         
       
       </Provider>

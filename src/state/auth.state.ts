@@ -18,11 +18,11 @@ const state=createSlice(
         name:'auth',
         initialState,
         reducers:{
-            setAuth:(state,action:PayloadAction<{user:User}>)=>{
-                const {user}=action.payload;
+            setAuth:(state,action)=>{
+               // const {user}=action.payload;
               return  {
                   ...state,
-                    user:user
+                    user:action.payload
                 }
             }, 
         }
