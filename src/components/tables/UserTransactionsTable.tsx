@@ -79,6 +79,10 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                      <h3 className='text-red-800'>Payment Issuer</h3>
                         <h5>{t.paymentIssuer}</h5>
                  </div>
+                 <div className='mb-2'>
+                     <h3 className='text-red-800'>Reason</h3>
+                        <h5>{t?.reason}</h5>
+                 </div>
                 </div>
             </div>
         )}>

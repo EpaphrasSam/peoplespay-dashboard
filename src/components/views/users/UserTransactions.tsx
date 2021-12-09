@@ -65,6 +65,7 @@ function UserTransactions(){
     }
  
 const {transactions} = useSelector(reportSelector)
+//console.log(transactions)
 
 const headers = [
     { label: "TRANSACTION ID", key: "_id" },
@@ -329,5 +330,3 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     )
 }
 export default UserTransactions;
-
-

@@ -21,12 +21,15 @@ export class ReportModel {
     paymentIssuer:string;
     reference:string;
     description : string;
+    reason: string
 
 
 
 
 
     constructor(report:any){
+        console.log(report.debit_transaction.Message);
+        
         this._id=report._id;
         this.createdAt=moment(report.createdAt).format('YYYY/MM/DD');
         this.time=moment(report.createdAt).format('HH:mm A');
@@ -46,6 +49,7 @@ export class ReportModel {
         this.status = report.status;
         this.getStatus(report.status);
         this.description = report.description;
+        this.reason = report.debit_transaction.Message;
     };
 
     getStatus(status:string){

@@ -66,7 +66,7 @@ function Dashboard() {
        {/** */}
        <div className="relative bg-lightBlue-600 md:pt-32 pb-10 pt-2">
        {/** */}
-      <div className="flex flex-wrap mb-10">
+       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
          <div className="w-full lg:w-4/12 xl:w-3/12 xl:mb-0 px-4 py-4">
           <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data.totalAmountPaid).toFixed(2)}`} icon='fas fa-hand-holding-usd fa-2x'/>
         </div> 
