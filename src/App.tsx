@@ -2,6 +2,8 @@ import  React,{useEffect} from 'react';
 import {Provider} from 'react-redux';
 import { HashRouter, Route,Routes,Navigate} from 'react-router-dom';
 import state from './state/state';
+import AuthService from "./services/auth.service";
+import Utils from './utils/AuthToken';
 
 
 
@@ -21,6 +23,7 @@ import AllMerchants from './components/views/merchant/Merchants'
 
 
 import './App.css';
+import { setTimeout } from 'timers';
 
 function App() {
 
@@ -31,7 +34,30 @@ function App() {
   
       <Navigate to='/login' />
     }
+
+    const user = {
+      email : 'admin@peoplepay.com.gh',
+      password : '12345'
+    }
+
+    const timer = setTimeout(async()=>{
+      try{
+        //clear current token
+      window.localStorage.clear();
+
+      //login for new token
+       const response = await AuthService.login(user)
+      
+      //save to localStorage
+     Utils.setAuthToken(response.token)
+
+      }catch(err:any){
+        alert(err.message)
+      }
+    }, 36000)
   },[])
+
+  
 
   return (
     <Provider store = {state}>

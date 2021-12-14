@@ -32,7 +32,7 @@ function Login() {
                     'Email or Password cannot be null'
                 )
             }
-            const response=await AuthService.login(
+            const response = await AuthService.login(
                 {
                     email:email,
                     password:password
@@ -44,12 +44,18 @@ function Login() {
                 )
             };
             setLoading(false);
+            
+
+            //save to localStorage
             Utils.setAuthToken(response.token)
+           
+            //Dispatch SetAuth
             dispatch(
                 setAuth(response.data)
             )
-            console.log(response.data);
-           
+          
+    
+            //Navigate to home
             window.location.href ='/'
             
             
@@ -59,7 +65,8 @@ function Login() {
         }
     }
 
-    
+    const {user} = useSelector(authSelector)
+    //console.log(user)
 
     return (
         <div className="flex items-center min-h-screen bg-gray-50">

@@ -6,7 +6,7 @@ import { authSelector } from "../../state/auth.state";
 
 export default function Navbar() {
 
-    const {user} = useSelector(authSelector)
+    //const {user} = useSelector(authSelector)
     //console.log(user);
     return (
             <nav className="absolute top-0 left-0 w-full z-1 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">

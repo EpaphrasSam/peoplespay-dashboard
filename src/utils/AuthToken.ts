@@ -1,3 +1,5 @@
+import { setTimeout } from "timers";
+
 const AuthToken = () =>{
 const token = localStorage.getItem('token')
 if(!token){
@@ -12,6 +14,14 @@ const setAuthToken = (token:any)=>{
     }
     return ;
 } 
+
+const autoLogoutTimer = (timer:any) => {
+  setTimeout(()=>{
+    window.localStorage.clear();
+    window.location.href = '/'
+  },timer)
+}
+
 
 const Utils = {
     AuthToken,
