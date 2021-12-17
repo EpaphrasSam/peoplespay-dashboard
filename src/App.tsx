@@ -2,8 +2,7 @@ import  React,{useEffect} from 'react';
 import {Provider} from 'react-redux';
 import { HashRouter, Route,Routes,Navigate} from 'react-router-dom';
 import state from './state/state';
-import AuthService from "./services/auth.service";
-import Utils from './utils/AuthToken';
+
 
 
 
@@ -35,29 +34,20 @@ function App() {
       <Navigate to='/login' />
     }
 
-    const user = {
-      email : 'admin@peoplepay.com.gh',
-      password : '12345'
-    }
-
     const timer = setTimeout(async()=>{
       try{
         //clear current token
       window.localStorage.clear();
 
-      //login for new token
-       const response = await AuthService.login(user)
-      
-      //save to localStorage
-     Utils.setAuthToken(response.token)
+      <Navigate to='/login' />
 
       }catch(err:any){
         alert(err.message)
       }
     }, 36000)
-  },[])
 
-  
+   return() => clearTimeout(timer);
+  },[])
 
   return (
     <Provider store = {state}>

@@ -81,7 +81,7 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                  </div>
                  <div className='mb-2'>
                      <h3 className='text-red-800'>Reason</h3>
-                        <h5>{t?.reason}</h5>
+                        <h5>{t.getReason() || ''}</h5>
                  </div>
                 </div>
             </div>
@@ -118,11 +118,11 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
             {t.recipientName}
         </p>
     </td>
-    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
             {t.customerPhone}
         </p>
-    </td>
+    </td> */}
     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
             {t.amount}
@@ -132,6 +132,39 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
         <p className="text-gray-900 whitespace-no-wrap">
             {t.charges}
         </p>
+    </td>
+    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+    {
+            t.debit_status.toLowerCase() === 'paid' ? 
+            (
+            <span
+                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                <span aria-hidden
+                    className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                <span className="relative">PAID</span>
+            </span>
+            )
+            : 
+            t.debit_status.toLowerCase() === 'failed' ? 
+            (
+                <span
+            className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+            <span aria-hidden
+                className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+            <span className="relative">FAILED</span>
+        </span>
+            ):
+            (
+            <span
+              className="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+               <span aria-hidden
+                className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+               <span className="relative uppercase">t.debit_status</span>
+        </span>
+            )
+
+        }
+
     </td>
     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         {

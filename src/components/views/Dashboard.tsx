@@ -71,7 +71,7 @@ function Dashboard() {
           <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data.totalAmountPaid).toFixed(2)}`} icon='fas fa-hand-holding-usd fa-2x'/>
         </div> 
         <div className="w-full lg:w-4/12 xl:w-3/12 xl:mb-0 px-4 py-4">
-        <BodyCard title='TOTAL PAID CHARGES' value={data.paidCharges} icon='fas fa-coins fa-2x'/>
+        <BodyCard title='TOTAL PAID CHARGES' value={Number.parseFloat(data.paidCharges).toFixed(2)} icon='fas fa-coins fa-2x'/>
         </div>
         <div className="w-full lg:w-4/12 xl:w-3/12 xl:mb-0 px-4 py-4">
           <BodyCard title='NUMBER OF TRANSACTIONS' value={data.transactionsNumb} icon='fas fa-list-ol fa-2x'/>

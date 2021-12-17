@@ -31,14 +31,14 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
             </span>
         </td> 
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-            {m.blocked 
+            {m.blocked === 'true'
               ?
               (
               <span
                 className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                <span className="relative">blocked</span>
+                <span className="relative"> blocked </span>
               </span>
             ) 
               : 
@@ -47,7 +47,7 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                <span className="relative">not active</span>
+                <span className="relative">active</span>
             </span>
               )
               }
