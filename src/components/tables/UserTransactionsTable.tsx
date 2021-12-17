@@ -135,7 +135,7 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
     </td>
     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
     {
-            t.debit_status.toLowerCase() === 'paid' ? 
+            t.debit_status === 'paid' ? 
             (
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -145,7 +145,7 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
             </span>
             )
             : 
-            t.debit_status.toLowerCase() === 'failed' ? 
+            t.debit_status === 'failed' ? 
             (
                 <span
             className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
