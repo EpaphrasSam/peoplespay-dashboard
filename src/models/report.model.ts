@@ -1,7 +1,9 @@
 import  moment from "moment";
+import { ghippsMsgs } from "../utils/ghipps_code";
 
 
 export class ReportModel {
+
 
     _id:string;
     createdAt:string;
@@ -21,14 +23,22 @@ export class ReportModel {
     paymentIssuer:string;
     reference:string;
     description : string;
-    reason: string
-
-
-
+    reason: string='';
+    debit_transaction:any;
+    payment_account_type:string;
+    debit_status:string;
+    credit_transaction:any;
+    bill_transaction:any;
+    ecard_transaction:any;
 
 
     constructor(report:any){
-       // console.log(report.debit_transaction.Message);
+       
+        this.debit_transaction=report.debit_transaction;
+        this.debit_status=report.debit_status;
+        this.credit_transaction=report.credit_transaction;
+        this.bill_transaction=report.bill_transaction;
+        this.ecard_transaction=report.ecard_transaction;
         
         this._id=report._id;
         this.createdAt=moment(report.createdAt).format('YYYY/MM/DD');
@@ -49,7 +59,7 @@ export class ReportModel {
         this.status = report.status;
         this.getStatus(report.status);
         this.description = report.description;
-        this.reason = report.debit_transaction?.Message;
+        this.payment_account_type=report.payment_account_type;
     };
 
     getStatus(status:string){
@@ -84,4 +94,49 @@ export class ReportModel {
         } catch (err) {
         }      
     };
+
+
+    getReason = ():string => {
+        try{
+           
+            let reason:string='';
+            switch (this.debit_status) {
+                case 'paid':
+                    switch (this.transaction_type) {
+                        case 'AT':
+                        case 'PB':
+                               reason=this.bill_transaction.responseMessage;  
+                            break;
+                        case 'ECARDS':
+                            reason=this.ecard_transaction?.ResponseMessage || ''
+                            break;
+                        default:
+                            
+                            reason=ghippsMsgs[this.credit_transaction.ActCode]
+                            break;
+                    }
+                    break;
+                default:
+                    if(typeof this.debit_transaction === 'string'){
+                         reason=this.debit_transaction;
+                    }else {
+                        switch (this.payment_account_type) {
+                            case 'momo':
+                                reason= this.debit_transaction.Message;
+                                break;
+                            case 'card':
+                                reason= this.debit_transaction.response.acquirerMessage;
+                                break;
+                            default:
+                                reason= ''
+                                break;
+                        }
+                    }
+                    break;
+            }
+            return reason;
+        } catch(err){            
+            return '';
+        }
+    }
 }
