@@ -39,12 +39,12 @@ function App() {
         //clear current token
       window.localStorage.clear();
 
-      <Navigate to='/login' />
+      window.location.href = '/login'
 
       }catch(err:any){
         alert(err.message)
       }
-    }, 36000)
+    }, 1639741236)
 
    return() => clearTimeout(timer);
   },[])
