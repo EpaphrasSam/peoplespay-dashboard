@@ -162,13 +162,12 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                <span className="relative uppercase">{t.debit_status}</span>
         </span>
             )
-
         }
 
     </td>
     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         {
-            t.status == 'PAID' ? 
+            t.status === 'PAID' ? 
             (
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -189,9 +188,32 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
         }
         
     </td>
-    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">
-            <i className='fas fa-eye text-gray-500'/>
+    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm  border-t-0 border-l-0 border-r-0">
+        <p className="text-gray-900 whitespace-no-wrap text-left">
+            {
+                t.payment_account_type === 'momo' ? 
+                (
+                 <>
+                 <i className="fas fa-circle text-yellow-300 mr-2"></i>
+                {t.payment_account_type}
+                 </>
+                )
+                : t.payment_account_type === 'wallet' ? 
+                (
+                    <>
+                 <i className="fas fa-circle text-indigo-500 mr-2"></i>
+                {t.payment_account_type}
+                 </> 
+                ) 
+                :
+                (
+                    <>
+                    <i className="fas fa-circle text-green-500 mr-2"></i>
+                   {t.payment_account_type}
+                    </>
+                )
+            }
+        
         </p>
     </td>
 </tr>

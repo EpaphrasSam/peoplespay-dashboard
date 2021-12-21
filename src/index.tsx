@@ -4,11 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
+import ErrorBoundary from './ErrorBoundary';
 
 ReactDOM.render(
   <React.StrictMode>
-      <App />
+    <ErrorBoundary>
+      <App/>
+    </ErrorBoundary>    
   </React.StrictMode>,
   document.getElementById('root')
 );

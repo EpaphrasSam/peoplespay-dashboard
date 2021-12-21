@@ -1,13 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { authSelector } from "../../state/auth.state";
-
 
 
 export default function Navbar() {
 
-    //const {user} = useSelector(authSelector)
-    //console.log(user);
     return (
             <nav className="absolute top-0 left-0 w-full z-1 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
                 <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
@@ -20,12 +15,12 @@ export default function Navbar() {
                         Dashboard
                     </a>
                     {/* Form */}
-                    <svg className="h-10 rounded-full text-red-800 w-5 text-gray-300 md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 rounded-full text-red-800 w-5 text-gray-300 md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" />
+                    </svg>
                     {/* User */}
                     <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-                        <h5 className='text-red-800'>Mark Tutu</h5>
+                        <h5 className='text-red-800'>Admin</h5>
                     </ul>
                 </div>
             </nav>        

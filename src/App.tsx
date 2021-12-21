@@ -1,7 +1,9 @@
 import  React,{useEffect} from 'react';
+//import { ErrorBoundary } from 'react-error-boundary';
 import {Provider} from 'react-redux';
-import { HashRouter, Route,Routes,Navigate} from 'react-router-dom';
+import { HashRouter, Route,Routes} from 'react-router-dom';
 import state from './state/state';
+import AuthService from './services/auth.service';
 
 
 
@@ -22,32 +24,26 @@ import AllMerchants from './components/views/merchant/Merchants'
 
 
 import './App.css';
-import { setTimeout } from 'timers';
+import Utils from './utils/AuthToken';
+
 
 function App() {
 
+useEffect(()=>{
+  const timer = setInterval(async()=>{
+   const email:any = 'admin@peoplepay.com'
+   const password:any = '12345'
+   const response = await AuthService.login({
+     email : email,
+     password : password
+   })
+   
+   Utils.setAuthToken(response.token,)
+   console.log('started again')
 
-  useEffect(()=>
-  {
-    if (!localStorage.token) {
-  
-      <Navigate to='/login' />
-    }
-
-    const timer = setTimeout(async()=>{
-      try{
-        //clear current token
-      window.localStorage.clear();
-
-      window.location.href = '/login'
-
-      }catch(err:any){
-        alert(err.message)
-      }
-    }, 1639741236)
-
-   return() => clearTimeout(timer);
-  },[])
+  }, 1640083044)
+  return () => clearInterval(timer);
+},[])
 
   return (
     <Provider store = {state}>
