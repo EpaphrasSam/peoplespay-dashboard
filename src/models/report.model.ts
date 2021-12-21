@@ -30,10 +30,13 @@ export class ReportModel {
     credit_transaction:any;
     bill_transaction:any;
     ecard_transaction:any;
+    reversal_status : string;
 
 
     constructor(report:any){
-       
+
+        //console.log(report.refund_status)
+
         this.debit_transaction=report.debit_transaction;
         this.debit_status=report.debit_status;
         this.credit_transaction=report.credit_transaction;
@@ -60,6 +63,7 @@ export class ReportModel {
         this.getStatus(report.status);
         this.description = report.description;
         this.payment_account_type=report.payment_account_type;
+        this.reversal_status = report.reversal_status;
     };
 
     getStatus(status:string){

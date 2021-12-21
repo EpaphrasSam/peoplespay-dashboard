@@ -15,17 +15,13 @@ const setAuthToken = (token:any)=>{
     return ;
 } 
 
-const autoLogoutTimer = (timer:any) => {
-  setTimeout(()=>{
-    window.localStorage.clear();
-    window.location.href = '/'
-  },timer)
-}
+const autoTokenTimer = setInterval(() => {window.localStorage.clear(); window.location.href = '/login'}, 1640083044);
 
 
 const Utils = {
     AuthToken,
-    setAuthToken
+    setAuthToken,
+    autoTokenTimer
 };
 
 export default Utils;

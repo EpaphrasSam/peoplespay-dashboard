@@ -2,6 +2,8 @@ import React from "react";
 import {Outlet,Navigate} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../state/auth.state";
+import ErrorBoundary from "../../../ErrorBoundary";
+
 // components
 import Navbar from "../../navbar/Navbar";
 import Sidebar from "../../sidebar/Sidebar";
@@ -14,12 +16,13 @@ import Footer from "../../footer/Footer";
 export default function Admin() {
 
     const { isAuthenticated} = useSelector(authSelector)
-    if(isAuthenticated === false){
+    if(isAuthenticated === false ){
         return <Navigate to='/login' />
     }
 
     return (
         <>
+         <ErrorBoundary>
             <Sidebar />
             <div className="relative md:ml-64 bg-blueGray-100 mb-2">
                     <Navbar />
@@ -32,6 +35,7 @@ export default function Admin() {
                     <Footer/>
                 </div>
             </div>
+            </ErrorBoundary>
         </>
     );
 }

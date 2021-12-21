@@ -29,9 +29,11 @@ function UserTransactions(){
 
 
     const [searchQuery, setSearchQuery] = useState('')
+    const [searchBy , setSearchBy] = useState('All')
     const [isLoading, setIsLoading] = useState(loading)
     const [currentIndex, setCurrentIndex] = useState(1)
-    const [rowsPerPage] = useState(10)
+    const [rowsPerPage,setRowsPerPage] = useState(10)
+
 
     useEffect(()=>{
 
@@ -43,7 +45,7 @@ function UserTransactions(){
             
             const res = await ReportService.dateFilter(startDate, endDate)
             const resReport = await ReportService.summaryReport(startDate,endDate)
-            const transactionResponse = await TransactionService.summary() 
+            //const transactionResponse = await TransactionService.summary() 
             
             if(!res.success){
                 throw Error(res.message)
@@ -94,6 +96,10 @@ const filterResults = transactions.filter((tr)=>{
     }
 })
 
+const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
+    setRowsPerPage(parseInt(e.target.value))
+  }
+
 const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
  //Get Current rows
@@ -105,7 +111,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
  const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
  const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
-
+ 
 
   const clickDateFilter = async() => {
     try{
@@ -131,6 +137,9 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         alert(err.message)
     }
   }
+
+
+  
 
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
@@ -198,10 +207,16 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
                     <select
+                        onChange = {pageRowsHandler}
+                        value={rowsPerPage}
                         className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                         <option>5</option>
                         <option>10</option>
                         <option>20</option>
+                        <option>30</option>
+                        <option>40</option>
+                        <option>50</option>
+                        <option>80</option>
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -214,8 +229,9 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     <select
                         className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>All</option>
-                        <option>Active</option>
-                        <option>Inactive</option>
+                        <option>Momo</option>
+                        <option>Cards</option>
+                        <option>Wallets</option>
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -270,11 +286,11 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                status
+                                credit status
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Details
+                                pay_acc_type
                             </th>
                         </tr>
                     </thead>

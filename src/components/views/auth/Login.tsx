@@ -48,7 +48,7 @@ function Login() {
 
             //save to localStorage
             Utils.setAuthToken(response.token)
-           
+
             //Dispatch SetAuth
             dispatch(
                 setAuth(response.data)
@@ -66,7 +66,7 @@ function Login() {
     }
 
     const {user} = useSelector(authSelector)
-    //console.log(user)
+    console.log(user?._id);
 
     return (
         <div className="flex items-center min-h-screen bg-gray-50">
