@@ -32,7 +32,7 @@ const getMerchant = (id : string) => fetch(
         method : 'GET',
         headers : {
             'Content-type' : 'Application/json',
-            'Authroization': Utils. AuthToken()
+            'Authroization': Utils.AuthToken()
         }
     }
 ).then(res => res.json());

@@ -1,10 +1,8 @@
-import  React,{useEffect} from 'react';
-//import { ErrorBoundary } from 'react-error-boundary';
+import  React from 'react';
 import {Provider} from 'react-redux';
 import { HashRouter, Route,Routes} from 'react-router-dom';
 import state from './state/state';
-import AuthService from './services/auth.service';
-
+//import jwt_decode from 'jwt-decode'
 
 
 
@@ -22,29 +20,28 @@ import Agents  from "./components/views/agents/Agents";
 import Users from './components/views/users/Users'
 import AllMerchants from './components/views/merchant/Merchants'
 
+import PaidTransactions from './components/views/paid/PaidTransactions'
+import Charges from './components/views/charges/Charges'
+
 
 import './App.css';
-import Utils from './utils/AuthToken';
-
 
 function App() {
 
-useEffect(()=>{
-  const timer = setInterval(async()=>{
-   const email:any = 'admin@peoplepay.com'
-   const password:any = '12345'
-   const response = await AuthService.login({
-     email : email,
-     password : password
-   })
-   
-   Utils.setAuthToken(response.token,)
-   console.log('started again')
-
-  }, 1640083044)
-  return () => clearInterval(timer);
-},[])
-
+    // try{
+    //   const _token:string | null = localStorage.getItem('token')
+    //   const decoded:any = jwt_decode(String(_token))
+    //   const {exp} = decoded;
+    //   const isExpired:boolean = exp * 1000 <= Date.now()
+    //   console.log(isExpired)
+    //   if(!_token || isExpired){
+    //    window.localStorage.clear();
+    //    <Navigate to='/login' />
+    //   }        
+    // }catch(err){
+    //   <Navigate to='/login'/>
+    // }
+      
   return (
     <Provider store = {state}>
       <HashRouter>
@@ -55,6 +52,13 @@ useEffect(()=>{
                   <Route  path='/' element={<Layout/>}>
 
                         <Route path="/"  element={<Dashboard/>}/>
+                        
+                          {/**paid transactions */}
+                        <Route path='allpaid-transactions' element={<PaidTransactions/>} />
+
+                         {/**paid transactions */}
+                         <Route path='allpaid-charges' element={<Charges/>} />
+
                           {/**merchants routes*/}
                         <Route path="merchant-categories"  element={<MerchantCategories/>} />
                         <Route path="merchant-transactions"  element={<MerchantTransactions/>} />
@@ -72,13 +76,11 @@ useEffect(()=>{
                         <Route path="wallets"  element={<Wallets/>} />
 
                         {/**Agents account route */}
-                        <Route path="agents"  element={<Agents/>}/>
+                        <Route path="agents"  element={<Agents/>}/> 
                  </Route>
               </Routes>
           </div>
-      </HashRouter>
-        
-      
+        </HashRouter>
       </Provider>
        );
 }
