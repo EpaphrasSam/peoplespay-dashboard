@@ -7,9 +7,9 @@ import {Link} from 'react-router-dom';
 export default function UsersDropdown() {
   return (
     <Menu as={React.Fragment}>
-      <i className='fas fa-users mr-5  text-sm text-red-900'></i>
+      <i className='fas fa-users mr-5  text-red-900'></i>
       <Menu.Button>
-              <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer font-sans'>users</span>
+              <span className='text-red-900 uppercase text-sm font-semibold cursor-pointer font-sans'>users</span>
       </Menu.Button>
       
            <Transition
@@ -38,7 +38,7 @@ export default function UsersDropdown() {
             <Link to='/users'>
               <a
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
-              href="#"
+              href="##"
                 >
                   <i className='fas fa-eye mr-2'/>
               view users

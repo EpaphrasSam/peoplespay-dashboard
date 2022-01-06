@@ -15,7 +15,7 @@ function Login() {
         if(isAuthenticated){
             window.location.href = '/'
         }
-    },[])
+    },[isAuthenticated])
 
     const dispatch = useDispatch(); 
    

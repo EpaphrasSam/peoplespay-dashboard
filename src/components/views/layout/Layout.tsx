@@ -11,15 +11,14 @@ import Footer from "../../footer/Footer";
 
 
 
-
-
 export default function Admin() {
 
-    const { isAuthenticated} = useSelector(authSelector)
-    if(isAuthenticated === false ){
+    const {isAuthenticated} = useSelector(authSelector);
+    if(!isAuthenticated){
         return <Navigate to='/login' />
     }
-
+    
+  
     return (
         <>
          <ErrorBoundary>

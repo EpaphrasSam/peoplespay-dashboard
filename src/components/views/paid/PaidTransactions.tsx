@@ -1,5 +1,5 @@
 import React,{useEffect, useState, ChangeEvent} from 'react'
-import Transaction from '../../tables/UserTransactionsTable'
+import Transaction from '../../tables/PaidTransactionsTable'
 import {useDispatch, useSelector} from 'react-redux';
 import {reportSelector, setUserTransactions} from '../../../state/report.state' 
 import {ReportModel} from '../../../models/report.model'
@@ -10,7 +10,7 @@ import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-//import moment from 'moment';
+import moment from 'moment';
 
 function UserTransactions(){
    
@@ -29,7 +29,7 @@ function UserTransactions(){
 
 
     const [searchQuery, setSearchQuery] = useState('')
-    //const [searchBy , setSearchBy] = useState('All')
+    const [searchBy , setSearchBy] = useState('All')
     const [isLoading, setIsLoading] = useState(loading)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
@@ -84,8 +84,7 @@ const headers = [
     { label: "TOTAL AMOUNT", key: "amount" },
     { label: "RECIPIENT NAME", key: "recipientName" },
     { label: "RECIPIENT ISSUER", key: "recipientIssuer" },
-    { label: "CREDIT STATUS", key: "status" },
-    {label:"DEBIT STATUS", key: "debit_status" }
+    { label: "STATUS", key: "status" }
     ]
 
 
@@ -138,15 +137,13 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         alert(err.message)
     }
   }
-
-
   
 
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">User Transactions</h2>
+              <h2 className="text-2xl font-semibold leading-tight text-red-800">Paid Transactions</h2>
            </div>
 
             {/**deviders */}

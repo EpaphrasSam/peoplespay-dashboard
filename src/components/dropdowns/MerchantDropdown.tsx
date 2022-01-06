@@ -7,9 +7,9 @@ import {Link} from 'react-router-dom'
 export default function MerchantsDropdown() {
   return (
     <Menu as={React.Fragment}>
-      <i className='fas fa-hand-holding-usd mr-5 text-sm text-red-900'></i>
+      <i className='fas fa-hand-holding-usd mr-2  text-red-900'></i>
       <Menu.Button>
-        <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer font-sans'>Merchants</span>
+        <span className='text-red-900 uppercase text-sm font-semibold cursor-pointer font-sans'>Merchants</span>
       </Menu.Button>
       
            <Transition

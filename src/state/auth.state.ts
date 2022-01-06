@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice} from "@reduxjs/toolkit";
 import { User } from "../models/auth.model";
 import {RootState} from './state'
 
@@ -7,9 +7,13 @@ interface StateModel {
     isAuthenticated : boolean,
 }
 
+const isNull = localStorage.getItem('token') === null
+const isEmptyString = localStorage.getItem('token') === ''
+const isUndefined = localStorage.getItem('token') === undefined;
+
 const initialState:StateModel={
     user:null,
-    isAuthenticated : localStorage.getItem('token')!== null ? true : false
+    isAuthenticated :  (isNull || isEmptyString || isUndefined) ? false : true 
 }
 
 

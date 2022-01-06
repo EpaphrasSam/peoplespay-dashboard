@@ -72,21 +72,11 @@ export default function Sidebar() {
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                             <li className="items-center py-7">
                                 <Link
-                                    className={
-                                        "text-xs uppercase py-3 font-semibold block font-sans" +
-                                        (window.location.href.indexOf("/admin/dashboard") !== -1
-                                            ? "text-lightBlue-500 hover:text-lightBlue-600"
-                                            : "text-blueGray-700 hover:text-blueGray-500")
-                                    }
                                     to="/"
                                 >
                                     <i
-                                        className={
-                                            "fas fa-tv mr-2 text-sm " +
-                                            (window.location.href.indexOf("/admin/dashboard") !== -1
-                                                ? "opacity-75"
-                                                : "text-blueGray-300")
-                                        }
+                                        className="fas fa-tv mr-2 text-sm "
+                                           
                                     ></i>{" "}
                                     Dashboard
                                 </Link>
@@ -98,35 +88,20 @@ export default function Sidebar() {
                                 <MerchantDropdown />
                             </li>
 
-                            <li className="items-center py-7 text-red-800 ml-2">
+                            <li className="items-center py-7 text-red-800 ml-2 font-bold font-sans text-sm uppercase">
                                  <Link
-                                    className={
-                                        "text-xs uppercase py-3 font-semibold text-red-800" +
-                                        (window.location.href.indexOf("/admin-dashboard") !== -1
-                                            ? "text-lightBlue-500 hover:text-lightBlue-600"
-                                            : "text-blueGray-700 hover:text-blueGray-500")
-                                    }
                                     to="/agents"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                                        className={
-                                            "fas fa-user                                                                                                                             mr-2 text-sm" +
-                                            (window.location.href.indexOf("/admin/dashboard") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                                ? "text-red-800"
-                                                : "text-red-800")
-                                        }
-                                    ></i>{" "}
+                                        className=
+                                            "fas fa-user mr-2 font-bold"
+                                        >
+                                    </i>{" "}
                                     view agents
                                 </Link>
                             </li>
-                            <li className="items-center py-7 text-red-800 -ml-1">
+                            <li className="items-center py-7 text-red-800 -ml-1 font-bold font-sans text-sm uppercase">
                                  <Link
-                                    className={
-                                        "text-xs uppercase py-3 font-semibold text-red-800" +
-                                        (window.location.href.indexOf("/admin-dashboard") !== -1
-                                            ? "text-lightBlue-500 hover:text-lightBlue-600"
-                                            : "text-blueGray-700 hover:text-blueGray-500")
-                                    }
                                     to="/referals"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
@@ -140,21 +115,16 @@ export default function Sidebar() {
                                     referrals
                                 </Link>
                             </li>
-                            <li className="items-center py-7 text-red-800 -ml-5">
+                            <li className="items-center py-7 text-red-800 -ml-5 font-bold font-sans text-sm uppercase">
                                  <Link
-                                    className={
-                                        "text-xs uppercase py-3 font-semibold text-red-800" +
-                                        (window.location.href.indexOf("/admin-dashboard") !== -1
-                                            ? "text-lightBlue-500 hover:text-lightBlue-600"
-                                            : "text-blueGray-700 hover:text-blueGray-500")
-                                    }
+                                    
                                     to="/wallets"
                                 >
                                     <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                         className={
-                                            "fas fa-wallet                                                                                                                             mr-2 text-sm" +
+                                            "fas fa-wallet text-red-800                                                                                                                          mr-2 text-sm" +
                                             (window.location.href.indexOf("/wallets") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                                ? "text-red-800"
+                                                ? ""
                                                 : "text-red-800")
                                         }
                                     ></i>{" "}
