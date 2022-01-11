@@ -7,12 +7,14 @@ import { ReportModel } from '../../models/report.model';
 
 
 import BodyCard from '../cards/BodyCard';
+import BodyCardTwo from '../cards/BodyCardTwo';
 import { Link } from 'react-router-dom';
 
 import CardBarChart from '../cards/CardBarChart';
 import CardLineChart from '../cards/CardLineChart'
 import PaidHighLights from '../views/highlights/PaidTransactions'
 import FailedHighLights from '../views/highlights/FailedTransactions'
+
 
 
 type StateData = {} | any
@@ -32,7 +34,11 @@ function Dashboard() {
     totalAmountFailed : 0,
     totalAmountSuccess:0,
     merchantsNumb : 0,
-    
+    mtn : 0,
+    voda : 0,
+    airteltigo : 0,
+    wallet : 0,
+    card : 0,
     paidSliced : [],
     failedSliced : [] 
   })
@@ -49,6 +55,7 @@ function Dashboard() {
        const res = await TransactionService.summary() 
        const resReport = await ReportService.summaryReport(startDate,endDate);
        const resTransactions = await ReportService.dateFilter(startDate, endDate)
+       
        
       
        if(!res.success )throw Error(res.message)
@@ -71,7 +78,26 @@ function Dashboard() {
        const failedTransactions = transactions?.filter((t:any)=> t.debit_status === 'failed' || t.status === 'FAILED')
        const _failedSliced = failedTransactions.slice(0,5);
        
-       
+       //payment source channels
+       let mtncount = 0;
+       let vodacount = 0;
+       let cardcount = 0;
+       let airtelcount = 0;
+       let walletcount = 0;
+
+       for(let i = 0; i < transactions.length; i++){
+         if(transactions[i].paymentIssuer === 'MTN'){
+           mtncount+=1;
+         }else if(transactions[i].paymentIssuer === 'VODAFONE'){
+           vodacount+=1
+         }else if(transactions[i].paymentIssuer === 'AIRTELTIGO'){
+           airtelcount+=1
+         }else if(transactions[i].payment_account_type === 'card'){
+          cardcount+=1
+         }else if(transactions[i].payment_account_type === 'wallet'){
+          walletcount+=1
+         }
+       }
 
 
        setData({
@@ -84,7 +110,13 @@ function Dashboard() {
          totalAmountSuccess : 0,
          merchantsNumb : merchantResponse.data && merchantResponse.data[0].count,
          paidSliced : _paidSliced,
-         failedSliced : _failedSliced
+         failedSliced : _failedSliced,
+         mtn : mtncount,
+         voda : vodacount,
+         card : cardcount,
+         wallet :walletcount,
+         airteltigo : airtelcount
+
        });
 
       }catch(err:any){
@@ -99,10 +131,15 @@ function Dashboard() {
    let success_TrData:string[] = [];
    let failure_TrData:string[] = [];
    let sales_TrData :number[] = [];
+   let cumulativeSales_TrData:number[] = [0];
+   let slicedCumulativeData:number[] = [];
    let dates:string[]= [];
 
+
    (async()=>{
-    const res = await ReportService.getTransactions()
+
+    //const res = await ReportService.getTransactions()
+    const res = await ReportService.dateFilter('2016-01-01',endDate);
     const trs = res.data; 
     const tr = trs.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
     
@@ -121,7 +158,6 @@ function Dashboard() {
         continue;
       } 
     }
-   
 
     //@Loops tr
     //@Groups transactions
@@ -142,8 +178,9 @@ function Dashboard() {
 
         //Check tr date in dates and increase count
         if(isSuccessful && (moment(tr[x].createdAt).format('YYYY/MMM') === dates[i])){
-          sucessCount+=1;
+           sucessCount+=1;
         }
+
         if(isFailure && (moment(tr[x].createdAt).format('YYYY/MMM') === dates[i])){
           failureCount+=1;
         }
@@ -153,13 +190,27 @@ function Dashboard() {
         failure_TrData.push(failureCount.toString())
         sales_TrData.push(Math.round(totalSales))
     }     
+       
+        
+    for(let i = 0; i < sales_TrData.length; i++){
+        cumulativeSales_TrData.push(Number(sales_TrData[i]) + Number(cumulativeSales_TrData[i]))
+      }
+
+    for(let i= 0; i < cumulativeSales_TrData.length;++i){
+        
+        slicedCumulativeData.push(cumulativeSales_TrData[i+1]);
+    }
    })()
 
-   console.log(success_TrData);
-   console.log(failure_TrData)
-   console.log(sales_TrData)
+   
+  //  console.log(success_TrData);
+  //  console.log(failure_TrData);
+  //  console.log(sales_TrData)
+  //  console.log(cumulativeSales_TrData)
+  //  console.log(slicedCumulativeData)
+   
    console.log(dates);
-
+  
     return (
         <>
        {/** */}
@@ -177,25 +228,34 @@ function Dashboard() {
                     <BodyCard title='SUCCESSFUL TRANSACTIONS' value={data.successfulCount} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
                     </Link>
                 </div>
-                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                    <BodyCard title='FAILED TRANSACTIONS' value={data.failedCount} icon='fas fa-times' statusIcon="fas fa-circle text-indigo-500 mr-1 fa-xs" status='today'/>
+                <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                    <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data.totalAmountPaid).toFixed(2)}`} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
                 </div>
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                    <Link to='/allpaid-transactions'>
-                    <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data.totalAmountPaid).toFixed(2)}`} icon='fas fa-hand-holding-usd' statusIcon="fas fa-circle text-purple-500 mr-1 fa-xs" status='today'/>
-                    </Link>
+                    <BodyCardTwo title='SOURCE CHANNELS'  
+                                icon='fas fa-compress-arrows-alt' 
+                                statusIcon="fas fa-circle text-purple-500 mr-1 fa-xs" 
+                                status='today'
+                                m = {data.mtn}
+                                v = {data.voda}
+                                a = {data.airteltigo}
+                                w = {data.wallet}
+                                c ={data.card}
+                                />
                   </div> 
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                     <Link to='/allpaid-charges'>
                   <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${Number.parseFloat(data.paidCharges).toFixed(2)}`} icon='fas fa-coins' statusIcon="fas fa-circle text-green-500 mr-1 fa-xs" status='today'/>
                     </Link>
                   </div>
-                <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                    <BodyCard title='TOTAL AMOUNT FAILED' value={`GH¢ ${Number.parseFloat(data.totalAmountFailed).toFixed(2)}`} icon='fas fa-times' statusIcon="fas fa-circle text-teal-500 mr-1 fa-xs" status='today'/>
+                  <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                    <Link to='/allfailed-transactions'>
+                      <BodyCard title='FAILED TRANSACTIONS' value={data.failedCount} icon='fas fa-times' statusIcon="fas fa-circle text-indigo-500 mr-1 fa-xs" status='today'/>
+                    </Link>
                 </div>
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                    <BodyCard title='TOTAL AMOUNT SUCCESSFUL' value={`GH¢ ${Number.parseFloat(data.totalAmountFailed).toFixed(2)}`} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
-                </div>
+                     <BodyCard title='TOTAL AMOUNT FAILED' value={`GH¢ ${Number.parseFloat(data.totalAmountFailed).toFixed(2)}`} icon='fas fa-times' statusIcon="fas fa-circle text-teal-500 mr-1 fa-xs" status='today'/>
+                </div> 
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                       <Link to='/merchants'>
                         <BodyCard title='TOTAL NUMBER OF MERCHANTS' value={data.merchantsNumb} icon='fas fa-list-ol' statusIcon="fas fa-arrow-up text-blue-500 mr-1 fa-xs" status='current'/>
@@ -206,7 +266,7 @@ function Dashboard() {
               {/**charts*/}
               <div className='flex flex-wrap pt-2'>
                 <div className="w-full xl:w-8/12 mb-12 xl:mb-0 md:pr-4">
-                  <CardLineChart dates={dates} salesData={sales_TrData}/>
+                  <CardLineChart dates={dates} salesData={sales_TrData} cumulativeData={slicedCumulativeData}/>
                 </div>
                 <div className="w-full xl:w-4/12 ">
                   <CardBarChart sucessData={success_TrData} failureData={failure_TrData} dates={dates}/>

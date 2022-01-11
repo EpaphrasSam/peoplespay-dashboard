@@ -21,6 +21,7 @@ import Users from './components/views/users/Users'
 import AllMerchants from './components/views/merchant/Merchants'
 
 import PaidTransactions from './components/views/paid/PaidTransactions'
+import FailedTransactions from './components/views/failed/FailedTransactions';
 import Charges from './components/views/charges/Charges'
 
 
@@ -56,7 +57,10 @@ function App() {
                           {/**paid transactions */}
                         <Route path='allpaid-transactions' element={<PaidTransactions/>} />
 
-                         {/**paid transactions */}
+                         {/**paid / successf transactions */}
+                         <Route path='allfailed-transactions' element={<FailedTransactions/>} />
+
+                         {/**failed transactions */}
                          <Route path='allpaid-charges' element={<Charges/>} />
 
                           {/**merchants routes*/}
