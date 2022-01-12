@@ -1,6 +1,6 @@
 import React from "react";
 
-const BodyCard: React.FC<{title:string,value:string,icon:string, status:string, statusIcon:string}> = ({title,value,icon,status,statusIcon}) => {
+const BodyCard: React.FC<{title:string,value:string,icon:string, status:undefined|string, statusIcon:undefined|string}> = ({title,value,icon,status,statusIcon}) => {
  
   return(
     <>

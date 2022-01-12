@@ -1,7 +1,7 @@
 import React,{useEffect, useState, ChangeEvent} from 'react'
 import Transaction from '../../tables/UserTransactionsTable'
 import {useDispatch, useSelector} from 'react-redux';
-import {reportSelector, setPaidTransactions} from '../../../state/report.state' 
+import {reportSelector, setFailedTransactions} from '../../../state/report.state' 
 import {ReportModel} from '../../../models/report.model'
 import ReportService from '../../../services/reports.service';
 import Spinner from '../layout/Spinner';
@@ -51,22 +51,22 @@ function UserTransactions(){
             }
 
             const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-            const paidTransactions = transactions.filter((t:any)=> t.status ==='PAID' && t.debit_status === 'paid')
-            dispatch(setPaidTransactions(paidTransactions))
+            const failedTransactions = transactions.filter((t:any)=> t.status ==='FAILED' && t.debit_status === 'failed')
+            dispatch(setFailedTransactions(failedTransactions))
             setIsLoading(loading)
 
             //Update states
             setAmount(resReport?.data?.paid[0].totalAmount)
             setPaidCharges(resReport?.data?.paid[0].charges)
             setFailedAmount(resReport?.data?.failed[0].totalAmount)
-            setTotalTransactionCount(paidTransactions.length)
+            setTotalTransactionCount(failedTransactions.length)
 
         }catch(err:any){
             alert(err.message)
         }
     }
  
-const {paidTransactions} = useSelector(reportSelector)
+const {failedTransactions} = useSelector(reportSelector)
 //console.log(transactions)
 
 const headers = [
@@ -91,7 +91,7 @@ const headers = [
 
 
 
-const filterResults = paidTransactions.filter((tr)=>{
+const filterResults = failedTransactions.filter((tr)=>{
     if(tr?.customerName?.toLowerCase().includes(searchQuery)){
        return tr;
     }
@@ -101,7 +101,7 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
   }
 
-const results:any[] = filterResults.length === 0 ? paidTransactions : filterResults
+const results:any[] = filterResults.length === 0 ? failedTransactions : filterResults
 
  //Get Current rows
  const indexOfLastRow:number = currentIndex * rowsPerPage;
@@ -122,8 +122,8 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
 
         
         const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-        const paidTransactions = transactions.filter((t:any)=> t.status ==='PAID' && t.debit_status === 'paid')
-            dispatch(setPaidTransactions(paidTransactions))
+        const failedTransactions = transactions.filter((t:any)=> t.status ==='FAILED' && t.debit_status === 'failed')
+            dispatch(setFailedTransactions(failedTransactions))
             setIsLoading(loading)
 
             
@@ -132,7 +132,7 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
        setAmount(resReport?.data?.paid[0].totalAmount)
        setPaidCharges(resReport?.data?.paid[0].charges)
        setFailedAmount(resReport?.data?.failed[0].totalAmount)
-       setTotalTransactionCount(paidTransactions.length)
+       setTotalTransactionCount(failedTransactions.length)
 
 
     }catch(err:any){
@@ -147,33 +147,34 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">Successful Transactions</h2>
+              <h2 className="text-2xl font-semibold leading-tight text-red-800">Failed Transactions</h2>
            </div>
 
             {/**deviders */}
             <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
                 <div>
-                    <span className='bg-green-300 rounded-xl px-2'>transactions</span>
+                    <span className='bg-green-300 rounded-xl px-2'>failed transactions</span>
                     <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
-                    <span className='bg-yellow-500 rounded-xl px-2'>amount</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
+                    <span className='bg-red-400 rounded-xl px-2'>total amount failed</span>
+                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
                 </div>
                 <div>
                     <span className='bg-blue-300 rounded-xl px-2'>charges</span>
                     <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-red-400 rounded-xl px-2'>failed</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
+                    <span className='bg-yellow-500 rounded-xl px-2'>amount</span>
+                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
                 </div>
+                
             </div>
 
         {/**download button */}
         <CSVLink 
             headers = {headers}
-            data = {paidTransactions}
+            data = {failedTransactions}
             filename={'successful transactions report.csv'}
             className='float-right py-3 px-7 bg-green-100 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150'>
                 Download CSV
@@ -307,7 +308,7 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < paidTransactions.length ? (currentIndex * rowsPerPage): paidTransactions.length}</span> of <span>{paidTransactions.length}</span>{' '}Transactions
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < failedTransactions.length ? (currentIndex * rowsPerPage): failedTransactions.length}</span> of <span>{failedTransactions.length}</span>{' '}Transactions
                     </span>
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
@@ -326,7 +327,7 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
                             </button>)
                         } 
                          {
-                            currentIndex * rowsPerPage === paidTransactions.length ? 
+                            currentIndex * rowsPerPage === failedTransactions.length ? 
                             (
                                 <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
                                 onClick = {paginateFront}
