@@ -127,7 +127,7 @@ export default function CardLineChart({dates,salesData,cumulativeData}) {
                 Overview
               </h6>
               <h2 className="text-blueGray-400 text-xl font-semibold text-left">Sales value</h2>
-              <h6 className='text-xs font-thin'>click and unclick on the white tile below to load chart</h6>
+              <h6 className='text-xs font-thin'>click and unclick on either tile below to load chart</h6>
             </div>
           </div>
         </div>

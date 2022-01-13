@@ -21,7 +21,7 @@ const BodyCard: React.FC<{title:string,icon:string, status:undefined|string, sta
                     <h6 className="text-xs font-semibold leading-tight text-white py-1 pt-2">{v}</h6>
                 </div>
                 <div>
-                <span className='bg-blue-500 rounded px-2 text-white font-bold'>AT</span>
+                <span className='bg-blue-500 rounded px-2 text-white font-bold'>A</span>
                     <h6 className="text-xs font-semibold leading-tight text-white py-1 pt-2">{a}</h6>
                 </div>
                 <div>

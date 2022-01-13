@@ -229,7 +229,9 @@ function Dashboard() {
                     </Link>
                 </div>
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                  <Link to='/allpaid-transactions'>
                     <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data.totalAmountPaid).toFixed(2)}`} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
+                  </Link>
                 </div>
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                     <BodyCardTwo title='SOURCE CHANNELS'  
@@ -244,9 +246,7 @@ function Dashboard() {
                                 />
                   </div> 
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                    <Link to='/allpaid-charges'>
-                  <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${Number.parseFloat(data.paidCharges).toFixed(2)}`} icon='fas fa-coins' statusIcon="fas fa-circle text-green-500 mr-1 fa-xs" status='today'/>
-                    </Link>
+                    <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${Number.parseFloat(data.paidCharges).toFixed(2)}`} icon='fas fa-coins' statusIcon="fas fa-circle text-green-500 mr-1 fa-xs" status='today'/>
                   </div>
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                     <Link to='/allfailed-transactions'>
@@ -254,7 +254,9 @@ function Dashboard() {
                     </Link>
                 </div>
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                   <Link to='/allfailed-transactions'>
                      <BodyCard title='TOTAL AMOUNT FAILED' value={`GH¢ ${Number.parseFloat(data.totalAmountFailed).toFixed(2)}`} icon='fas fa-times' statusIcon="fas fa-circle text-teal-500 mr-1 fa-xs" status='today'/>
+                    </Link>
                 </div> 
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                       <Link to='/merchants'>
