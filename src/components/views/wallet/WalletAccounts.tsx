@@ -33,6 +33,7 @@ function Wallets(){
      [loading,dispatch])
 
      const {wallets} = useSelector(reportSelector)
+     console.log(wallets);
      
 
      //Get Current rows
