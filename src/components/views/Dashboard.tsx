@@ -208,8 +208,7 @@ function Dashboard() {
   //  console.log(sales_TrData)
   //  console.log(cumulativeSales_TrData)
   //  console.log(slicedCumulativeData)
-   
-   console.log(dates);
+   //console.log(dates);
   
     return (
         <>
