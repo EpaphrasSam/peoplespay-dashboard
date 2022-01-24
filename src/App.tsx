@@ -1,58 +1,44 @@
-import  React from 'react';
+import  React,{lazy, Suspense} from 'react';
 import {Provider} from 'react-redux';
 import { HashRouter, Route,Routes} from 'react-router-dom';
 import state from './state/state';
-//import jwt_decode from 'jwt-decode'
 
-
-
-import Login from './components/views/auth/Login';
 import Layout from './components/views/layout/Layout'
-// views
-import Dashboard from "./components/views/Dashboard";
-import MerchantForm from './components/forms/MerchantForm'
-import MerchantCategories from './components/views/merchant/MerchantCategory'
-import MerchantTransactions from './components/views/merchant/MerchantTransactions'
-import UserTransactions from "./components/views/users/UserTransactions";
-import Wallets from './components/views/wallet/WalletAccounts';
-import Referals from './components/views/referals/Referals'
-import Agents  from "./components/views/agents/Agents";
-import Users from './components/views/users/Users'
-import AllMerchants from './components/views/merchant/Merchants'
-
-import PaidTransactions from './components/views/paid/PaidTransactions'
-import FailedTransactions from './components/views/failed/FailedTransactions';
-import Charges from './components/views/charges/Charges'
-
+import PageLoading from './components/views/layout/PageLoading'
 
 import './App.css';
 
-function App() {
+const Dashboard = lazy(()=>import('./components/views/Dashboard'))
+const Login = lazy(()=> import('./components/views/auth/Login'))
+const UserTransactions = lazy(()=>import('./components/views/users/UserTransactions'))
+const Users =  lazy(()=>import('./components/views/users/Users'))
+const MerchantForm = lazy(()=>import('./components/forms/MerchantForm'))
+const Wallets = lazy(()=>import('./components/views/wallet/WalletAccounts'))
+const AllMerchants = lazy(()=>import('./components/views/merchant/Merchants'))
+const PaidTransactions = lazy(()=>import('./components/views/paid/PaidTransactions'))
+const MerchantCategories = lazy(()=>import('./components/views/merchant/MerchantCategory'))
+const MerchantTransactions = lazy(()=>import('./components/views/merchant/MerchantTransactions'))
+const Referals = lazy(()=>import('./components/views/referals/Referals'));
+const Agents = lazy(()=>import('./components/views/agents/Agents'))
+const FailedTransactions = lazy(()=>import('./components/views/failed/FailedTransactions'))
+const Charges = lazy(()=> import('./components/views/charges/Charges'));
 
-    // try{
-    //   const _token:string | null = localStorage.getItem('token')
-    //   const decoded:any = jwt_decode(String(_token))
-    //   const {exp} = decoded;
-    //   const isExpired:boolean = exp * 1000 <= Date.now()
-    //   console.log(isExpired)
-    //   if(!_token || isExpired){
-    //    window.localStorage.clear();
-    //    <Navigate to='/login' />
-    //   }        
-    // }catch(err){
-    //   <Navigate to='/login'/>
-    // }
+
+function App() {
       
   return (
     <Provider store = {state}>
       <HashRouter>
           <div className='App'>
+            <Suspense fallback={<PageLoading/>}>
               <Routes>
-                  <Route  path='/login' element={<Login/>} />
+                    <Route  path='/login' element={<Login/>} />
+                  
                  
                   <Route  path='/' element={<Layout/>}>
 
-                        <Route path="/"  element={<Dashboard/>}/>
+                          <Route path="/"  element={<Dashboard/>}/>
+                        
                         
                           {/**paid transactions */}
                         <Route path='allpaid-transactions' element={<PaidTransactions/>} />
@@ -83,6 +69,7 @@ function App() {
                         <Route path="agents"  element={<Agents/>}/> 
                  </Route>
               </Routes>
+            </Suspense>
           </div>
         </HashRouter>
       </Provider>
