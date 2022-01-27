@@ -69,7 +69,7 @@ export class ReportModel {
     getStatus(status:string){
         switch (status) {
             case 'pp':
-                this.status='AUTHORIZATION FAILED';
+                this.status='AUTHORIZATION PENDING';
                 break;
             default:
                 this.status=status.toUpperCase();

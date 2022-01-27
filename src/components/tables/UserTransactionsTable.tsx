@@ -174,7 +174,7 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                 <span className="relative">{t.status}</span>
             </span>
             )
-            :
+            :  t.status === 'FAILED' ? 
             (
                 <span
             className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
@@ -182,7 +182,15 @@ const UserTransactionsTable = ({transactions}:{transactions:AppProps}):JSX.Eleme
                 className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
             <span className="relative">{t.status}</span>
         </span>
-            )
+            ):
+            (
+                <span
+            className="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
+            <span aria-hidden
+                className="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+            <span className="relative">{t.status}</span>
+        </span>
+        )
         }
         
     </td>
