@@ -196,7 +196,7 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                                         <h5>{t.paymentName}</h5>
                                 </div>
                                 <div className='mb-2'>
-                                    <h3 className='text-red-800'>Amount</h3>
+                                    <h3 className='text-red-800'>Total Amount</h3>
                                         <h5>{t.amount}</h5>
                                 </div>
                                 <div className='mb-2'>
@@ -204,7 +204,7 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                                         <h5>{t.charges}</h5>
                                 </div>
                                 <div className='mb-2'>
-                                    <h3 className='text-red-800'>Total Amount</h3>
+                                    <h3 className='text-red-800'>Amount</h3>
                                         <h5>{t.actualAmount}</h5>
                                 </div>
                                 <div className='mb-2'>
