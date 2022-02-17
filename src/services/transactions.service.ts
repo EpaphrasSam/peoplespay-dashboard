@@ -67,12 +67,40 @@ const merchantSummary=(id:string)=>fetch(
     }
 ).then(res=>res.json())
 
+const otpReversal = () => fetch(
+    'http://18.118.126.49/peoplepay/transactions/reversal/otp',
+    {
+        method:'POST',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' :  Utils.AuthToken()
+        },
+    }
+).then(res=>res.json())
 
-export default {
+
+const reverseTransaction = (data:any) => fetch(
+    'http://18.118.126.49/peoplepay/transactions/customer/reversal',
+    {
+        method:'POST',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' :  Utils.AuthToken()
+        },
+        body : JSON.stringify(data)
+    }
+).then(res=>res.json())
+
+
+const transactionServices = {
     nec,
     transactions,
     getMerchantTransaction,
     payFailed,
     merchantSummary,
-    summary
+    summary,
+    otpReversal,
+    reverseTransaction
 }
+
+export default transactionServices;

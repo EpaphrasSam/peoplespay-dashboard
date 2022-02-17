@@ -6,6 +6,7 @@ interface StateModel {
     transactions : any[]
     selected : any,
     summary : any,
+    otpResponse:string
 }
 
 
@@ -13,7 +14,8 @@ const initialState : StateModel = {
     loading : true,
     transactions : [],
     selected : [],
-    summary : null
+    summary : null,
+    otpResponse:''
 }
 
 const state = createSlice({
@@ -33,11 +35,19 @@ const state = createSlice({
                 selected : action.payload,
                 loading : false
             }
-          }
+          },
+          hitOTP: (state,action)=>{
+            return {
+                ...state,
+                otpResponse:action.payload,
+                loading : false
+            }
+          },
     }
 })
 
-export const {setTransactions, setSelected} = state.actions;
+
+export const {setTransactions, setSelected, hitOTP} = state.actions;
 
 export const transactionsSelector = (state: RootState)=> state.transactions;
 export default state.reducer;
