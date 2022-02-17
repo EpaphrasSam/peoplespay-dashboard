@@ -1,5 +1,5 @@
 import React,{useEffect, useState, ChangeEvent} from 'react'
-import Transaction from '../../tables/UserTransactionsTable'
+import Transaction from '../../tables/ChargesTable'
 import {useDispatch, useSelector} from 'react-redux';
 import {reportSelector, setUserTransactions} from '../../../state/report.state' 
 import {ReportModel} from '../../../models/report.model'

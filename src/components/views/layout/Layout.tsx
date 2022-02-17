@@ -2,7 +2,7 @@ import React from "react";
 import {Outlet,Navigate} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../state/auth.state";
-import ErrorBoundary from "../../../ErrorBoundary";
+import ErrorBoundary from "../../error-boundary/ErrorBoundary";
 
 // components
 import Navbar from "../../navbar/Navbar";

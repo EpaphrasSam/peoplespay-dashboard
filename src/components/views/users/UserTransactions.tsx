@@ -1,19 +1,22 @@
-import React,{useEffect, useState, ChangeEvent} from 'react'
+import {useEffect, useState, ChangeEvent, useRef} from 'react'
 import Transaction from '../../tables/UserTransactionsTable'
 import {useDispatch, useSelector} from 'react-redux';
 import {reportSelector, setUserTransactions} from '../../../state/report.state' 
 import {ReportModel} from '../../../models/report.model'
 import ReportService from '../../../services/reports.service';
-import TransactionService from '../../../services/transactions.service';
+import transactionService from '../../../services/transactions.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-//import moment from 'moment';
+
+
+const swal = require('@sweetalert/with-react');
 
 function UserTransactions(){
-   
+
+    
     const dispatch = useDispatch()
 
     const {loading} = useSelector(reportSelector);
@@ -33,38 +36,45 @@ function UserTransactions(){
     const [isLoading, setIsLoading] = useState(loading)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
+    const [transactionCategory, setTransactionCategory] = useState<string>('')
 
+    const [otpValue, setOtpValue] = useState<string>("")
+
+
+    const reverseIDArray  = useRef(new Array());
+    
 
     useEffect(()=>{
 
-        response();
-    },[loading,dispatch]) 
-
-    const response = async()=> {
-        try{
-            
-            const res = await ReportService.dateFilter(startDate, endDate)
-            const resReport = await ReportService.summaryReport(startDate,endDate)
-            //const transactionResponse = await TransactionService.summary() 
-            
-            if(!res.success){
-                throw Error(res.message)
+        const response = async()=> {
+            try{
+                
+                const res = await ReportService.dateFilter(startDate, endDate)
+                const resReport = await ReportService.summaryReport(startDate,endDate)
+                //const transactionResponse = await TransactionService.summary() 
+                
+                if(!res.success){
+                    throw Error(res.message)
+                }
+    
+                const transactions = res.data.map((d:any)=> new ReportModel(d)) 
+                dispatch(setUserTransactions(transactions))
+                setIsLoading(loading)
+    
+                //Update states
+                setAmount(resReport?.data?.paid[0].totalAmount)
+                setPaidCharges(resReport?.data?.paid[0].charges)
+                setFailedAmount(resReport?.data?.failed[0].totalAmount)
+                setTotalTransactionCount(transactions.length)
+    
+            }catch(err:any){
+                alert(err.message)
             }
-
-            const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-            dispatch(setUserTransactions(transactions))
-            setIsLoading(loading)
-
-            //Update states
-            setAmount(resReport?.data?.paid[0].totalAmount)
-            setPaidCharges(resReport?.data?.paid[0].charges)
-            setFailedAmount(resReport?.data?.failed[0].totalAmount)
-            setTotalTransactionCount(transactions.length)
-
-        }catch(err:any){
-            alert(err.message)
         }
-    }
+        response();
+    },[loading,dispatch,startDate,endDate]) 
+
+    
  
 const {transactions} = useSelector(reportSelector)
 //console.log(transactions)
@@ -83,23 +93,37 @@ const headers = [
     { label: "CHARGES", key: "charges" },
     { label: "TOTAL AMOUNT", key: "amount" },
     { label: "RECIPIENT NAME", key: "recipientName" },
+    { label: "RECIPIENT NUMBER", key: "recipientNumber"},
     { label: "RECIPIENT ISSUER", key: "recipientIssuer" },
     { label: "CREDIT STATUS", key: "status" },
     {label:"DEBIT STATUS", key: "debit_status" }
-    ]
+ ]
 
-
-
-
+  
 const filterResults = transactions.filter((tr)=>{
-    if(tr?.customerName?.toLowerCase().includes(searchQuery)){
-       return tr;
+
+     const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery)  
+     const hasCategoryResults:boolean = tr?.payment_account_type === transactionCategory;
+     const hasBoth:boolean = hasSearchResults && hasCategoryResults;
+     
+    if(hasCategoryResults && searchQuery === ""){
+        return tr; 
+    }else if(hasSearchResults && transactionCategory==="all"){
+             return tr;
+    }else if(hasBoth){
+         return tr;
     }
+
 })
+
+
 
 const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
-  }
+}
+
+const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
+
 
 const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
@@ -118,14 +142,14 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     try{
         const res = await ReportService.dateFilter(startDate,endDate)
         const resReport = await ReportService.summaryReport(startDate,endDate)
-        const transactionResponse = await TransactionService.summary() 
+        //const transactionResponse = await TransactionService.summary() 
 
         
         const transactions = res.data.map((d:any)=> new ReportModel(d)) 
             dispatch(setUserTransactions(transactions))
             setIsLoading(loading)
 
-            console.log(transactions)
+            // console.log(transactions)
 
        //Update states
        setAmount(resReport?.data?.paid[0].totalAmount)
@@ -139,8 +163,62 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     }
   }
 
+  const reverseSelectedTransactions = async(data:any) => {
+      const res = await transactionService.reverseTransaction(data)
+      if(res.statusCode !== 200)throw alert("sorry, reversal action not successful")
+  }
 
-  
+ const initiateReversal = async() => {
+
+   try{
+    if(reverseIDArray.current.length < 1){
+        return swal(
+            <div>
+                <p>No transaction has been selected</p>
+            </div>
+        )
+    }
+
+    const res = await transactionService.otpReversal();
+
+    if(!res.success){
+      return swal(
+            <div>
+                <p>{res.message}</p>
+            </div>
+        )
+    }
+ 
+    const data = {
+        transactions : reverseIDArray.current,
+        otp : otpValue
+    }
+    console.log(data)
+    swal(
+        <div>
+            <h4>Enter the OTP received</h4>
+            <input type="text" className="mr-2" value={otpValue} onChange={(e:ChangeEvent<HTMLInputElement>)=>setOtpValue(e.target.value)}/>
+            <button 
+                    className='bg-green-500 py-2 px-8 rounded text-white'
+                    onClick={()=>reverseSelectedTransactions(data)}
+                    >
+                        send
+            </button>
+        </div>
+    )
+   }catch(err){
+    swal(
+        <div>
+            <p>Sorry, select transactions and initiate reversal again</p>
+        </div>
+    )
+   }
+ }
+
+ const addIdToReverseIDs = (id:string)=> {
+     reverseIDArray.current.push(id);
+     console.log(reverseIDArray)
+    }
 
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
@@ -170,13 +248,22 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
             </div>
 
         {/**download button */}
-        <CSVLink 
-            headers = {headers}
-            data = {transactions}
-            filename={'report.csv'}
-            className='float-right py-3 px-7 bg-green-100 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150'>
-                Download CSV
-        </CSVLink>
+        <div className="float-right space-x-2 mr-12">
+            <CSVLink 
+                headers = {headers}
+                data = {transactions}
+                filename={'report.csv'}
+                className='py-3 px-2 bg-green-50 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
+                    Download CSV
+            </CSVLink>
+            <button 
+                    className="border border-green-100 outline outline-2  outline-offset-2  py-2 px-1 bg-gray-200 text-green-700 font-semibold rounded uppercase shadow hover:shadow hover:bg-green-500 focus:outline-none ease-linear transition-all duration-150"
+                    onClick={()=>initiateReversal()}
+                    >
+                Reverse Transactions
+            </button>
+        </div>
+        
        
         {/**date picker */}
         <div className="flex items-center">
@@ -199,7 +286,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
        {/**filter btn */}
        <button 
             onClick={()=>clickDateFilter()}
-            className='rounded-full bg-red-800 text-gray-200 py-1 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
+            className='rounded-md bg-red-800 text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
      </div>
      {/**end date */}
 
@@ -228,11 +315,13 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 </div>
                 <div className="relative">
                     <select
+                        onChange = {transactionCategoryHandler}
+                        value = {transactionCategory}
                         className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>All</option>
-                        <option>Momo</option>
-                        <option>Cards</option>
-                        <option>Wallets</option>
+                        <option>all</option>
+                        <option>momo</option>
+                        <option>card</option>
+                        <option>wallet</option>
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -242,7 +331,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     </div>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by customer name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search by customer name ...'/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
@@ -293,6 +382,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 pay_acc_type
                             </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -300,14 +393,14 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                            isLoading ?
                            <Spinner/>
                            :
-                           <Transaction transactions={currentRows} />
+                           <Transaction transactions={currentRows} addId={addIdToReverseIDs}/>
                        }
                     </tbody>
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < transactions.length ? (currentIndex * rowsPerPage): transactions.length}</span> of <span>{transactions.length}</span>{' '}Transactions
-                    </span>
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < results.length ? (currentIndex * rowsPerPage): transactions.length}</span> of <span>{results.length}</span>{' '}Transactions
+                    </span> 
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
                             currentIndex === 1 ? 
