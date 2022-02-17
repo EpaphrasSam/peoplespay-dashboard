@@ -10,6 +10,7 @@ import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
+import { reverse } from 'dns';
 
 
 const swal = require('@sweetalert/with-react');
@@ -215,9 +216,14 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
    }
  }
 
- const addIdToReverseIDs = (id:string)=> {
+ const addIdToReverseIDs = (id:any)=> {
+     const i = reverseIDArray.current.indexOf(id)
+     if(i > -1){
+       return  reverseIDArray.current.splice(i,1);
+     } 
+
      reverseIDArray.current.push(id);
-     console.log(reverseIDArray)
+     console.log(reverseIDArray.current)
     }
 
     return(
