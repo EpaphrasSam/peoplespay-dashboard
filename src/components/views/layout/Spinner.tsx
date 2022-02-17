@@ -5,8 +5,13 @@ const Spinner = () => (
   <Fragment>
     <img
       src={spinner}
-    className='ml-80 w-10 block'
+    className='w-10'
       alt="Loading..."
+      style={{
+        position: "absolute",
+        left: '50%',
+        marginLeft: '-50px',
+      }}
      />
   </Fragment>
 );
