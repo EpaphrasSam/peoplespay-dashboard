@@ -6,6 +6,7 @@ import UsersService from '../../../services/users.service'
 import UsersTable from '../../tables/UsersTable'
 import AddUserForm from '../../forms/AddUserForm';
 import Spinner from '../layout/Spinner';
+import { reportSelector } from '../../../state/report.state';
 
 export default function Users() {
 
@@ -19,13 +20,32 @@ export default function Users() {
 
     useEffect(()=>{ 
         
-        const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
-        console.log(response);
-        response.then(data=> {
-                let users= data.map((d:any) => d)
-                 dispatch(setUsers(users))
-                 setIsLoading(loading)
-        })
+        // const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
+        // console.log(response);
+        // response.then(data=> {
+        //         let users= data.map((d:any) => d)
+        //          dispatch(setUsers(users))
+        //          setIsLoading(loading)
+        // })
+        try{
+            
+            const loadUsers = async() => {
+                const response =  await UsersService.getUsers();
+
+                if(!response.success){
+                    throw alert(response.message)
+                }
+                
+                const users = response?.data.map((d:any)=> d)
+                dispatch(setUsers(users))
+                setIsLoading(loading)
+            }
+
+            loadUsers()
+
+        }catch(err:any){
+          throw alert(err.message)
+        }
      },
      [loading,dispatch])
 
