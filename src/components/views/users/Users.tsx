@@ -7,7 +7,7 @@ import UsersTable from '../../tables/UsersTable'
 import AddUserForm from '../../forms/AddUserForm';
 import Spinner from '../layout/Spinner';
 
-export default function MerchantTransaction() {
+export default function Users() {
 
     const dispatch = useDispatch()
    
@@ -20,7 +20,7 @@ export default function MerchantTransaction() {
     useEffect(()=>{ 
         
         const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
-
+        console.log(response);
         response.then(data=> {
                 let users= data.map((d:any) => d)
                  dispatch(setUsers(users))
@@ -30,7 +30,7 @@ export default function MerchantTransaction() {
      [loading,dispatch])
 
      const {users} = useSelector(usersSelector)
-     console.log(users)
+     //console.log(users)
 
      //Get Current rows
     const indexOfLastRow:number = currentIndex * rowsPerPage;

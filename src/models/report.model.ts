@@ -58,7 +58,7 @@ export class ReportModel {
         this.recipientNumber=report.recipient_account_number;
         this.recipientIssuer = report.recipient_account_issuer_name;
         this.reference=report.reference;
-        this.paymentIssuer = report.payment_account_issuer_name;
+        this.paymentIssuer = report.payment_account_issuer_name ? report.payment_account_issuer_name : "WALLET" 
         this.status = report.status;
         this.getStatus(report.status);
         this.description = report.description;
@@ -77,27 +77,28 @@ export class ReportModel {
         }
     }
 
-    getIssuerName=(code:string,issuers:any[]=[])=>{
-        try {
-            const issuer=issuers.find((d)=>d.id ===code);
-            if(issuer && issuer.shortName){
-                this.recipientIssuer=issuer.shortName;
-            }
-        } catch (err) {
-        }
-        
-    };
+    // getIssuerName=(code:string,issuers:any[]=[])=>{
+    //     try {
 
-    getPaymentIssuer=(code:string,issuers:any[]=[])=>{
-        try {
-            const issuer=issuers.find((d)=>d.id ===code);
-            if(issuer && issuer.shortName){
-                this.paymentIssuer=issuer.shortName;
-                return this.paymentIssuer;
-            }
-        } catch (err) {
-        }      
-    };
+    //         const issuer=issuers.find((d)=>d.id ===code);
+    //         if(issuer && issuer.shortName){
+    //             this.recipientIssuer=issuer.shortName;
+    //         }
+    //     } catch (err) {
+    //     }
+    // };
+    
+
+    // getPaymentIssuer=(code:string,issuers:any[]=[])=>{
+    //     try {
+    //         const issuer=issuers.find((d)=>d.id === code);
+    //         if(issuer && issuer.shortName){
+    //             this.paymentIssuer=issuer.shortName;
+    //         }
+    //         return this.paymentIssuer;
+    //     } catch (err) {
+    //     }      
+    // };
 
 
     getReason = ():string => {

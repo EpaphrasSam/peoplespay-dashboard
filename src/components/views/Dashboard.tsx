@@ -21,7 +21,8 @@ type StateData = {} | any
 
 function Dashboard() {
 
-      const startDate =  new Date((new Date()).valueOf() - 1000*60*60*24).toISOString();
+      //const startDate =  new Date((new Date()).valueOf() - 1000*60*60*24).toISOString();
+      const startDate = new Date().toISOString();
       const endDate = new Date().toISOString();
       
 

@@ -23,7 +23,7 @@ function UserTransactions(){
     const {loading} = useSelector(reportSelector);
     //console.log(loading)
 
-    const [startDate, setStartDate] = useState<any>(new Date((new Date()).valueOf() - 1000*60*60*24))
+    const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
     const [amount, setAmount] = useState<string>('0');
@@ -203,7 +203,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     if(!res.success){
       return swal.fire(
              {
-                 html : "<div><p>{res.message}</p></div>"
+                 html : "<div><p>" + res.message + "</p></div>"
              }
         )
     }
@@ -280,7 +280,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 headers = {headers}
                 data = {transactions}
                 filename={'report.csv'}
-                className='py-3 px-2 bg-green-50 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
+                className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
                     Download CSV
             </CSVLink>
             <button 

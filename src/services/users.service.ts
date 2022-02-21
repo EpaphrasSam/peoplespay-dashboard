@@ -10,6 +10,7 @@ const getUsers = () => fetch(
     }
 ).then(res=>res.json())
 
-export default{
+const usersService = {
     getUsers
 }
+export default usersService;
