@@ -131,6 +131,18 @@ export default function Sidebar() {
                                     wallets
                                 </Link>
                             </li>
+                            <li className="items-center py-7 text-red-800 ml-2 font-bold font-sans text-sm uppercase">
+                                 <Link
+                                    to="broadcast-message"
+                                >
+                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                        className=
+                                            "fas fa-bullhorn mr-2 font-bold"
+                                        >
+                                    </i>{" "}
+                                     broadcast message
+                                </Link>
+                            </li>
                         </ul>
                          {/* Divider */}
                          <hr className="my-4 md:min-w-full" />
