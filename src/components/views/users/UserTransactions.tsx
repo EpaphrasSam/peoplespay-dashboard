@@ -12,7 +12,8 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
 
-const swal = require('@sweetalert/with-react');
+
+const swal = require('sweetalert2');
 
 function UserTransactions(){
 
@@ -22,7 +23,7 @@ function UserTransactions(){
     const {loading} = useSelector(reportSelector);
     //console.log(loading)
 
-    const [startDate, setStartDate] = useState<any>(new Date((new Date()).valueOf() - 1000*60*60*24))
+    const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
     const [amount, setAmount] = useState<string>('0');
@@ -38,7 +39,7 @@ function UserTransactions(){
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
 
-    const [otpValue, setOtpValue] = useState<string>("")
+
 
 
     const reverseIDArray  = useRef(new Array());
@@ -164,60 +165,86 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
   }
 
   const reverseSelectedTransactions = async(data:any) => {
-      const res = await transactionService.reverseTransaction(data)
-      if(res.statusCode !== 200)throw alert("sorry, reversal action not successful")
+      console.log(data)
+      try{
+        const res = await transactionService.reverseTransaction(data)
+        if(!res.success){
+            throw Error()
+            }else{
+                swal.fire(
+                {
+                    html : "<div>Transactions have been successfully reversed</div>"
+                }
+                )
+            }
+      }
+      catch(err:any){
+          swal.fire(
+              {
+                  html : "<div>Sorry, the OTP you entered may be wrong. Try again</div>"
+              }
+          )
+      }
   }
 
  const initiateReversal = async() => {
 
    try{
     if(reverseIDArray.current.length < 1){
-        return swal(
-            <div>
-                <p>No transaction has been selected</p>
-            </div>
+        return swal.fire(
+            {
+                html : "<div><p>No transaction has been selected</p></div>"
+            }
         )
     }
 
     const res = await transactionService.otpReversal();
 
     if(!res.success){
-      return swal(
-            <div>
-                <p>{res.message}</p>
-            </div>
+      return swal.fire(
+             {
+                 html : "<div><p>" + res.message + "</p></div>"
+             }
         )
     }
  
-    const data = {
-        transactions : reverseIDArray.current,
-        otp : otpValue
-    }
-    console.log(data)
-    swal(
-        <div>
-            <h4>Enter the OTP received</h4>
-            <input type="text" className="mr-2" value={otpValue} onChange={(e:ChangeEvent<HTMLInputElement>)=>setOtpValue(e.target.value)}/>
-            <button 
-                    className='bg-green-500 py-2 px-8 rounded text-white'
-                    onClick={()=>reverseSelectedTransactions(data)}
-                    >
-                        send
-            </button>
-        </div>
-    )
+    
+    swal.fire(
+        {   
+            title: "Enter the OTP received",
+            input: 'text',
+            showCancelButton: true,
+            cancelButtonText : "Cancel Reversal",
+            confirmButtonText : "Confirm Reversal"
+        }
+        ).then(function(input:any){
+               if(input){
+                const data = {
+                             transactions : reverseIDArray.current,
+                             otp : input.value
+                             }
+                console.log(input.value)
+                reverseSelectedTransactions(data)
+               }
+                
+                })
    }catch(err){
     swal(
-        <div>
-            <p>Sorry, select transactions and initiate reversal again</p>
-        </div>
+        {
+            html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
+        }
     )
    }
  }
 
- const addIdToReverseIDs = (id:string)=> {
+ const addIdToReverseIDs = (id:any)=> {
+     const i = reverseIDArray.current.indexOf(id)
+     if(i > -1){
+       return  reverseIDArray.current.splice(i,1);
+     } 
+
      reverseIDArray.current.push(id);
-     console.log(reverseIDArray)
+     console.log(reverseIDArray.current)
     }
 
     return(
@@ -253,11 +280,11 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 headers = {headers}
                 data = {transactions}
                 filename={'report.csv'}
-                className='py-3 px-2 bg-green-50 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
+                className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
                     Download CSV
             </CSVLink>
             <button 
-                    className="border border-green-100 outline outline-2  outline-offset-2  py-2 px-1 bg-gray-200 text-green-700 font-semibold rounded uppercase shadow hover:shadow hover:bg-green-500 focus:outline-none ease-linear transition-all duration-150"
+                    className="outline outline-2  outline-offset-2  py-2 px-1 bg-blue-500 text-white font-semibold rounded uppercase shadow hover:shadow hover:bg-blue-500 focus:outline-none ease-linear transition-all duration-150"
                     onClick={()=>initiateReversal()}
                     >
                 Reverse Transactions

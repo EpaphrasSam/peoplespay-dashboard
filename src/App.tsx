@@ -22,6 +22,7 @@ const Referals = lazy(()=>import('./components/views/referals/Referals'));
 const Agents = lazy(()=>import('./components/views/agents/Agents'))
 const FailedTransactions = lazy(()=>import('./components/views/failed/FailedTransactions'))
 const Charges = lazy(()=> import('./components/views/charges/Charges'));
+const BroadCastMessage = lazy(()=>import('./components/views/broadcast/Broadcast'))
 
 
 function App() {
@@ -35,13 +36,13 @@ function App() {
                     <Route  path='/login' element={<Login/>} />
                   
                  
-                  <Route  path='/' element={<Layout/>}>
+                    <Route  path='/' element={<Layout/>}>
 
                           <Route path="/"  element={<Dashboard/>}/>
                         
                         
                           {/**paid transactions */}
-                        <Route path='allpaid-transactions' element={<PaidTransactions/>} />
+                         <Route path='allpaid-transactions' element={<PaidTransactions/>} />
 
                          {/**paid / successf transactions */}
                          <Route path='allfailed-transactions' element={<FailedTransactions/>} />
@@ -67,6 +68,9 @@ function App() {
 
                         {/**Agents account route */}
                         <Route path="agents"  element={<Agents/>}/> 
+
+                        {/**BroadCast Message */}
+                        <Route path="broadcast-message"  element={<BroadCastMessage/>}/> 
                  </Route>
               </Routes>
             </Suspense>

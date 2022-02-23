@@ -6,8 +6,9 @@ import UsersService from '../../../services/users.service'
 import UsersTable from '../../tables/UsersTable'
 import AddUserForm from '../../forms/AddUserForm';
 import Spinner from '../layout/Spinner';
+import { reportSelector } from '../../../state/report.state';
 
-export default function MerchantTransaction() {
+export default function Users() {
 
     const dispatch = useDispatch()
    
@@ -19,18 +20,37 @@ export default function MerchantTransaction() {
 
     useEffect(()=>{ 
         
-        const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
+        // const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
+        // console.log(response);
+        // response.then(data=> {
+        //         let users= data.map((d:any) => d)
+        //          dispatch(setUsers(users))
+        //          setIsLoading(loading)
+        // })
+        try{
+            
+            const loadUsers = async() => {
+                const response =  await UsersService.getUsers();
 
-        response.then(data=> {
-                let users= data.map((d:any) => d)
-                 dispatch(setUsers(users))
-                 setIsLoading(loading)
-        })
+                if(!response.success){
+                    throw alert(response.message)
+                }
+                
+                const users = response?.data.map((d:any)=> d)
+                dispatch(setUsers(users))
+                setIsLoading(loading)
+            }
+
+            loadUsers()
+
+        }catch(err:any){
+          throw alert(err.message)
+        }
      },
      [loading,dispatch])
 
      const {users} = useSelector(usersSelector)
-     console.log(users)
+     //console.log(users)
 
      //Get Current rows
     const indexOfLastRow:number = currentIndex * rowsPerPage;
