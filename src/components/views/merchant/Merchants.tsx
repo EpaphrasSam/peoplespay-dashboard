@@ -27,7 +27,7 @@ function Merchants(){
             try{
                 const res = await MerchantsService.getMerchants();
                 if(!res.success){
-                    throw Error( res.message )
+                    throw alert( res.message )
                 }
                 console.log(response)
                 let merchants = res.data.map((t:any) => t)
@@ -45,18 +45,19 @@ function Merchants(){
 
     const {merchants} = useSelector(merchantsSelector)
     
-    const filterResults = merchants.filter((mr:any)=>{
-        if(mr?.name.toLowerCase().includes(searchQuery)){
-           return mr;
-        }
-    })
+    // const filterResults = merchants.filter((mr:any)=>{
+    //     // if(mr?.name.toLowerCase().includes(searchQuery)){
+    //     //    return mr;
+    //     // }
+    
+    // })
 
- const results:any[] = filterResults.length === 0 ? merchants : filterResults
+ //const results:any[] = filterResults.length === 0 ? merchants : filterResults
 
 //Get Current rows
 const indexOfLastRow:number = currentIndex * rowsPerPage;
 const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-const currentRows = results.slice(indexOfFirstRow,indexOfLastRow)
+const currentRows = merchants.slice(indexOfFirstRow,indexOfLastRow)
 
 //buttonactions
 const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
@@ -64,14 +65,12 @@ const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
 const handleSelectedId:Function = async (id:string) => {
     try{
-        console.log(id);
         const response =  await MerchantsService.getMerchantDetail(id)
         
         if(!response.success){
-            throw Error(response.message)
+            throw alert(response.message)
         }
         
-        console.log(response.data)
         return  dispatch(setSelected(response.data))
        
     }catch(err:any){

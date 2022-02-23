@@ -5,6 +5,7 @@ import state from './state/state';
 
 import Layout from './components/views/layout/Layout'
 import PageLoading from './components/views/layout/PageLoading'
+import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
 import './App.css';
 
@@ -31,49 +32,51 @@ function App() {
     <Provider store = {state}>
       <HashRouter>
           <div className='App'>
-            <Suspense fallback={<PageLoading/>}>
-              <Routes>
-                    <Route  path='/login' element={<Login/>} />
-                  
-                 
-                    <Route  path='/' element={<Layout/>}>
+           <ErrorBoundary>
+                <Suspense fallback={<PageLoading/>}>
+                  <Routes>
+                        <Route  path='/login' element={<Login/>} />
+                      
+                    
+                        <Route  path='/' element={<Layout/>}>
 
-                          <Route path="/"  element={<Dashboard/>}/>
-                        
-                        
-                          {/**paid transactions */}
-                         <Route path='allpaid-transactions' element={<PaidTransactions/>} />
+                              <Route path="/"  element={<Dashboard/>}/>
+                            
+                            
+                              {/**paid transactions */}
+                            <Route path='allpaid-transactions' element={<PaidTransactions/>} />
 
-                         {/**paid / successf transactions */}
-                         <Route path='allfailed-transactions' element={<FailedTransactions/>} />
+                            {/**paid / successf transactions */}
+                            <Route path='allfailed-transactions' element={<FailedTransactions/>} />
 
-                         {/**failed transactions */}
-                         <Route path='allpaid-charges' element={<Charges/>} />
+                            {/**failed transactions */}
+                            <Route path='allpaid-charges' element={<Charges/>} />
 
-                          {/**merchants routes*/}
-                        <Route path="merchant-categories"  element={<MerchantCategories/>} />
-                        <Route path="merchant-transactions"  element={<MerchantTransactions/>} />
-                        <Route path="create-merchant"  element={<MerchantForm/>}/> 
-                        <Route path="merchants"   element={<AllMerchants/>}/>
+                              {/**merchants routes*/}
+                            <Route path="merchant-categories"  element={<MerchantCategories/>} />
+                            <Route path="merchant-transactions"  element={<MerchantTransactions/>} />
+                            <Route path="create-merchant"  element={<MerchantForm/>}/> 
+                            <Route path="merchants"   element={<AllMerchants/>}/>
 
-                        {/**users routes */}
-                        <Route path="user-transactions"  element={<UserTransactions/>} />
-                        <Route path="users"  element={<Users/>} />
+                            {/**users routes */}
+                            <Route path="user-transactions"  element={<UserTransactions/>} />
+                            <Route path="users"  element={<Users/>} />
 
-                        {/**Referals route */}
-                        <Route path="referals"  element={<Referals/>} />
-                        
-                        {/**Wallet account route */}
-                        <Route path="wallets"  element={<Wallets/>} />
+                            {/**Referals route */}
+                            <Route path="referals"  element={<Referals/>} />
+                            
+                            {/**Wallet account route */}
+                            <Route path="wallets"  element={<Wallets/>} />
 
-                        {/**Agents account route */}
-                        <Route path="agents"  element={<Agents/>}/> 
+                            {/**Agents account route */}
+                            <Route path="agents"  element={<Agents/>}/> 
 
-                        {/**BroadCast Message */}
-                        <Route path="broadcast-message"  element={<BroadCastMessage/>}/> 
-                 </Route>
-              </Routes>
-            </Suspense>
+                            {/**BroadCast Message */}
+                            <Route path="broadcast-message"  element={<BroadCastMessage/>}/> 
+                    </Route>
+                  </Routes>
+                </Suspense>
+            </ErrorBoundary>
           </div>
         </HashRouter>
       </Provider>

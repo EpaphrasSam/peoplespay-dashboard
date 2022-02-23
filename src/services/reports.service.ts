@@ -27,7 +27,8 @@ const getWallets = () => fetch(
     {
         method:'GET',
         headers:{
-            'Content-type':'Application/json'
+            'Content-type':'Application/json',
+            'Authorization' : Utils.AuthToken()
         }
     }
 ).then(res => res.json())

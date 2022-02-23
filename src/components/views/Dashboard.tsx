@@ -57,16 +57,17 @@ function Dashboard() {
        const resReport = await ReportService.summaryReport(startDate,endDate);
        const resTransactions = await ReportService.dateFilter(startDate, endDate)
        
-       
       
-       if(!res.success )throw Error(res.message)
+      
+       if(!res.success )throw alert(res.message)
           
-       if(!resReport.success) throw Error(resReport.message)
+       if(!resReport.success) throw alert(resReport.message)
 
-       if(!resTransactions.success) throw Error(resTransactions.message)
+       if(!resTransactions.success) throw alert(resTransactions.message)
 
        //HighLight table 
        const transactions = resTransactions.data.map((d:any) => new ReportModel(d))
+       
        
 
        //Paid
@@ -136,10 +137,11 @@ function Dashboard() {
    let slicedCumulativeData:number[] = [];
    let dates:string[]= [];
 
-
+   
    (async()=>{
 
-    //const res = await ReportService.getTransactions()
+    try{
+  
     const res = await ReportService.dateFilter('2016-01-01',endDate);
     const trs = res.data; 
     const tr = trs.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
@@ -201,9 +203,13 @@ function Dashboard() {
         
         slicedCumulativeData.push(cumulativeSales_TrData[i+1]);
     }
+    }catch(err:any){
+        alert(err.message)
+    }   
    })()
+  
 
-   
+   console.log("paid" + data.totalAmountPaid)
   //  console.log(success_TrData);
   //  console.log(failure_TrData);
   //  console.log(sales_TrData)
