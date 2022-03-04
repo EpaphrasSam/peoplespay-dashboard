@@ -57,6 +57,7 @@ function App() {
                             <Route path="merchant-transactions"  element={<MerchantTransactions/>} />
                             <Route path="create-merchant"  element={<MerchantForm/>}/> 
                             <Route path="merchants"   element={<AllMerchants/>}/>
+                            
 
                             {/**users routes */}
                             <Route path="user-transactions"  element={<UserTransactions/>} />

@@ -1,4 +1,4 @@
-import React,{ChangeEvent} from 'react';
+import React,{ChangeEvent,useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { merchantsSelector, setMerchants } from '../../../state/merchant.state';
 import MerchantsService from '../../../services/merchant.service'
@@ -21,6 +21,8 @@ function Merchants(){
     const [currentIndex, setCurrentIndex] = React.useState(1)
     const [rowsPerPage] = React.useState(10)
 
+    const [merchantCategory, setMerchantCategory] = useState<string>('')
+
     React.useEffect(()=>{ 
 
         const response = async()=>{
@@ -29,7 +31,7 @@ function Merchants(){
                 if(!res.success){
                     throw alert( res.message )
                 }
-                console.log(response)
+               
                 let merchants = res.data.map((t:any) => t)
                 dispatch(setMerchants(merchants))
                 setIsLoading(loading)
@@ -43,16 +45,13 @@ function Merchants(){
         },
      [loading,dispatch])
 
-    const {merchants} = useSelector(merchantsSelector)
-    
-    // const filterResults = merchants.filter((mr:any)=>{
-    //     // if(mr?.name.toLowerCase().includes(searchQuery)){
-    //     //    return mr;
-    //     // }
-    
-    // })
+     
 
- //const results:any[] = filterResults.length === 0 ? merchants : filterResults
+    const {merchants} = useSelector(merchantsSelector)
+   
+    
+const merchantCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setMerchantCategory(e.target.value);
+
 
 //Get Current rows
 const indexOfLastRow:number = currentIndex * rowsPerPage;
@@ -70,13 +69,12 @@ const handleSelectedId:Function = async (id:string) => {
         if(!response.success){
             throw alert(response.message)
         }
-        
+        console.log(response)
         return  dispatch(setSelected(response.data))
        
     }catch(err:any){
-        alert(err.message)
+        alert(err)
     }
-    
 }
 
     return (
@@ -95,8 +93,8 @@ const handleSelectedId:Function = async (id:string) => {
          </div>
         </div>
             <div className='flex flex-wrap -mt-24'>
-                <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">  
-                <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+                <div className="w-full xl:w-5/12 mb-12 xl:mb-0">  
+                <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 ">
            <div className="my-2 flex sm:flex-row flex-col mt-0 pt-0">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
@@ -114,12 +112,14 @@ const handleSelectedId:Function = async (id:string) => {
                         </div>
                 </div>
                 <div className="relative">
-                    <select
+                 <select
+                        onChange = {merchantCategoryHandler}
+                        value = {merchantCategory}
                         className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>All</option>
-                        <option>Active</option>
-                        <option>Inactive</option>
-                    </select>
+                        <option>all</option>
+                        <option>Approved</option>
+                        <option>Pending</option>
+                </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -221,11 +221,11 @@ const handleSelectedId:Function = async (id:string) => {
                 </div>
             </div>
         </div>
-                </div>
-            <div className="w-full xl:w-4/12 px-4">
-                 <MerchantDetailsTable/>
-             </div>
-         </div>
+        </div>
+        <div className="w-full xl:w-7/12">
+            <MerchantDetailsTable/>
+        </div>
+      </div>
      </div>
     )
 }
