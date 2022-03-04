@@ -213,8 +213,8 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         {   
             title: "Enter the OTP received",
             input: 'text',
-            showCancelButton: true,
-            cancelButtonText : "Cancel Reversal",
+            showDenyButton: true,
+            denyButtonText : "Cancel Reversal",
             confirmButtonText : "Confirm Reversal"
         }
         ).then(function(input:any){

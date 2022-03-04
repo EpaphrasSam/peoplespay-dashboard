@@ -21,19 +21,34 @@ function Wallets(){
 
     useEffect(()=>{ 
         
-        const response =  ReportService.getWallets().then(res=> res.data).catch(err=> {throw Error(err)})
-        //response.then(res=> console.log(res))
-
-        response.then(data=> {
-                let walletAccounts= data.map((w:any) => w)
-                 dispatch(setWalletAccounts(walletAccounts))
-                 setIsLoading(loading)
-        })
+        // const response =  ReportService.getWallets().then(res=> res.data).catch(err=> {throw alert(err)})
+        // //response.then(res=> console.log(res))
+        // console.log(response)
+        // response.then(data=> {
+        //         let walletAccounts= data.map((w:any) => w)
+        //          dispatch(setWalletAccounts(walletAccounts))
+        //          setIsLoading(loading)
+        // })
+        const loadWallets = async()=>{
+             try{
+                const res =  await ReportService.getWallets();
+                
+                if(!res.success){
+                    throw alert(res.message);
+                }
+             const wallets = res.data.map((w:any)=>w)
+             dispatch(setWalletAccounts(wallets))
+             setIsLoading(loading);
+             }catch(err:any){
+                alert(err.message)
+             }
+        }
+        loadWallets();
      },
      [loading,dispatch])
 
      const {wallets} = useSelector(reportSelector)
-     console.log(wallets);
+     
      
 
      //Get Current rows

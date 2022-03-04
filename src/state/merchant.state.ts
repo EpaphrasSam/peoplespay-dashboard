@@ -7,13 +7,15 @@ interface StateModel {
     merchants : {}[],
     categories : any[],
     selected : any
+    docx : any[]
 }
 
 const initialState:StateModel={
     loading : true,
  merchants : [],
  categories : [],
- selected : []
+ selected : [],
+ docx : []
 }
 
 
@@ -42,11 +44,17 @@ const state = createSlice(
                      selected : action.payload,
                     loading: false
                 } 
+            },
+            setDocuments : (state,action)=>{
+                return{
+                    ...state,
+                    docx : action.payload
+                }
             }
         }
     }
 )
 
-export const {setMerchants , setCategories, setSelected}=state.actions;
+export const {setMerchants , setCategories, setSelected, setDocuments}=state.actions;
 export const merchantsSelector = (state : RootState)=> state.merchants;
 export default state.reducer;
