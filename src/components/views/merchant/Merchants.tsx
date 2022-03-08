@@ -68,6 +68,9 @@ const handleSelectedId:Function = async (id:string) => {
         
         if(!response.success){
             throw alert(response.message)
+        }else if(response?.data === null){
+            return alert('Merchant details is empty')
+
         }
         console.log(response)
         return  dispatch(setSelected(response.data))
@@ -99,7 +102,7 @@ const handleSelectedId:Function = async (id:string) => {
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
                         <select
-                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option>5</option>
                             <option>10</option>
                             <option>20</option>
@@ -115,7 +118,7 @@ const handleSelectedId:Function = async (id:string) => {
                  <select
                         onChange = {merchantCategoryHandler}
                         value = {merchantCategory}
-                        className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>all</option>
                         <option>Approved</option>
                         <option>Pending</option>
