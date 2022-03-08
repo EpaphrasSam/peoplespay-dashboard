@@ -35,14 +35,19 @@ const MerchantDetails: React.FC = () => {
   };
 
   const getDocuments = async () => {
-    if (selected._id !== undefined) {
-      const response = await merchantsService.getDocuments(selected._id);
-      if (!response.success) {
-        throw alert(response.message);
+    try{
+      
+      if (selected._id !== undefined) {
+        const response = await merchantsService.getDocuments(selected._id);
+        if (!response.success) {
+          throw alert(response.message);
+        }
+        //console.log(response.data)
+        const data = response.data.map((t: any) => t);
+        dispatch(setDocuments(data));
       }
-      //console.log(response.data)
-      const data = response.data.map((t: any) => t);
-      dispatch(setDocuments(data));
+    }catch(err:any){
+      console.log(err.message)
     }
   };
 

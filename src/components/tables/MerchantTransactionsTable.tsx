@@ -12,7 +12,7 @@ const MerchantTransactions = ({transactions,handleSelectedId}:AppProps):JSX.Elem
     <>
     {
         transactions.map(t=>(
-            <tr className='hover:bg-green-100 click:bg-green-200 cursor-pointer' onClick={()=>{handleSelectedId(t.merchantId._id)}}>
+            <tr className='hover:bg-green-100 click:bg-green-200 cursor-pointer' onClick={()=>{handleSelectedId(t.merchantId?._id)}}>
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <span
                         className=

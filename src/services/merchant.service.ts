@@ -27,20 +27,20 @@ const getActivities = () => fetch(
 ).then(res=> res.json())
 
 
-const getMerchant = (id : string) => fetch(
-    `http://18.118.126.49/peoplepay/merchants/get/${id}`,
-    {
-        method : 'GET',
-        headers : {
-            'Content-type' : 'Application/json',
-            'Authroization': Utils.AuthToken()
-        }
-    }
-).then(res => res.json());
+// const getMerchant = (id : string) => fetch(
+//     `${BASE_URL}/merchants/get/${id}`,
+//     {
+//         method : 'GET',
+//         headers : {
+//             'Content-type' : 'Application/json',
+//             'Authroization': Utils.AuthToken()
+//         }
+//     }
+// ).then(res => res.json());
 
 
 const getMerchantDetail = (id:string) => fetch(
-    `http://18.118.126.49/peoplepay/merchants/get/${id}`,
+    `${BASE_URL}/merchants/get/${id}`,
     {
         method : 'GET',
         headers : {
@@ -201,7 +201,7 @@ const summary = () => fetch(
 ).then(res=>res.json())
 
 const getDocuments = (merchantId:string) => fetch(
-    `http://18.118.126.49/peoplepay/documents/get/${merchantId}`,
+    `${BASE_URL}/documents/get/${merchantId}`,
     {
         method : 'GET',
         headers : {
@@ -212,7 +212,7 @@ const getDocuments = (merchantId:string) => fetch(
 ).then(res=>res.json())
 
 const approveMerchant = (body:any) => fetch(
-    'http://18.118.126.49/peoplepay/merchants/approve',
+    `${BASE_URL}/merchants/approve`,
     {
         method : 'POST',
         headers : {
@@ -231,7 +231,7 @@ const merchantsService =  {
     getMerchants,
     getCategories,
     summary,
-    getMerchant,
+    // getMerchant,
     getMerchantDetail,
     getActivities,
     getCities,
