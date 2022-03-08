@@ -70,7 +70,6 @@ const handleSelectedId:Function = async (id:string) => {
             throw alert(response.message)
         }else if(response?.data === null){
             return alert('Merchant details is empty')
-
         }
         console.log(response)
         return  dispatch(setSelected(response.data))
