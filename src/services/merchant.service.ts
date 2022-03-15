@@ -1,10 +1,9 @@
-import { deserialize } from "v8";
 import Utils from "../utils/AuthToken";
 import { BASE_URL } from "../utils/url";
 
 
 const getMerchants=()=>fetch(
-    'http://18.118.126.49/peoplepay/merchants/get',
+    `${BASE_URL}/merchants/get`,
     {
         method:'GET',
         headers:{
@@ -212,6 +211,7 @@ const getDocuments = (merchantId:string) => fetch(
 ).then(res=>res.json())
 
 const approveMerchant = (body:any) => fetch(
+    
     `${BASE_URL}/merchants/approve`,
     {
         method : 'POST',
@@ -219,9 +219,13 @@ const approveMerchant = (body:any) => fetch(
             'Content-type' : 'Application/json',
            'Authorization' : Utils.AuthToken()
     },
-    body : body
+    body : JSON.stringify(body)
+    
     }
-).then(res=>res.json())
+).then(res=>{
+    console.log(body)
+    return res.json()
+})
 
 
 

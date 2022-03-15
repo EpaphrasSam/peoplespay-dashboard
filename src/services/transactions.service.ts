@@ -68,7 +68,7 @@ const merchantSummary=(id:string)=>fetch(
 ).then(res=>res.json())
 
 const otpReversal = () => fetch(
-    'http://18.118.126.49/peoplepay/transactions/reversal/otp',
+    `${BASE_URL}/transactions/reversal/otp`,
     {
         method:'POST',
         headers:{
@@ -80,7 +80,7 @@ const otpReversal = () => fetch(
 
 
 const reverseTransaction = (data:any) => fetch(
-    'http://18.118.126.49/peoplepay/transactions/customer/reversal',
+    `${BASE_URL}/transactions/customer/reversal`,
     {
         method:'POST',
         headers:{

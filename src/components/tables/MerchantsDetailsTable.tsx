@@ -16,7 +16,7 @@ const MerchantDetails: React.FC = () => {
   const confirmMerchantApproval = async () => {
     try {
       const response = await merchantsService.approveMerchant({
-        id: String(selected._id),
+        'id': selected._id
       });
       if (!response.success) {
         return swal.fire({

@@ -16,7 +16,7 @@ const AuthToken = () =>{
             return '';
         }else if(isExpired){
             window.location.href='/#/login'    
-            window.localStorage.clear() 
+           return window.localStorage.clear() 
         }else if(isUndefined){
              window.location.href='/#/login'
         }
