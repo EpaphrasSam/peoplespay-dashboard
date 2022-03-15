@@ -144,7 +144,7 @@ function Dashboard() {
   
     const res = await ReportService.dateFilter('2016-01-01',endDate);
     const trs = res.data; 
-    const tr = trs.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
+    const tr = trs?.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
     
     dates.push(moment(tr[0].createdAt).format('YYYY/MMM'));
     
@@ -223,7 +223,7 @@ function Dashboard() {
        <div className="relative md:pt-16 pb-12 pt-12">
         {/** */}
         <div className="px-4 md:px-10 mx-auto w-full">
-              <div className='flex flex-wrap bg-gray-900 py-12 pb-4'>
+              <div className='flex flex-wrap bg-gray-900 py-12 pb-4 rounded-lg'>
                  <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                    <Link to='/user-transactions'>
                      <BodyCard title='TOTAL TRANSACTIONS TODAY' value={data?.totalTransactions??0} icon='fas fa-list-ol' statusIcon="fas fa-arrow-up text-blue-500 mr-1 fa-xs" status='current'/>

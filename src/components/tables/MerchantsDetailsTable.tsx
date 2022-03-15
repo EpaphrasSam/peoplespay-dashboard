@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { merchantsSelector, setDocuments } from "../../state/merchant.state";
 import merchantsService from "../../services/merchant.service";
-const QRCode = require("qrcode.react");
+//const QRCode = require("qrcode.react");
 
 const swal = require("sweetalert2");
 
@@ -33,6 +33,30 @@ const MerchantDetails: React.FC = () => {
       });
     }
   };
+
+  // const blockMerchant = async () => {
+  //   try {
+  //     const response = await merchantsService.blockMerchant({
+  //       'id': selected._id,
+  //       active : false
+  //     });
+  //     if (!response.success) {
+  //       return swal.fire({
+  //         text: response.message,
+  //       });
+  //     } else {
+  //       return swal.fire({
+  //         text: response.message,
+  //       });
+  //     }
+  //   } catch (err: any) {
+  //     swal.fire({
+  //       text: err.message,
+  //     });
+  //   }
+  // };
+
+  
 
   const getDocuments = async () => {
     try{
@@ -71,11 +95,27 @@ const MerchantDetails: React.FC = () => {
                 Details
               </h3>
               <button
-                className="font-sans bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                className={`font-sans ${selected?.active? 'bg-gray-900':'bg-red-800'} text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
                 type="button"
                 onClick={() => {
                   try {
-                    if (selected._id === undefined) {
+                    if(selected?.active){
+                      return swal
+                        .fire({
+                          text: "Are you sure to block this merchant ?",
+                          showDenyButton: true,
+                          denyButtonText: "No",
+                          confirmButtonText: "Yes",
+                        })
+                        .then((result: any) => {
+                          if (result.isConfirmed) {
+                              //blockMerchant();
+                              return alert('This feature will be effected in next update')
+                          }
+                        });
+                    }
+
+                    else if (selected._id === undefined) {
                       swal.fire({
                         text: "No merchant selected",
                       });
@@ -99,7 +139,7 @@ const MerchantDetails: React.FC = () => {
                   }
                 }}
               >
-                Approve Merchant
+                {selected?.active ? 'Block Merchant' : 'Approve Merchant'}
               </button>
             </div>
           </div>
@@ -381,7 +421,22 @@ const MerchantDetails: React.FC = () => {
                         (
                             <tr>
                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">{d.name}</td>
-                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap"><img src={d?.data} alt={d.name} className="w-22 h-20"/></td>
+                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap flex justify-center"><img src={d?.data} alt={d.name} className="w-22 h-20"/></td>
+                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">
+                                   <button className="font-sans bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                   onClick={()=>{
+                                  
+                                    let w = window.open('about:blank');
+                                    let image = new Image();
+                                    image.src = d?.data;
+                                    setTimeout(function(){
+                                      w?.document.write(image.outerHTML);
+                                    }, 0);
+                                   }}>
+                                    view
+                                  </button>
+                                  
+                                </td>
                             </tr>
                         
                     ))}
@@ -392,49 +447,6 @@ const MerchantDetails: React.FC = () => {
             }
             
           </div>
-          {/* <div className="block w-full overflow-x-auto">
-                
-                <table className="border-collapse border border-slate-400 w-full">
-                    <thead>
-                        <tr>
-                            <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
-                            <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">Merchant ID</td>
-                            <td className="border border-slate-300 px-6 py-4 whitespace-nowrap">{selected?._id}</td>
-                        </tr>
-                        <tr>
-                            <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">Type</td>
-                            <td className="border border-slate-300 px-6 py-4 whitespace-nowrap">{selected?.type}</td>
-                        </tr>
-                        <tr>
-                            <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">Registration Number</td>
-                            <td className="border border-slate-300 px-6 py-4 whitespace-nowrap">{selected?.registrationNumber}</td>
-                        </tr>
-                    </tbody>
-                </table>  
-                <table className="border-collapse border border-slate-400 w-full">
-                    <thead>
-                        <tr>
-                            <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
-                            <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody className="overflow-y-scroll" style={{height: '20vh'}}>
-                    {docx?.map(d=>
-                        (
-                            <tr>
-                                <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">{d.name}</td>
-                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap"><img src={d?.data} alt={d.name} /></td>
-                            </tr>
-                        
-                    ))}
-                    </tbody> 
-                </table>    
-            </div> */}
         </div>
       </div>
     </>

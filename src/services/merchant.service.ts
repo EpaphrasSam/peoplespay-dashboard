@@ -222,12 +222,21 @@ const approveMerchant = (body:any) => fetch(
     body : JSON.stringify(body)
     
     }
-).then(res=>{
-    console.log(body)
-    return res.json()
-})
+).then(res => res.json())
 
+const blockMerchant = (body:any) =>fetch(
 
+    `${BASE_URL}/merchants/update`,
+    {
+        method : 'PUT',
+        headers : {
+            'Content-type' : 'Application/json',
+           'Authorization' : Utils.AuthToken()
+    },
+    body : JSON.stringify(body)
+    
+    }
+).then(res=>res.json())
 
 
 
@@ -242,6 +251,7 @@ const merchantsService =  {
     getRegions,
     createMerchant,
     getDocuments,
-    approveMerchant
+    approveMerchant,
+    blockMerchant
 }
 export default merchantsService;
