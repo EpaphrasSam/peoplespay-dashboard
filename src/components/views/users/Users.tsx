@@ -19,16 +19,7 @@ export default function Users() {
     const [rowsPerPage] = useState(10)
 
     useEffect(()=>{ 
-        
-        // const response =  UsersService.getUsers().then(res=> res.data).catch(err=> {throw Error(err)});
-        // console.log(response);
-        // response.then(data=> {
-        //         let users= data.map((d:any) => d)
-        //          dispatch(setUsers(users))
-        //          setIsLoading(loading)
-        // })
         try{
-            
             const loadUsers = async() => {
                 const response =  await UsersService.getUsers();
 

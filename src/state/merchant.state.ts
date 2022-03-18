@@ -11,11 +11,11 @@ interface StateModel {
 }
 
 const initialState:StateModel={
-    loading : true,
- merchants : [],
- categories : [],
- selected : [],
- docx : []
+    loading :true,
+    merchants:[],
+    categories:[],
+    selected :[],
+    docx :[]
 }
 
 
@@ -55,6 +55,6 @@ const state = createSlice(
     }
 )
 
+export const merchantsSelector=(state:RootState)=>state.merchants;
 export const {setMerchants , setCategories, setSelected, setDocuments}=state.actions;
-export const merchantsSelector = (state : RootState)=> state.merchants;
 export default state.reducer;

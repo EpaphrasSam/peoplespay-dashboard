@@ -3,19 +3,22 @@ import { merchantsSelector,setMerchants } from '../../../state/merchant.state';
 import { useDispatch, useSelector } from 'react-redux';
 import MerchantsService from '../../../services/merchant.service'
 import AccountsService from '../../../services/accounts.service';
-import { issuersSelector,setIssuers } from '../../../state/account.state';
-//import SettlementForm from '../../forms/SettlementForm';
-import Spinner from '../layout/Spinner';
+import { setIssuers } from '../../../state/account.state';
+import Swal from 'sweetalert2';
+
 
 export default function Users() {
 
     const dispatch = useDispatch()
     const {loading} = useSelector(merchantsSelector);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading]=useState(false);
+
+    const {merchants}=useSelector((state:any)=>state.merchants);
+     const {issuers}=useSelector((state:any)=>state.issuers);
 
    
 
-    const[formData, setFormData] = useState({
+    const[formData, setFormData]:any=useState({
         merchantId : '',
         accountType : '',
         startDate : '',
@@ -24,7 +27,8 @@ export default function Users() {
         accountIssuerName : '',
         accountNumber : '',
         accountName : '',
-        description : ''
+        description : '',
+        amount:''
     })
 
 
@@ -36,7 +40,7 @@ export default function Users() {
     const onIssuer=(event:ChangeEvent<any>):void=>{
         try {
             const id:string=event.target.value;
-            const _details:any=SIssuers.find((iss:any)=>iss.id===id);
+            const _details:any=issuers.find((iss:any)=>iss.id===id);
             setFormData(
                 {
                     ...formData,
@@ -77,66 +81,72 @@ export default function Users() {
 
         const handleChange = (event:ChangeEvent<any>)=>{
             setFormData({...formData,[event.target.name]: event.target.value})
-            console.log(formData)
         }
 
-        const {
-            merchantId, 
-            accountType, 
-            startDate, 
-            endDate, 
-            accountIssuerName,
-            accountIssuer,
-            accountName,
-            accountNumber,
-            description
-            
-         } = formData
 
-
-     const loadMerchantsandIssuers = async() => {
-        const response =  await MerchantsService.getMerchants();
-        const res = await AccountsService.getIssuers();
-
-        if(!response.success){
-            throw alert(response.message)
-        }
-
-        if(!res.success){
-            throw alert(response.message)
-        }
-        
-        const merchants = response?.data.map((d:any)=> d)
-        dispatch(setMerchants(merchants))
-        //setIsLoading(loading)
-        const issuers = res?.data.map((d:any)=> d)
-        dispatch(setIssuers(issuers))
-
+     const loadMerchantsandIssuers=async()=>{
+         try {
+             const [merchants,issuers]=await Promise.all(
+                 [
+                     MerchantsService.getMerchants(),
+                    AccountsService.getIssuers()
+                 ]
+             )
+             if(!merchants.success && !issuers.success){
+                 throw Error(
+                     'Oops there is a problem loading some of the services'
+                 )
+             }
+             dispatch(setMerchants(merchants.data || []));
+             dispatch(setIssuers(issuers.data || []));
+         } catch (err:any) {
+             alert(err.message)
+         }
     }
 
-     const {merchants:SMerchants} = useSelector(merchantsSelector)
-     const {issuers:SIssuers} = useSelector(issuersSelector)
-       console.log(SMerchants)
-     
-       const merchantsList = SMerchants.map((mer:any,i) => {
-           return (
-            <option key={i} value={mer?._id}>{mer.merchant_tradeName}</option>
-          )
-       })
 
-       const IssuersList = SIssuers.map((iss:any,i) => {
-        return (
-         <option key={i} value={iss.id}>{iss?.name}</option>
-       )
-    })
-
-   // let IssuerName:string = SIssuers.filter((v:any)=> accountIssuer === v?.name)
-
-       
-
-       
-
-
+    const pay=async():Promise<void>=>{
+        try {
+            Object.keys(formData).forEach((key:any)=>{
+                if(!formData[key] || formData[key]===''){
+                    throw Error(
+                        'Please provide all details on the form'
+                    )
+                }
+            })
+            const prompt=await Swal.fire(
+                {
+                    text:'Confirm Transaction',
+                    cancelButtonColor:'red',
+                    showCancelButton:true
+                }
+            )
+            if(!prompt.value){
+                throw Error(
+                    'You cancelled the transaction'
+                )
+            }
+            setIsLoading(true);
+            const response=await AccountsService.settle(formData);
+            setIsLoading(false);
+            Swal.fire(
+                {
+                    icon:response.success?'success':'error',
+                    title:'Transaction Message',
+                    text:response.message
+                }
+            )
+        } catch (err:any) {
+            setIsLoading(false);
+            Swal.fire(
+                {
+                    icon:'error',
+                    title:'Oops! Something went wrong',
+                    text:err.message,
+                }
+            )
+        }
+    }
 
 
     return (
@@ -177,11 +187,13 @@ export default function Users() {
                                     <select
                                         className="border-0 px-3 py-3 placeholder-blueGray-300  bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="merchantId"
-                                        value="kbkb"
+                                        value={formData.merchantId}
                                         onChange = {handleChange}
                                         placeholder="select merchant"
                                     >
-                                    {merchantsList}
+                                    {
+                                        merchants.map((mer:any,i:number)=><option key={i} value={mer?._id}>{mer.merchant_tradeName}</option>)
+                                    }
                                     </select>
                                 </div>
 
@@ -194,7 +206,7 @@ export default function Users() {
                                     <select    
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="accountType"
-                                        value={accountType}
+                                        value={formData.accountType}
                                         onChange = {handleChange}
                                    >
                                        <option value="momo">momo</option>
@@ -213,10 +225,12 @@ export default function Users() {
                                     <select
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="accountIssuer"
-                                        value={accountIssuer}
+                                        value={formData.accountIssuer}
                                         onChange = {onIssuer}
                                     >
-                                     {IssuersList}
+                                     {
+                                        issuers.map((issuer:any,i:number)=><option key={i} value={issuer?.id}>{issuer.name}</option>)
+                                     }
                                     </select>
                                 </div>
 
@@ -230,7 +244,7 @@ export default function Users() {
                                         type="text"
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="accountIssuerName"
-                                        value={accountIssuerName}
+                                        value={formData.accountIssuerName}
                                         disabled={true}
                                     />
                                 </div> 
@@ -247,12 +261,26 @@ export default function Users() {
                                         type="text"
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="accountNumber"
-                                        value={accountNumber}
+                                        value={formData.accountNumber}
                                         onChange = {handleChange}
                                     />
                                     <button className='mt-2 w-full bg-red-800 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150'  onClick={verifyNumberDetails}>
                                         verify 
                                     </button>
+                                </div>
+                                <div className="relative w-6/12 mb-3">
+                                    <label
+                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
+                                    >
+                                        Enter Amount
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        name="amount"
+                                        value={formData.amount}
+                                        onChange = {handleChange}
+                                    />
                                 </div>
 
                                 <div className="relative w-6/12 mb-3">
@@ -262,10 +290,11 @@ export default function Users() {
                                         Account Name
                                     </label>
                                     <input
-                                        type="email"
+                                        type="text"
+                                        disabled={true}
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="accountName"
-                                        value={accountName}
+                                        value={formData.accountName}
                                         onChange = {handleChange}
                                     />
                                 </div> 
@@ -281,7 +310,7 @@ export default function Users() {
                                         type="date"
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name = "startDate"
-                                        value ={startDate}
+                                        value ={formData.startDate}
                                         onChange = {handleChange}
                                     />
                                 </div>
@@ -296,7 +325,7 @@ export default function Users() {
                                         type="date"
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         name="endDate"
-                                        value ={endDate}
+                                        value ={formData.endDate}
                                         onChange = {handleChange}
                                     />
                                 </div>    
@@ -333,7 +362,7 @@ export default function Users() {
                                         rows={3}
                                         placeholder="Your message"
                                         name="description"
-                                        value={description}
+                                        value={formData.description}
                                         onChange = {handleChange}
                                         >
                                     </textarea>
@@ -341,7 +370,7 @@ export default function Users() {
                         </div>  
                     </div>            
                 </div>
-                <button className='w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
+                <button disabled={isLoading} onClick={pay} className='w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
                      Settle Merchant Account
                 </button>
              </div>
