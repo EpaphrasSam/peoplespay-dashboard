@@ -131,6 +131,22 @@ export default function Sidebar() {
                                     wallets
                                 </Link>
                             </li>
+                            <li className="items-center py-7 text-red-800 -ml-5 font-bold font-sans text-sm uppercase">
+                                 <Link
+                                    
+                                    to="merchant-settlement"
+                                >
+                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                        className={
+                                            "fas fa-hand-holding-usd text-red-800                                                                                                                          mr-2 text-sm" +
+                                            (window.location.href.indexOf("/settlement") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                                ? ""
+                                                : "text-red-800")
+                                        }
+                                    ></i>{" "}
+                                    settlement
+                                </Link>
+                            </li>
                             <li className="items-center py-7 text-red-800 ml-2 font-bold font-sans text-sm uppercase">
                                  <Link
                                     to="broadcast-message"

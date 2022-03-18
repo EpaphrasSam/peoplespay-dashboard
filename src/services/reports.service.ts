@@ -65,8 +65,7 @@ const dateFilter = (startDate:string, endDate :string) =>fetch(
 ).then(res => res.json())
 
 
-
-export default {
+const ReportService = {
 summaryReport,
 getTransactions,
 getWallets,
@@ -74,3 +73,4 @@ getReferals,
 getAgents,
 dateFilter
 }
+export default ReportService;
