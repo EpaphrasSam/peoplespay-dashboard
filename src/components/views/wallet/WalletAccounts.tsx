@@ -36,7 +36,8 @@ function Wallets(){
                 if(!res.success){
                     throw alert(res.message);
                 }
-             const wallets = res.data.map((w:any)=>w)
+             const wallets = res.data.map((w:any)=>w);
+             console.log(wallets);
              dispatch(setWalletAccounts(wallets))
              setIsLoading(loading);
              }catch(err:any){
@@ -120,7 +121,15 @@ function Wallets(){
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Balance
+                                Name
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Total Balance
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Actual Balance
                             </th>
                              <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">

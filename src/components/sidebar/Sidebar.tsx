@@ -8,7 +8,7 @@ export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
     return (
         <>
-            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-md bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-md bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6 md:border-1 md:rounded-tr-3xl md:rounded-br-3xl">
                 <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     {/* Toggler */}
                     <button
@@ -129,6 +129,22 @@ export default function Sidebar() {
                                         }
                                     ></i>{" "}
                                     wallets
+                                </Link>
+                            </li>
+                            <li className="items-center py-7 text-red-800 -ml-5 font-bold font-sans text-sm uppercase">
+                                 <Link
+                                    
+                                    to="merchant-settlement"
+                                >
+                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                        className={
+                                            "fas fa-hand-holding-usd text-red-800                                                                                                                          mr-2 text-sm" +
+                                            (window.location.href.indexOf("/settlement") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                                ? ""
+                                                : "text-red-800")
+                                        }
+                                    ></i>{" "}
+                                    settlement
                                 </Link>
                             </li>
                             <li className="items-center py-7 text-red-800 ml-2 font-bold font-sans text-sm uppercase">

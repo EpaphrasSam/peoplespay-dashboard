@@ -23,7 +23,7 @@ export default function Admin() {
         <>
          <ErrorBoundary>
             <Sidebar />
-            <div className="relative md:ml-64 bg-blueGray-100 mb-2">
+            <div className="relative md:ml-64 bg-white mb-2">
                     <Navbar />
 
                 {/* Header */}

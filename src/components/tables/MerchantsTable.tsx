@@ -31,6 +31,29 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
             </span>
         </td> 
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+            {m.submitted 
+              ?
+              (
+              <span
+                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                <span aria-hidden
+                    className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                <span className="relative"> Submitted </span>
+              </span>
+            ) 
+              : 
+              (
+                <span
+                className="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
+                <span aria-hidden
+                    className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                <span className="relative">Not Submitted</span>
+            </span>
+              )
+              }
+        
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
             {m.active 
               ?
               (

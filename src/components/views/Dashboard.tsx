@@ -144,7 +144,7 @@ function Dashboard() {
   
     const res = await ReportService.dateFilter('2016-01-01',endDate);
     const trs = res.data; 
-    const tr = trs.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
+    const tr = trs?.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
     
     dates.push(moment(tr[0].createdAt).format('YYYY/MMM'));
     
@@ -223,20 +223,20 @@ function Dashboard() {
        <div className="relative md:pt-16 pb-12 pt-12">
         {/** */}
         <div className="px-4 md:px-10 mx-auto w-full">
-              <div className='flex flex-wrap bg-gray-900 py-12 pb-4'>
+              <div className='flex flex-wrap bg-gray-900 py-12 pb-4 rounded-lg'>
                  <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                    <Link to='/user-transactions'>
-                     <BodyCard title='TOTAL TRANSACTIONS TODAY' value={data.totalTransactions} icon='fas fa-list-ol' statusIcon="fas fa-arrow-up text-blue-500 mr-1 fa-xs" status='current'/>
+                     <BodyCard title='TOTAL TRANSACTIONS TODAY' value={data?.totalTransactions??0} icon='fas fa-list-ol' statusIcon="fas fa-arrow-up text-blue-500 mr-1 fa-xs" status='current'/>
                    </Link>
                  </div>
                  <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                     <Link to='/allpaid-transactions'>
-                    <BodyCard title='SUCCESSFUL TRANSACTIONS' value={data.successfulCount} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
+                    <BodyCard title='SUCCESSFUL TRANSACTIONS' value={data?.successfulCount??0} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
                     </Link>
                 </div>
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                   <Link to='/allpaid-transactions'>
-                    <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data.totalAmountPaid).toFixed(2)}`} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
+                    <BodyCard title='TOTAL AMOUNT PAID' value={`GH¢ ${Number.parseFloat(data?.totalAmountPaid??0).toFixed(2)}`} icon='fas fa-check' statusIcon="fas fa-circle text-orange-500 mr-1 fa-xs" status='today'/>
                   </Link>
                 </div>
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
@@ -252,16 +252,16 @@ function Dashboard() {
                                 />
                   </div> 
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                    <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${Number.parseFloat(data.paidCharges).toFixed(2)}`} icon='fas fa-coins' statusIcon="fas fa-circle text-green-500 mr-1 fa-xs" status='today'/>
+                    <BodyCard title='TOTAL PAID CHARGES' value={`GH¢ ${Number.parseFloat(data?.paidCharges??0).toFixed(2)}`} icon='fas fa-coins' statusIcon="fas fa-circle text-green-500 mr-1 fa-xs" status='today'/>
                   </div>
                   <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                     <Link to='/allfailed-transactions'>
-                      <BodyCard title='FAILED TRANSACTIONS' value={data.failedCount} icon='fas fa-times' statusIcon="fas fa-circle text-indigo-500 mr-1 fa-xs" status='today'/>
+                      <BodyCard title='FAILED TRANSACTIONS' value={data?.failedCount??0} icon='fas fa-times' statusIcon="fas fa-circle text-indigo-500 mr-1 fa-xs" status='today'/>
                     </Link>
                 </div>
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                    <Link to='/allfailed-transactions'>
-                     <BodyCard title='TOTAL AMOUNT FAILED' value={`GH¢ ${Number.parseFloat(data.totalAmountFailed).toFixed(2)}`} icon='fas fa-times' statusIcon="fas fa-circle text-teal-500 mr-1 fa-xs" status='today'/>
+                     <BodyCard title='TOTAL AMOUNT FAILED' value={`GH¢ ${Number.parseFloat(data?.totalAmountFailed??0).toFixed(2)}`} icon='fas fa-times' statusIcon="fas fa-circle text-teal-500 mr-1 fa-xs" status='today'/>
                     </Link>
                 </div> 
                 <div className="w-full lg:w-6/12 xl:w-3/12 px-4">

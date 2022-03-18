@@ -40,7 +40,7 @@ export default function MerchantsDropdown() {
               className="uppercase flex items-center px-4 py-4 text-xs text-white hover:bg-red-800"
               to="/merchant-transactions"
                 >
-             <i className='fas fa-coins mr-2'/>
+             <i className='fas fa-coins mr-1'/>
               Merchant transactions
             </Link>
           )}

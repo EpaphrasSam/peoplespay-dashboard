@@ -4,6 +4,7 @@ import Report from './report.state'
 import Users from './users.state';
 import Merchants from './merchant.state'
 import Transactions from './transactions.state'
+import Issuers from './account.state'
 
 const state =configureStore(
     {
@@ -12,7 +13,8 @@ const state =configureStore(
             report : Report,
             users : Users,
             merchants : Merchants,
-            transactions : Transactions
+            transactions : Transactions,
+            issuers : Issuers
         },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
