@@ -25,6 +25,7 @@ const FailedTransactions = lazy(()=>import('./components/views/failed/FailedTran
 const Charges = lazy(()=> import('./components/views/charges/Charges'));
 const BroadCastMessage = lazy(()=>import('./components/views/broadcast/Broadcast'))
 const Settlement = lazy(()=>import('./components/views/settlement/Settlement'))
+const AllSettlements = lazy(()=>import('./components/views/settlement/AllSettlements'))
 
 
 function App() {
@@ -77,7 +78,8 @@ function App() {
                             <Route path="broadcast-message"  element={<BroadCastMessage/>}/>
 
                              {/**Settlement */}
-                            <Route path="merchant-settlement"  element={<Settlement/>}/> 
+                            <Route path="merchant-settlement/new"  element={<Settlement/>}/> 
+                            <Route path="merchant-settlement/all"  element={<AllSettlements/>}/> 
                     </Route>
                   </Routes>
                 </Suspense>

@@ -5,6 +5,7 @@ import {RootState} from './state'
 interface StateModel {
     user:User|any,
     isAuthenticated : boolean,
+    admins : Array<any>
 }
 
 const isNull = localStorage.getItem('token') === null
@@ -13,6 +14,7 @@ const isUndefined = localStorage.getItem('token') === undefined;
 
 const initialState:StateModel={
     user:null,
+    admins : [],
     isAuthenticated :  (isNull || isEmptyString || isUndefined) ? false : true 
 }
 
@@ -28,11 +30,14 @@ const state=createSlice(
                   ...state,
                     user:action.payload
                 }
-            }, 
-        }
-    }
+            },
+            setAdmins: (state,action)=> {
+                state.admins=action.payload;
+            }
+        }}         
 )
 
-export const {setAuth}=state.actions;
+
+export const {setAuth, setAdmins}=state.actions;
 export const authSelector = (state : RootState) => state.auth;
 export default state.reducer;

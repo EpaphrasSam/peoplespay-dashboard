@@ -15,7 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const swal = require('sweetalert2');
 
-function UserTransactions(){
+function AllSettlements(){
 
     
     const dispatch = useDispatch()
@@ -251,28 +251,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">User Transactions</h2>
+              <h2 className="text-2xl font-semibold leading-tight text-red-800">Settlements History</h2>
            </div>
 
-            {/**deviders */}
-            <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
-                <div>
-                    <span className='bg-green-300 rounded-xl px-2'>transactions</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount??0}</h2>
-                </div>
-                <div>
-                    <span className='bg-yellow-500 rounded-xl px-2'>amount</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
-                </div>
-                <div>
-                    <span className='bg-red-400 rounded-xl px-2'>failed</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
-                </div>
-                <div>
-                    <span className='bg-blue-300 rounded-xl px-2'>charges</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
-                </div>
-            </div>
+            
 
         {/**download button */}
         <div className="float-right space-x-2 mr-12">
@@ -470,4 +452,4 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
      </div>
     )
 }
-export default UserTransactions;
+export default AllSettlements;

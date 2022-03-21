@@ -1,32 +1,52 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, ChangeEventHandler} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthService from "../../../services/auth.service";
-import { authSelector, setAuth } from '../../../state/auth.state';
+import { authSelector, setAuth, setAdmins } from '../../../state/auth.state';
 import Utils from '../../../utils/AuthToken'
 
 
 
 function Login() {
-    
-    const {isAuthenticated} = useSelector(authSelector)
-
-    useEffect(()=>
-    {
-        if(isAuthenticated){
-            window.location.href = '/'
-        }
-    },[isAuthenticated])
 
     const dispatch = useDispatch(); 
    
-    let email='';
-    let password='';
-
-
     const [loading,setLoading]=useState(false);
+    const [formData, setFormData] = useState({
+        email: '',
+        password : ''
+    }) 
 
+    
+    const {isAuthenticated, user, admins} = useSelector(authSelector)
+
+    useEffect(()=>
+    {
+        
+        if(isAuthenticated){
+            window.location.href = '/'
+        }
+        getAdmins();
+    },[])
+
+    const getAdmins = async() => {
+       try{
+        const response = await AuthService.getAdminAccess();
+        if(!response.success){
+            alert("loading admin failed")
+        }
+        dispatch(setAdmins(response.data))
+
+       }catch(err){
+
+       }
+    }
+    getAdmins()
+
+    
     const login=async()=>{
+         
         try {
+            const {email, password} =  formData;
             if(email ==='' || password === ''){
                 throw Error(
                     'Email or Password cannot be null'
@@ -45,8 +65,6 @@ function Login() {
                 )
             };
             setLoading(false);
-            
-
             //save to localStorage
             Utils.setAuthToken(response.token)
 
@@ -55,19 +73,15 @@ function Login() {
                 setAuth(response.data)
             )
           
-    
             //Navigate to home
             window.location.href ='/'
-            
-            
+        
         } catch (err:any) {
             setLoading(false);
             alert(err.message)
         }
     }
 
-    const {user} = useSelector(authSelector)
-    console.log(user?._id);
 
     return (
         <div className="flex items-center min-h-screen bg-gray-50">
@@ -88,16 +102,20 @@ function Login() {
                             <div>
                                 <div>
                                     <label className="block text-sm">
-                                        Email
+                                        Choose your Account
                                     </label>
-                                    <input type="email"
+                                    <select
                                         className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600 placeholder:text-gray-200"
                                         placeholder="enter email or number"
                                         name ='email'
                             
-                                        onChange={v=>email=v.target.value.trim()}
+                                        onChange={e=> setFormData({...formData,email:e.target.value})}
                                     
-                                        />
+                                        >
+                                        {admins.map(ad =>(
+                                            <option value={ad.email}>{ad.name}</option>
+                                        ))}
+                                        </select>
                                 </div>
                                 <div>
                                     <label className="block mt-4 text-sm">
@@ -108,7 +126,7 @@ function Login() {
                                         placeholder="enter password" 
                                         type="password"
                                         name = 'password'
-                                        onChange={v=>password=v.target.value}
+                                        onChange={e=> setFormData({...formData,password:e.target.value})}
                                         />
                                 </div>
                                 <p className="mt-4">

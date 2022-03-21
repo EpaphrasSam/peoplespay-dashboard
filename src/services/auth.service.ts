@@ -25,16 +25,15 @@ const addAdmin = (admin:any) => fetch(
     }
 )
 
-const getAdmin = () => fetch(
+const getAdminAccess = () => fetch(
     `${BASE_URL}/admin/get`,
     {
         method : 'GET',
         headers : {
             'Content-type' : 'Application/json',
-            'Authroization' : AuthToken.AuthToken()
     },
     }
-)
+).then(res=> res.json())
 
 const update = (data:any) => fetch(
     `${BASE_URL}/admin/add/`,
@@ -53,6 +52,6 @@ const update = (data:any) => fetch(
 export default {
     login,
     addAdmin,
-    getAdmin,
+    getAdminAccess,
     update
 }

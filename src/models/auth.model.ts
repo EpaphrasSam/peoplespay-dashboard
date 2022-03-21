@@ -17,3 +17,17 @@ export interface User {
     "createdAt":string;
     "updatedAt":string;
 }
+
+export  enum LoginPath{
+    "DASHBOARD" = "/",
+    "USERTRANSACTIONS" = "user-transactions",
+    "USERS" = "users",
+    "MERCHANTS" = "merchants",
+    "MERCHANTTRANSACTIONS" = "merchant-transations",
+    "MERCHANTCATEGORIES" = "merchant-categories",
+    "AGENTS" = "agents",
+    "REFERRALS" = "referrals",
+    "WALLETS" = "wallets",
+    "SETTLEMENTNEW" = "merchant-settlement/new",
+    "SETTLEMENTHISTORY" = "merchant-settlement/all"
+}
