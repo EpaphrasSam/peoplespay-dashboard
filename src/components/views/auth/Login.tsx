@@ -1,6 +1,7 @@
 import React,{useState,useEffect, ChangeEventHandler} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthService from "../../../services/auth.service";
+import { Navigate, useNavigate, } from "react-router-dom";
 import { authSelector, setAuth, setAdmins } from '../../../state/auth.state';
 import Utils from '../../../utils/AuthToken'
 
@@ -8,27 +9,24 @@ import Utils from '../../../utils/AuthToken'
 
 function Login() {
 
-    const dispatch = useDispatch(); 
-   
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
+    const {admins} = useSelector(authSelector)
+
     const [loading,setLoading]=useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password : ''
     }) 
 
-    
-    const {isAuthenticated, user, admins} = useSelector(authSelector)
 
     useEffect(()=>
     {
-        
-        if(isAuthenticated){
-            window.location.href = '/'
-        }
         getAdmins();
     },[])
 
-    const getAdmins = async() => {
+
+    const getAdmins=async()=>{
        try{
         const response = await AuthService.getAdminAccess();
         if(!response.success){
@@ -36,17 +34,12 @@ function Login() {
         }
         dispatch(setAdmins(response.data))
 
-       }catch(err){
-
-       }
+       }catch(err){}
     }
-    getAdmins()
-
     
     const login=async()=>{
-         
         try {
-            const {email, password} =  formData;
+            const {email,password}=formData;
             if(email ==='' || password === ''){
                 throw Error(
                     'Email or Password cannot be null'
@@ -65,17 +58,9 @@ function Login() {
                 )
             };
             setLoading(false);
-            //save to localStorage
-            Utils.setAuthToken(response.token)
-
-            //Dispatch SetAuth
-            dispatch(
-                setAuth(response.data)
-            )
-          
-            //Navigate to home
-            window.location.href ='/'
-        
+            Utils.setAuthToken(response.token);
+            sessionStorage.setItem('PP-USER',JSON.stringify(response.data));
+            window.location.href='/#/home/dashboard';
         } catch (err:any) {
             setLoading(false);
             alert(err.message)
@@ -112,8 +97,8 @@ function Login() {
                                         onChange={e=> setFormData({...formData,email:e.target.value})}
                                     
                                         >
-                                        {admins.map(ad =>(
-                                            <option value={ad.email}>{ad.name}</option>
+                                        {admins.map((ad,i) =>(
+                                            <option key={i.toString()} value={ad.email}>{ad.name}</option>
                                         ))}
                                         </select>
                                 </div>

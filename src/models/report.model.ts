@@ -46,7 +46,7 @@ export class ReportModel {
         this._id=report._id;
         this.createdAt=moment(report.createdAt).format('YYYY/MM/DD');
         this.time=moment(report.createdAt).format('HH:mm A');
-        this.customerName=report.customerId?.fullname;
+        this.customerName=report.customerId?.fullname || report.customerId?.merchant_tradeName;
         this.customerPhone=report.customerId?.phone;
         this.transaction_type=report.transaction_type;
         this.actualAmount=`GHS${report.actualAmount}`;

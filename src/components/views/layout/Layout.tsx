@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Outlet,Navigate} from "react-router-dom";
-import { useSelector } from "react-redux";
-import { authSelector } from "../../../state/auth.state";
+import { useDispatch, useSelector } from "react-redux";
+import { authSelector,setAuth } from "../../../state/auth.state";
 import ErrorBoundary from "../../error-boundary/ErrorBoundary";
 
 // components
@@ -13,11 +13,25 @@ import Footer from "../../footer/Footer";
 
 export default function Admin() {
 
-    const {isAuthenticated} = useSelector(authSelector);
-    if(!isAuthenticated){
-        return <Navigate to='/login' />
-    }
+    const dispatch=useDispatch();
+    const {isAuthenticated}=useSelector(authSelector);
     
+    useEffect(()=>{
+        loadProfile();
+    },[]);
+
+
+    const loadProfile=()=>{
+        const session=sessionStorage.getItem('PP-USER');
+        if(typeof session==='string'){
+            dispatch(
+                setAuth(
+                    JSON.parse(session)
+                )
+            )
+        }
+        
+    }
   
     return (
         <>
