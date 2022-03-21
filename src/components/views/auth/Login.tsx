@@ -1,8 +1,9 @@
-import React,{useState,useEffect, ChangeEventHandler} from 'react';
+import React,{useState,useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthService from "../../../services/auth.service";
 import { authSelector, setAuth, setAdmins } from '../../../state/auth.state';
 import Utils from '../../../utils/AuthToken'
+
 
 
 
@@ -17,7 +18,7 @@ function Login() {
     }) 
 
     
-    const {isAuthenticated, user, admins} = useSelector(authSelector)
+    const {isAuthenticated, admins} = useSelector(authSelector)
 
     useEffect(()=>
     {
@@ -40,7 +41,7 @@ function Login() {
 
        }
     }
-    getAdmins()
+
 
     
     const login=async()=>{
@@ -64,18 +65,19 @@ function Login() {
                     response.message
                 )
             };
-            setLoading(false);
-            //save to localStorage
-            Utils.setAuthToken(response.token)
 
+            console.log(response.data)
+            setLoading(false);
+
+            //save to localStorage
+            Utils.setAuthToken(response.token) 
             //Dispatch SetAuth
             dispatch(
                 setAuth(response.data)
-            )
-          
-            //Navigate to home
-            window.location.href ='/'
-        
+            )   
+            sessionStorage.setItem('PP-USER',JSON.stringify(response.data));
+            window.location.href='/';
+            
         } catch (err:any) {
             setLoading(false);
             alert(err.message)

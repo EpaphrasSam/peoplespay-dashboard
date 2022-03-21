@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import MerchantDropdown from "../dropdowns/MerchantDropdown";
 import UserDropdown from '../dropdowns/UsersDropdown';
 import SettlementDropdown from '../dropdowns/SettlementDropdown';
-
+import {useSelector} from 'react-redux';
+import {authSelector} from '../../state/auth.state'
 
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
-
-    
+    const {user}  = useSelector(authSelector);
+    //const {access} = user;
+    //console.log(user);
 
     return (
         <>
