@@ -4,7 +4,7 @@ import {RootState} from './state'
 
 interface StateModel {
     user:User|any,
-    isAuthenticated : boolean,
+    isAuthenticated:boolean,
     admins : Array<any>
 }
 
@@ -25,11 +25,7 @@ const state=createSlice(
         initialState,
         reducers:{
             setAuth:(state,action)=>{
-               // const {user}=action.payload;
-              return  {
-                  ...state,
-                    user:action.payload
-                }
+                state.user=action.payload;
             },
             setAdmins: (state,action)=> {
                 state.admins=action.payload;

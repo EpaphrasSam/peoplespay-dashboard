@@ -38,7 +38,7 @@ const settle=(body:any)=>fetch(
 ).then(res=>res.json())
 
 
-const getSettlements=(body:any)=>fetch(
+const getSettlements=()=>fetch(
     `${BASE_URL}/settlements/get`,
     {
         method:'GET',

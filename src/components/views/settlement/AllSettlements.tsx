@@ -1,14 +1,11 @@
 import {useEffect, useState, ChangeEvent, useRef} from 'react'
-import Transaction from '../../tables/UserTransactionsTable'
+import SettlementsTable from '../../tables/SettlementsTable'
 import {useDispatch, useSelector} from 'react-redux';
-import {reportSelector, setUserTransactions} from '../../../state/report.state' 
-import {ReportModel} from '../../../models/report.model'
-import ReportService from '../../../services/reports.service';
-import transactionService from '../../../services/transactions.service';
+import {accountsSelector,setAllSettlements} from '../../../state/account.state' 
+import AccountsService from '../../../services/accounts.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
-import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -19,22 +16,11 @@ function AllSettlements(){
 
     
     const dispatch = useDispatch()
-
-    const {loading} = useSelector(reportSelector);
     //console.log(loading)
-
-    const [startDate, setStartDate] = useState<any>(new Date())
-    const [endDate, setEndDate] = useState<any>(new Date())
-
-    const [amount, setAmount] = useState<string>('0');
-    const [paidCharges, setPaidCharges] = useState<string>('0');
-    const [failedAmount, setFailedAmount] = useState<string>('0');
-    const [totalTransactionCount, setTotalTransactionCount] = useState<string>('0')
 
 
     const [searchQuery, setSearchQuery] = useState('')
-    //const [searchBy , setSearchBy] = useState('All')
-    const [isLoading, setIsLoading] = useState(loading)
+    const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
@@ -50,34 +36,25 @@ function AllSettlements(){
         const response = async()=> {
             try{
                 
-                const res = await ReportService.dateFilter(startDate, endDate)
-                const resReport = await ReportService.summaryReport(startDate,endDate)
-                //const transactionResponse = await TransactionService.summary() 
+                const res = await AccountsService.getSettlements()
+                setIsLoading(true)
                 
                 if(!res.success){
                     throw Error(res.message)
                 }
     
-                const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-                dispatch(setUserTransactions(transactions))
-                setIsLoading(loading)
+                dispatch(setAllSettlements(res))
+                setIsLoading(false)
     
                 //Update states
-                setAmount(resReport?.data?.paid[0].totalAmount)
-                setPaidCharges(resReport?.data?.paid[0].charges)
-                setFailedAmount(resReport?.data?.failed[0].totalAmount)
-                setTotalTransactionCount(transactions.length)
-    
-            }catch(err:any){
-                alert(err.message)
-            }
+            }catch(err:any){}
         }
         response();
-    },[loading,dispatch,startDate,endDate]) 
+    },[]) 
 
     
  
-const {transactions} = useSelector(reportSelector)
+const {allsettlements} = useSelector(accountsSelector)
 //console.log(transactions)
 
 const headers = [
@@ -101,22 +78,6 @@ const headers = [
  ]
 
   
-const filterResults = transactions.filter((tr)=>{
-
-     const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery)  
-     const hasCategoryResults:boolean = tr?.payment_account_type === transactionCategory;
-     const hasBoth:boolean = hasSearchResults && hasCategoryResults;
-     
-    if(hasCategoryResults && searchQuery === ""){
-        return tr; 
-    }else if(hasSearchResults && transactionCategory==="all"){
-             return tr;
-    }else if(hasBoth){
-         return tr;
-    }
-
-})
-
 
 
 const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
@@ -126,126 +87,16 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
 const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
 
 
-const results:any[] = filterResults.length === 0 ? transactions : filterResults
-
  //Get Current rows
  const indexOfLastRow:number = currentIndex * rowsPerPage;
  const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
- const currentRows = results?.slice(indexOfFirstRow,indexOfLastRow)
+ const currentRows = allsettlements.slice(indexOfFirstRow,indexOfLastRow)
  
  //button actions
  const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
  const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
- 
 
-  const clickDateFilter = async() => {
-    try{
-        const res = await ReportService.dateFilter(startDate,endDate)
-        const resReport = await ReportService.summaryReport(startDate,endDate)
-        //const transactionResponse = await TransactionService.summary() 
-
-        
-        const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-            dispatch(setUserTransactions(transactions))
-            setIsLoading(loading)
-
-            // console.log(transactions)
-
-       //Update states
-       setAmount(resReport?.data?.paid[0].totalAmount)
-       setPaidCharges(resReport?.data?.paid[0].charges)
-       setFailedAmount(resReport?.data?.failed[0].totalAmount)
-       setTotalTransactionCount(transactions.length)
-
-
-    }catch(err:any){
-        alert(err.message)
-    }
-  }
-
-  const reverseSelectedTransactions = async(data:any) => {
-      console.log(data)
-      try{
-        const res = await transactionService.reverseTransaction(data)
-        if(!res.success){
-            throw Error()
-            }else{
-                swal.fire(
-                {
-                    html : "<div>Transactions have been successfully reversed</div>"
-                }
-                )
-            }
-      }
-      catch(err:any){
-          swal.fire(
-              {
-                  html : "<div>Sorry, the OTP you entered may be wrong. Try again</div>"
-              }
-          )
-      }
-  }
-
- const initiateReversal = async() => {
-
-   try{
-    if(reverseIDArray.current.length < 1){
-        return swal.fire(
-            {
-                html : "<div><p>No transaction has been selected</p></div>"
-            }
-        )
-    }
-
-    const res = await transactionService.otpReversal();
-
-    if(!res.success){
-      return swal.fire(
-             {
-                 html : "<div><p>" + res.message + "</p></div>"
-             }
-        )
-    }
- 
-    
-    swal.fire(
-        {   
-            title: "Enter the OTP received",
-            input: 'text',
-            showDenyButton: true,
-            denyButtonText : "Cancel Reversal",
-            confirmButtonText : "Confirm Reversal"
-        }
-        ).then(function(input:any){
-               if(input){
-                const data = {
-                             transactions : reverseIDArray.current,
-                             otp : input.value
-                             }
-                console.log(input.value)
-                reverseSelectedTransactions(data)
-               }
-                
-                })
-   }catch(err){
-    swal(
-        {
-            html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
-        }
-    )
-   }
- }
-
- const addIdToReverseIDs = (id:any)=> {
-     const i = reverseIDArray.current.indexOf(id)
-     if(i > -1){
-       return  reverseIDArray.current.splice(i,1);
-     } 
-
-     reverseIDArray.current.push(id);
-     console.log(reverseIDArray.current)
-    }
 
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
@@ -260,41 +111,30 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         <div className="float-right space-x-2 mr-12">
             <CSVLink 
                 headers = {headers}
-                data = {transactions}
+                data = {allsettlements}
                 filename={'report.csv'}
                 className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
                     Download CSV
             </CSVLink>
-            <button 
-                    className="outline outline-2  outline-offset-2  py-2 px-1 bg-blue-500 text-white font-semibold rounded uppercase shadow hover:shadow hover:bg-blue-500 focus:outline-none ease-linear transition-all duration-150"
-                    onClick={()=>initiateReversal()}
-                    >
-                Reverse Transactions
-            </button>
         </div>
         
        
         {/**date picker */}
         <div className="flex items-center">
           <div className="relative">
-            <DatePicker selected = {startDate}
-                        onChange = {(date)=>setStartDate(date)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
+            <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
             />
          </div>
         <span className="mx-4 text-gray-500">to</span>
         <div className="relative">
-        <DatePicker selected = {endDate}
-                    value = {endDate}
-                        //locale = 'en-CA'
-                        onChange = {(date)=>setEndDate(date)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-         />
+            <div className="relative">
+                <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
+                />
+            </div>
        </div>
 
        {/**filter btn */}
        <button 
-            onClick={()=>clickDateFilter()}
             className='rounded-md bg-red-800 text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
      </div>
      {/**end date */}
@@ -402,13 +242,13 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                            isLoading ?
                            <Spinner/>
                            :
-                           <Transaction transactions={currentRows} addId={addIdToReverseIDs}/>
+                           <SettlementsTable data={currentRows}/>
                        }
                     </tbody>
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < results.length ? (currentIndex * rowsPerPage): transactions.length}</span> of <span>{results.length}</span>{' '}Transactions
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < allsettlements.length ? (currentIndex * rowsPerPage): allsettlements.length}</span> of <span>{allsettlements.length}</span>{' '}Transactions
                     </span> 
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
@@ -427,7 +267,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                             </button>)
                         } 
                          {
-                            currentIndex * rowsPerPage === transactions.length ? 
+                            currentIndex * rowsPerPage === allsettlements.length ? 
                             (
                                 <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
                                 onClick = {paginateFront}

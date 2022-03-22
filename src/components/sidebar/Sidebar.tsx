@@ -1,20 +1,146 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import MerchantDropdown from "../dropdowns/MerchantDropdown";
-import UserDropdown from '../dropdowns/UsersDropdown';
-import SettlementDropdown from '../dropdowns/SettlementDropdown';
-import {useSelector} from 'react-redux';
-import {authSelector} from '../../state/auth.state'
+import { useSelector } from "react-redux";
+import MenuItem from "../dropdowns/MenuDropdown";
+
+export interface Route {
+    path:string;
+    title:string;
+    icon:string;
+    hasChild? :boolean;
+    children?:Array<Route>
+}
+
+const routes:Route[]=[
+    {
+        path:'/',
+        title:'Dashboard',
+        icon:'fas fa-home mr-1',
+        hasChild : false,
+        children:[]
+    },
+    {
+        path:'users',
+        title:'Users',
+        icon:'fas fa-users mr-3',
+        hasChild : true,
+        children:[
+            {
+                path:'user-transactions',
+                icon:'fas fa-dollar-sign mr-2',
+                title:'User Transactions'
+            },
+            {
+                path:'users',
+                icon:'fas fa-users mr-2',
+                title:'Users'
+            }
+        ]
+    },
+    {
+        path:'merchants',
+        title:'Merchants',
+        icon:'fas fa-users mr-1',
+        hasChild : true,
+        children:[
+            {
+                path:'merchants',
+                icon:'fas fa-users mr-2',
+                title:'Merchants'
+            },
+            {
+                path:'merchant-transactions',
+                icon:'fas fa-coins mr-2',
+                title:'Transactions'
+            },
+            {
+                path:'merchant-categories',
+                icon:'fas fa-list-alt mr-2',
+                title:'Categories'
+            },
+        ]
+    },
+    {
+        path:'agents',
+        title:'Agents',
+        icon:'fas fa-users mr-2',
+        hasChild : false,
+        children:[]
+    },
+    {
+        path:'referrals',
+        title:'Referrals',
+        icon:'fas fa-registered mr-1',
+        hasChild : false,
+        children:[]
+    },
+    {
+        path:'wallets',
+        title:'Wallets',
+        icon:'fas fa-wallet mr-1',
+        hasChild : false,
+        children:[]
+    },
+    {
+        path:'merchant-settlement/new',
+        title:'Settlement',
+        icon:'fas fa-hand-holding-usd mr-1',
+        hasChild : true,
+        children:[
+            {
+                path:'merchant-settlement/new',
+                icon:'fas fa-hand-holding-usd mr-2',
+                title:'Make Settlement'
+            },
+            {
+                path:'merchant-settlement/all',
+                icon:'fas fa-eye mr-1',
+                title:'All Settlements'
+            },
+        ]
+    },
+    {
+        path:'broadcast-messaage',
+        title:'Broadcast',
+        icon:'fas fa-bullhorn mr-1',
+        hasChild : false,
+        children:[]
+    },
+]
 
 export default function Sidebar() {
-    const [collapseShow, setCollapseShow] = React.useState("hidden");
-    const {user}  = useSelector(authSelector);
-    //const {access} = user;
-    //console.log(user);
+
+    const {user}=useSelector((state:any)=>state.auth);
+    const [collapseShow,setCollapseShow]=React.useState("hidden");
+    const [paths,setPaths]:any=useState([]);
+
+
+    useEffect(()=>{
+        if(user && Array.isArray(user.access)){
+            let _paths:any[]=[];
+            routes.forEach((route:Route)=>{
+                if(route.hasChild){
+                    let children:Array<Route>|undefined=route.children?.filter((r)=>user.access.find((p:string)=>r.path===p));
+                    if(children && children.length>0){
+                        route.children=children;
+                        _paths.push(route);                       
+                    }
+                }else{
+                    user.access.forEach((p:string)=>{
+                        if(route.path===p){
+                            _paths.push(route);
+                        }
+                    })
+                }
+            });
+            
+            setPaths(_paths);
+        }
+    },[user])
 
     return (
         <>
-            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-md bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6 md:border-1 md:rounded-tr-3xl md:rounded-br-3xl">
+            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-md bg-gray-800 flex flex-wrap items-center justify-between relative md:w-56 z-10 py-4 px-6 md:border-1">
                 <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     {/* Toggler */}
                     <button
@@ -70,88 +196,18 @@ export default function Sidebar() {
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full" />
                         {/* Heading */}
-                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                        <h6 className="md:-ml-7 md:min-w-full text-gray-100 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                             Admin Layout Pages
                         </h6>
                         {/* Navigation */}
 
-                        <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-                            <li className="items-center py-7">
-                                <Link
-                                    to="/"
-                                >
-                                    <i
-                                        className="fas fa-tv mr-2 text-sm "
-                                           
-                                    ></i>{" "}
-                                    Dashboard
-                                </Link>
+                        <ul className="md:flex-col md:min-w-full flex flex-col list-none -ml-14">
+                            {paths.map((p:any,i:number)=>
+                            (<li className="py-7  text-gray-100">
+                                <MenuItem key={i.toString()} data={p}/>
                             </li>
-                            <li className="items-center py-7 -ml-7">
-                                <UserDropdown />
-                            </li>                          
-                            <li className="items-center py-7 ">
-                                <MerchantDropdown />
-                            </li>
-
-                            <li className="items-center py-7 text-red-800 ml-2 font-bold font-sans text-sm uppercase">
-                                 <Link
-                                    to="/agents"
-                                >
-                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                                        className=
-                                            "fas fa-user mr-2 font-bold"
-                                        >
-                                    </i>{" "}
-                                    view agents
-                                </Link>
-                            </li>
-                            <li className="items-center py-7 text-red-800 -ml-1 font-bold font-sans text-sm uppercase">
-                                 <Link
-                                    to="/referals"
-                                >
-                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                                        className={
-                                            "fas fa-registered                                                                                                                            mr-2 text-sm" +
-                                            (window.location.href.indexOf("/admin/dashboard") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                                ? "text-red-800"
-                                                : "text-red-800")
-                                        }
-                                    ></i>{" "}
-                                    referrals
-                                </Link>
-                            </li>
-                            <li className="items-center py-7 text-red-800 -ml-5 font-bold font-sans text-sm uppercase">
-                                 <Link
-                                    
-                                    to="/wallets"
-                                >
-                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                                        className={
-                                            "fas fa-wallet text-red-800                                                                                                                          mr-2 text-sm" +
-                                            (window.location.href.indexOf("/wallets") !== -1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                                ? ""
-                                                : "text-red-800")
-                                        }
-                                    ></i>{" "}
-                                    wallets
-                                </Link>
-                            </li>
-                            <li className="items-center py-7 -ml-7">
-                                <SettlementDropdown />
-                            </li>
-                            <li className="items-center py-7 text-red-800 ml-2 font-bold font-sans text-sm uppercase">
-                                 <Link
-                                    to="broadcast-message"
-                                >
-                                    <i                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                                        className=
-                                            "fas fa-bullhorn mr-2 font-bold"
-                                        >
-                                    </i>{" "}
-                                     broadcast message
-                                </Link>
-                            </li>
+                            ))
+                            }
                         </ul>
                          {/* Divider */}
                          <hr className="my-4 md:min-w-full" />

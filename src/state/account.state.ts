@@ -5,16 +5,18 @@ import  { RootState } from "./state"
 interface StateModel{
     loading : boolean,
     issuers : {}[]
+    allsettlements : any
 }
 
 const initialState:StateModel = {
     loading : true,
-    issuers : []
+    issuers : [],
+    allsettlements : []
 }
 
 const state=createSlice(
     {
-        name:'issuers',
+        name:'accounts',
         initialState,
         reducers:{
             setIssuers:(state,action)=>{
@@ -24,9 +26,15 @@ const state=createSlice(
                     loading: false
                 }
             }, 
+            setAllSettlements:(state,action)=>{
+                return  {
+                    ...state,
+                    allsettlements : action.payload
+                  }
+              }
         }
     }
 )
-export const {setIssuers} = state.actions
-export const issuersSelector = (state: RootState) => state.issuers;
+export const {setIssuers, setAllSettlements} = state.actions
+export const accountsSelector = (state: RootState) => state.accounts;
 export default state.reducer;   

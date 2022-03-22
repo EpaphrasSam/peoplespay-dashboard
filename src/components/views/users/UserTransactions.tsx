@@ -17,68 +17,8 @@ const swal = require('sweetalert2');
 
 function UserTransactions(){
 
-    
-    const dispatch = useDispatch()
+    const {transactions} = useSelector(reportSelector)
 
-    const {loading} = useSelector(reportSelector);
-    //console.log(loading)
-
-    const [startDate, setStartDate] = useState<any>(new Date())
-    const [endDate, setEndDate] = useState<any>(new Date())
-
-    const [amount, setAmount] = useState<string>('0');
-    const [paidCharges, setPaidCharges] = useState<string>('0');
-    const [failedAmount, setFailedAmount] = useState<string>('0');
-    const [totalTransactionCount, setTotalTransactionCount] = useState<string>('0')
-
-
-    const [searchQuery, setSearchQuery] = useState('')
-    //const [searchBy , setSearchBy] = useState('All')
-    const [isLoading, setIsLoading] = useState(loading)
-    const [currentIndex, setCurrentIndex] = useState(1)
-    const [rowsPerPage,setRowsPerPage] = useState(10)
-    const [transactionCategory, setTransactionCategory] = useState<string>('')
-
-
-
-
-    const reverseIDArray  = useRef(new Array());
-    
-
-    useEffect(()=>{
-
-        const response = async()=> {
-            try{
-                
-                const res = await ReportService.dateFilter(startDate, endDate)
-                const resReport = await ReportService.summaryReport(startDate,endDate)
-                //const transactionResponse = await TransactionService.summary() 
-                
-                if(!res.success){
-                    throw Error(res.message)
-                }
-    
-                const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-                dispatch(setUserTransactions(transactions))
-                setIsLoading(loading)
-    
-                //Update states
-                setAmount(resReport?.data?.paid[0].totalAmount)
-                setPaidCharges(resReport?.data?.paid[0].charges)
-                setFailedAmount(resReport?.data?.failed[0].totalAmount)
-                setTotalTransactionCount(transactions.length)
-    
-            }catch(err:any){
-                alert(err.message)
-            }
-        }
-        response();
-    },[loading,dispatch,startDate,endDate]) 
-
-    
- 
-const {transactions} = useSelector(reportSelector)
-//console.log(transactions)
 
 const headers = [
     { label: "TRANSACTION ID", key: "_id" },
@@ -99,6 +39,69 @@ const headers = [
     { label: "CREDIT STATUS", key: "status" },
     {label:"DEBIT STATUS", key: "debit_status" }
  ]
+
+
+    
+    const dispatch = useDispatch();
+    //console.log(loading)
+
+    const [startDate, setStartDate] = useState<any>(new Date())
+    const [endDate, setEndDate] = useState<any>(new Date())
+
+    const [amount, setAmount] = useState<string>('0');
+    const [paidCharges, setPaidCharges] = useState<string>('0');
+    const [failedAmount, setFailedAmount] = useState<string>('0');
+    const [totalTransactionCount, setTotalTransactionCount] = useState<string>('0')
+
+
+    const [searchQuery, setSearchQuery] = useState('')
+    //const [searchBy , setSearchBy] = useState('All')
+    const [isLoading, setIsLoading] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(1)
+    const [rowsPerPage,setRowsPerPage] = useState(10)
+    const [transactionCategory, setTransactionCategory] = useState<string>('')
+
+
+
+
+    const reverseIDArray  = useRef(new Array());
+    
+
+    useEffect(()=>{
+
+        const response = async()=> {
+            try{
+                
+
+                setIsLoading(true)
+                const [res,resReport] = await Promise.all(
+                    [
+                        ReportService.dateFilter(startDate, endDate),
+                        ReportService.summaryReport(startDate,endDate)
+                    ]
+                )
+                
+                if(!res.success){
+                    throw Error(res.message)
+                }
+    
+                const transactions = res.data.map((d:any)=> new ReportModel(d)) 
+                dispatch(setUserTransactions(transactions))
+                //Update states
+                setAmount(resReport?.data?.paid[0].totalAmount)
+                setPaidCharges(resReport?.data?.paid[0].charges)
+                setFailedAmount(resReport?.data?.failed[0].totalAmount)
+                setTotalTransactionCount(transactions.length);
+
+                setIsLoading(false);
+    
+            }catch(err:any){}
+        }
+        response();
+    },[]) 
+
+    
+ 
 
   
 const filterResults = transactions.filter((tr)=>{
@@ -141,14 +144,16 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
   const clickDateFilter = async() => {
     try{
+
+        setIsLoading(true);
+
         const res = await ReportService.dateFilter(startDate,endDate)
         const resReport = await ReportService.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
-
         
         const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-            dispatch(setUserTransactions(transactions))
-            setIsLoading(loading)
+        dispatch(setUserTransactions(transactions))
+        setIsLoading(false)
 
             // console.log(transactions)
 
