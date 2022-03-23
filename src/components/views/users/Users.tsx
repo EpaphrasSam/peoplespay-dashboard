@@ -6,7 +6,6 @@ import UsersService from '../../../services/users.service'
 import UsersTable from '../../tables/UsersTable'
 import AddUserForm from '../../forms/AddUserForm';
 import Spinner from '../layout/Spinner';
-import { reportSelector } from '../../../state/report.state';
 
 export default function Users() {
 

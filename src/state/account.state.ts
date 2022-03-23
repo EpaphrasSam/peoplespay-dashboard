@@ -5,13 +5,13 @@ import  { RootState } from "./state"
 interface StateModel{
     loading : boolean,
     issuers : {}[]
-    allsettlements : any
+    settlementHistory : any
 }
 
 const initialState:StateModel = {
     loading : true,
     issuers : [],
-    allsettlements : []
+    settlementHistory : []
 }
 
 const state=createSlice(
@@ -26,15 +26,15 @@ const state=createSlice(
                     loading: false
                 }
             }, 
-            setAllSettlements:(state,action)=>{
+            setSettlementHistory:(state,action)=>{
                 return  {
                     ...state,
-                    allsettlements : action.payload
+                    settlementHistory : action.payload
                   }
               }
         }
     }
 )
-export const {setIssuers, setAllSettlements} = state.actions
+export const {setIssuers, setSettlementHistory} = state.actions
 export const accountsSelector = (state: RootState) => state.accounts;
 export default state.reducer;   

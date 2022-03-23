@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {Outlet,Navigate} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelector,setAuth } from "../../../state/auth.state";
 import ErrorBoundary from "../../error-boundary/ErrorBoundary";
@@ -14,7 +14,7 @@ import Footer from "../../footer/Footer";
 export default function Admin() {
 
     const dispatch=useDispatch();
-    const {isAuthenticated}=useSelector(authSelector);
+    
     
     useEffect(()=>{
         loadProfile();

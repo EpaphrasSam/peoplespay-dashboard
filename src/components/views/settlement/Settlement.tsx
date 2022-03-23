@@ -10,11 +10,10 @@ import Swal from 'sweetalert2';
 export default function Users() {
 
     const dispatch = useDispatch()
-    const {loading} = useSelector(merchantsSelector);
     const [isLoading, setIsLoading]=useState(false);
 
     const {merchants}=useSelector((state:any)=>state.merchants);
-     const {issuers}=useSelector((state:any)=>state.issuers);
+     const {issuers}=useSelector((state:any)=>state.accounts);
 
    
 

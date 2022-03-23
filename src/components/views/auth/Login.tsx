@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../../../services/auth.service";
-import { Navigate, useNavigate } from "react-router-dom";
-import { authSelector, setAuth, setAdmins } from "../../../state/auth.state";
+import { authSelector, setAdmins } from "../../../state/auth.state";
 import Utils from "../../../utils/AuthToken";
 
 function Login() {
@@ -49,7 +48,8 @@ function Login() {
       setLoading(false);
       Utils.setAuthToken(response.token);
       sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
-      window.location.href = "/";
+
+      window.location.href = response.data.access[0];
     } catch (err: any) {
       setLoading(false);
       alert(err.message);

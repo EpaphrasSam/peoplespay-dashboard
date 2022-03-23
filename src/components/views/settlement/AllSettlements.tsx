@@ -1,7 +1,7 @@
 import {useEffect, useState, ChangeEvent, useRef} from 'react'
 import SettlementsTable from '../../tables/SettlementsTable'
 import {useDispatch, useSelector} from 'react-redux';
-import {accountsSelector,setAllSettlements} from '../../../state/account.state' 
+import {accountsSelector,setSettlementHistory} from '../../../state/account.state' 
 import AccountsService from '../../../services/accounts.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
@@ -24,57 +24,43 @@ function AllSettlements(){
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
-
-
-
-
-    const reverseIDArray  = useRef(new Array());
     
 
     useEffect(()=>{
-
-        const response = async()=> {
-            try{
-                
-                const res = await AccountsService.getSettlements()
-                setIsLoading(true)
-                
-                if(!res.success){
-                    throw Error(res.message)
-                }
-    
-                dispatch(setAllSettlements(res))
-                setIsLoading(false)
-    
-                //Update states
-            }catch(err:any){}
-        }
         response();
     },[]) 
 
+    const response = async()=> {
+        try{ 
+            setIsLoading(true)
+            const res = await AccountsService.getSettlements() 
+            //console.log(res);
+            if(!res.success){
+                alert(res.message)
+            }
+            dispatch(setSettlementHistory(res.data))
+            setIsLoading(false)
+
+            //Update states
+        }catch(err:any){}
+    }
+
     
  
-const {allsettlements} = useSelector(accountsSelector)
-//console.log(transactions)
+const {settlementHistory} = useSelector(accountsSelector)
+
 
 const headers = [
-    { label: "TRANSACTION ID", key: "_id" },
-    { label: "CUSTOMER REFERENCE", key: "reference" },
-    { label: "TRANSACTION DATE", key: "createdAt" },
-    { label: "TRANSACTION TIME", key: "time" },
-    { label: "TRANSACTION TYPE", key: "transaction_type" },
-    { label: "CUSTOMER NAME", key: "customerName" },
-    { label: "CUSTOMER PHONE NUMBER", key: "customerPhone" },
-    { label: "PAYMENT ACCOUNT NUMBER", key: "paymentNumber" },
-    { label: "PAYMENT ACCOUNT ISSUER", key: "paymentIssuer" },
-    { label: "AMOUNT", key: "actualAmount" },
-    { label: "CHARGES", key: "charges" },
-    { label: "TOTAL AMOUNT", key: "amount" },
-    { label: "RECIPIENT NAME", key: "recipientName" },
-    { label: "RECIPIENT NUMBER", key: "recipientNumber"},
-    { label: "RECIPIENT ISSUER", key: "recipientIssuer" },
-    { label: "CREDIT STATUS", key: "status" },
-    {label:"DEBIT STATUS", key: "debit_status" }
+    { label: "Date", key: "createdAt" },
+    { label: "Merchant Id", key: "merchantId" },
+    { label: "Description", key: "description" },
+    { label: "startDate", key: "startDate" },
+    { label: "endDate", key: "endDate" },
+    { label: "Account Number", key: "accountNumber" },
+    { label: "Account Issuer", key: "accountIssuerName" },
+    { label: "Account Type", key: "accountType" },
+    { label: "Amount", key: "amount" },
+    { label: "Status", key: "actualAmount" },
  ]
 
   
@@ -90,7 +76,7 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
  //Get Current rows
  const indexOfLastRow:number = currentIndex * rowsPerPage;
  const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
- const currentRows = allsettlements.slice(indexOfFirstRow,indexOfLastRow)
+ //const currentRows = settlementHistory.slice(indexOfFirstRow,indexOfLastRow)
  
  //button actions
  const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
@@ -111,8 +97,8 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
         <div className="float-right space-x-2 mr-12">
             <CSVLink 
                 headers = {headers}
-                data = {allsettlements}
-                filename={'report.csv'}
+                data = {settlementHistory}
+                filename={'settlements.csv'}
                 className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
                     Download CSV
             </CSVLink>
@@ -168,9 +154,10 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                         value = {transactionCategory}
                         className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>all</option>
-                        <option>momo</option>
-                        <option>card</option>
-                        <option>wallet</option>
+                        <option>paid</option>
+                        <option>failed</option>
+                        <option>account type bank</option>
+                        
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -180,60 +167,56 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                     </div>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search by customer name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search merchant name ...'/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
-                <table className="min-w-full leading-normal">
+                <table className="overflow-x-scroll min-w-full leading-normal">
                     <thead>
                         <tr>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Customer Description
+                                Date
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Transaction date
+                                Merchant Id
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                transaction time
+                                Description
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Start Date
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                End Date
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Account Number
                             </th>
                              <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Customer name
+                                Account Name
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Recipient name
+                                Account Issuer
                             </th>
-                            {/* <th
+                            <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                customer #
-                            </th> */}
+                                Account Type
+                            </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Amount
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                charge
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                debit status
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                credit status
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                pay_acc_type
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Actions
+                                status
                             </th>
                         </tr>
                     </thead>
@@ -242,13 +225,13 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                            isLoading ?
                            <Spinner/>
                            :
-                           <SettlementsTable data={currentRows}/>
+                           <SettlementsTable data={settlementHistory}/>
                        }
                     </tbody>
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < allsettlements.length ? (currentIndex * rowsPerPage): allsettlements.length}</span> of <span>{allsettlements.length}</span>{' '}Transactions
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < settlementHistory.length ? (currentIndex * rowsPerPage): settlementHistory.length}</span> of <span>{settlementHistory.length}</span>{' '}Transactions
                     </span> 
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
@@ -267,7 +250,7 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                             </button>)
                         } 
                          {
-                            currentIndex * rowsPerPage === allsettlements.length ? 
+                            currentIndex * rowsPerPage === settlementHistory.length ? 
                             (
                                 <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
                                 onClick = {paginateFront}

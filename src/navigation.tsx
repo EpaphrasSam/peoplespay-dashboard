@@ -1,5 +1,4 @@
 import React, {  Suspense,lazy } from 'react';
-import { useSelector } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
 import Layout from './components/views/layout/Layout'
