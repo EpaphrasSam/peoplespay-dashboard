@@ -1,39 +1,94 @@
-import React from "react";
+import React from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import faker from '@faker-js/faker';
 
-const BodyCard: React.FC<{title:string,value:string,icon:string, status:undefined|string, statusIcon:undefined|string}> = ({title,value,icon,status,statusIcon}) => {
- 
+interface BarProps{
+  successData : any,
+  failureData : any,
+  dates : any
+}
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+
+//const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+
+export default function BodyCard({successData, failureData, dates}:BarProps) {
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Monthly Statistics',
+      },
+    },
+  };
+
+  const data = {
+    labels : ['jan','feb','mar'],
+    datasets: [
+      {
+        label: 'Successful',
+        data: [1,2,3],
+        backgroundColor:'#0284c7'
+      },
+      {
+        label: 'Failed',
+        data: [5,8,10],
+        backgroundColor:'#ef4444',
+      },
+    ],
+  };
+
   return(
     <>
-       <div className="relative flex flex-col min-w-0 break-words bg-red-900 rounded mb-6 xl:mb-4 shadow-md border-1 border-red-700 h-28 hover:bg-red-800">
-        <div className=" p-4 my-5">
-          <div className="flex flex-wrap">
-            <div className="relative w-full pr-4 max-w-full  flex-1">
-              <h5 className="text-gray-300 uppercase text-xs mb-2 font-semibold font-sans">
-                {title}
-              </h5>
-              <span className="font-semibold text-xl text-gray-300">
-                 {value}
-              </span>
+    <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded h-auto">
+        <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
+          <div className="flex flex-wrap items-center">
+            <div className="relative w-full max-w-full flex-grow flex-1">
+              <h6 className="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
+                Realtime App Performance
+              </h6>
+              <h2 className="text-gray-700 text-xl font-semibold">
+                Total transactions
+                <div className='text-xs font-thin'>click and unclick on either tile to load chart</div>
+              </h2>
             </div>
-            <div className="relative w-auto pl-4 flex-initial">
-              <i
-                className={`${icon} p-3 text-center inline-flex items-center justify-center shadow-lg rounded-full bg-red-800 text-gray-300`}
-              >
-              </i>
-              <div className='sm:text-right sm:mr-1 text-white font-sans text-xs mt-5'>
-              <i className={statusIcon}></i>
-               {status}
-            </div>
-            </div>
-            
           </div>
-            {/* <div className='sm:text-right sm:mr-1 text-white font-sans text-xs '>
-              <i className={statusIcon}></i>
-               {status}
-            </div> */}
+        </div>
+        <div className="p-4 flex-auto">
+          {/* Chart */}
+          <div className="relative h-96">
+            <Bar 
+              options={options} 
+              width = {400}
+              height = {280}
+              data={data}
+          />
+          </div>
         </div>
       </div>
     </>
   )
 }
-export default BodyCard;

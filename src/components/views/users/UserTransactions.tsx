@@ -62,8 +62,6 @@ const headers = [
     const [transactionCategory, setTransactionCategory] = useState<string>('')
 
 
-
-
     const reverseIDArray  = useRef(new Array());
     
 
@@ -86,6 +84,7 @@ const headers = [
                 }
     
                 const transactions = res.data.map((d:any)=> new ReportModel(d)) 
+                console.log(transactions)
                 dispatch(setUserTransactions(transactions))
                 //Update states
                 setAmount(resReport?.data?.paid[0].totalAmount)
@@ -139,8 +138,6 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
  //button actions
  const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
  const paginateBack = () => setCurrentIndex(currentIndex - 1)
-
- 
 
   const clickDateFilter = async() => {
     try{
@@ -247,9 +244,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
      if(i > -1){
        return  reverseIDArray.current.splice(i,1);
      } 
-
      reverseIDArray.current.push(id);
-     console.log(reverseIDArray.current)
     }
 
     return(
@@ -390,10 +385,6 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Recipient name
                             </th>
-                            {/* <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                customer #
-                            </th> */}
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Amount
@@ -422,9 +413,9 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     </thead>
                     <tbody>
                        {
-                           isLoading ?
-                           <Spinner/>
-                           :
+                        //    isLoading ?
+                        //    <Spinner/>
+                        //    :
                            <Transaction transactions={currentRows} addId={addIdToReverseIDs}/>
                        }
                     </tbody>

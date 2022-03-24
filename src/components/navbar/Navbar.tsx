@@ -26,7 +26,8 @@ export default function Navbar() {
                     </svg>
                     {/* User */}
                     <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-                        <h5 className='text-red-800'>{user?.name}</h5>
+                           
+                        <h5 className='text-red-800 font-bold font-sans'>{user?.name}</h5>
                     </ul>
                 </div>
             </nav>        

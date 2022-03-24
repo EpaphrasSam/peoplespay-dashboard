@@ -4,10 +4,11 @@ import TransactionService from '../../services/transactions.service'
 import MerchantService from '../../services/merchant.service';
 import ReportService from '../../services/reports.service'
 import { ReportModel } from '../../models/report.model';
+import { Link } from 'react-router-dom';
 
 import HeaderCard from '../cards/HeaderCard';
 import StatCard from '../cards/StatCard'
-import { Link } from 'react-router-dom';
+import BodyCard from '../cards/BodyCard';
 
 import CardBarChart from '../cards/CardBarChart';
 import CardLineChart from '../cards/CardLineChart'
@@ -50,11 +51,11 @@ function Dashboard() {
 
   useEffect(()=>{
     response();
+    loadGraph();
     },[])
 
     async function response(){
       try{
-    
         const [merchantResponse,res,resReport,resTransactions]=await Promise.all(
           [
             MerchantService.summary(),
@@ -111,16 +112,13 @@ function Dashboard() {
          airteltigo : airtelcount
 
        });
-
-       loadGraph(resTransactions);
-
       }catch(err:any){}
    }
 
 
-   const loadGraph=async(res:any)=>{
+   const loadGraph=async()=>{
     try{
-      const res = await ReportService.dateFilter('2019-01-01',endDate);
+      const res = await ReportService.dateFilter('2021-01-01',endDate);
       const trs = res.data; 
       const tr = trs?.sort((a:any,b:any)=> new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
       
@@ -186,6 +184,13 @@ function Dashboard() {
       } 
    }
   
+  console.log({
+    success_TrData,
+    failure_TrData,
+    sales_TrData,
+    cumulativeSales_TrData,
+    dates
+  })
   
     return (
         <>

@@ -1265,6 +1265,11 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
+"@faker-js/faker@^6.0.0":
+  "integrity" "sha512-10zLCKhp3YEmBuko71ivcMoIZcCLXgQVck6aNswX+AWwaek/L8S3yz9i8m3tHigRkcF6F2vI+qtdtyySHK+bGA=="
+  "resolved" "https://registry.npmjs.org/@faker-js/faker/-/faker-6.0.0.tgz"
+  "version" "6.0.0"
+
 "@fortawesome/fontawesome-free@^5.15.4":
   "integrity" "sha512-eYm8vijH/hpzr/6/1CJ/V/Eb1xQFW2nnUKArb3z+yUWv7HTwj6M7SP957oMjfZjAHU6qpoNc2wQvIxBLWYa/Jg=="
   "resolved" "https://registry.npmjs.org/@fortawesome/fontawesome-free/-/fontawesome-free-5.15.4.tgz"

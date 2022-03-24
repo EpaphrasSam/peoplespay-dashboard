@@ -9,7 +9,7 @@ interface AppProps{
 const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
     <>
     {
-    transactions.map(t=>(
+    transactions.length > 0 ? transactions.map(t=>(
         <tr  className='cursor-pointer hover:bg-green-100 click:bg-green-200'>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <div className="flex items-center">
@@ -237,7 +237,8 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                 }}/>
             </td>
 </tr>
-    ))
+    )) :
+     "NO transactions to display"
     }
     </>
 )
