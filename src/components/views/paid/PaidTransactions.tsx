@@ -11,14 +11,14 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 //import moment from 'moment';
 
-function UserTransactions(){
+function PaidTransactions(){
    
     const dispatch = useDispatch()
 
     const {loading} = useSelector(reportSelector);
     //console.log(loading)
 
-    const [startDate, setStartDate] = useState<any>(new Date((new Date()).valueOf() - 1000*60*60*24))
+    const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
     const [amount, setAmount] = useState<string>('0');
@@ -37,7 +37,7 @@ function UserTransactions(){
     useEffect(()=>{
 
         response();
-    },[loading,dispatch]) 
+    },[loading]) 
 
     const response = async()=> {
         try{
@@ -351,4 +351,4 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
      </div>
     )
 }
-export default UserTransactions;
+export default PaidTransactions;

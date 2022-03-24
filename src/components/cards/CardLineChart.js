@@ -115,7 +115,7 @@ export default function CardLineChart({dates,salesData,cumulativeData}) {
     };
     var ctx = document.getElementById("line-chart").getContext("2d");
     window.myLine = new Chart(ctx, config);
-  }, []);
+  }, [cumulativeData,salesData,dates]);
   
   return (
     <>

@@ -13,11 +13,9 @@ import SearchForm from '../../forms/SearchForm';
 function Merchants(){
 
     const dispatch = useDispatch()
-
-    const {loading} = useSelector(merchantsSelector)
     
     const [searchQuery, setSearchQuery] = React.useState('')
-    const [isLoading, setIsLoading] = React.useState(loading)
+    const [isLoading, setIsLoading] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(1)
     const [rowsPerPage] = React.useState(10)
 
@@ -27,23 +25,25 @@ function Merchants(){
 
         const response = async()=>{
             try{
+                setIsLoading(true)
                 const res = await MerchantsService.getMerchants();
                 if(!res.success){
                     throw alert( res.message )
                 }
                
-                let merchants = res.data.map((t:any) => t)
+                let merchants = res.data.filter((t:any) => t.type ==="PPAY")
                 dispatch(setMerchants(merchants))
-                setIsLoading(loading)
+                setIsLoading(false)
                 
             }catch(err:any){
+                setIsLoading(false)
               alert(err.message)
             }
         }
 
         response();
         },
-     [loading,dispatch])
+     [])
 
      
 

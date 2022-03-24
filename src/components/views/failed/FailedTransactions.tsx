@@ -18,7 +18,7 @@ function UserTransactions(){
     const {loading} = useSelector(reportSelector);
     //console.log(loading)
 
-    const [startDate, setStartDate] = useState<any>(new Date((new Date()).valueOf() - 1000*60*60*24))
+    const [startDate, setStartDate] = useState<any>(new Date(new Date()))
     const [endDate, setEndDate] = useState<any>(new Date())
 
     const [amount, setAmount] = useState<string>('0');

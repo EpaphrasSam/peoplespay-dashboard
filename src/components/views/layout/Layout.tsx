@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import {Outlet} from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { authSelector,setAuth } from "../../../state/auth.state";
+import { useDispatch} from "react-redux";
+import {setAuth } from "../../../state/auth.state";
 import ErrorBoundary from "../../error-boundary/ErrorBoundary";
 
 // components

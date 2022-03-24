@@ -93,7 +93,7 @@ export default function CardBarChart({sucessData,failureData,dates}) {
     };
     let ctx = document.getElementById("bar-chart").getContext("2d");
     window.myBar = new Chart(ctx, config);
-  }, []);
+  }, [failureData,sucessData,dates]);
   
   return (
     <>

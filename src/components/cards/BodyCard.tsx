@@ -9,12 +9,12 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import faker from '@faker-js/faker';
+
 
 interface BarProps{
-  successData : any,
-  failureData : any,
-  dates : any
+  successData : Array<any> | undefined,
+  failureData : Array<any> | undefined,
+  dates : Array<any> | undefined
 }
 
 ChartJS.register(
@@ -30,7 +30,7 @@ ChartJS.register(
 //const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 
-export default function BodyCard({successData, failureData, dates}:BarProps) {
+export default function BodyCard({successData,failureData,dates}:BarProps) {
 
   const options = {
     responsive: true,
@@ -46,16 +46,16 @@ export default function BodyCard({successData, failureData, dates}:BarProps) {
   };
 
   const data = {
-    labels : ['jan','feb','mar'],
+    labels : dates,
     datasets: [
       {
         label: 'Successful',
-        data: [1,2,3],
+        data: successData,
         backgroundColor:'#0284c7'
       },
       {
         label: 'Failed',
-        data: [5,8,10],
+        data: failureData,
         backgroundColor:'#ef4444',
       },
     ],

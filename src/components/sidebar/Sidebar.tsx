@@ -196,7 +196,7 @@ export default function Sidebar() {
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full" />
                         {/* Heading */}
-                        <h6 className="md:-ml-7 md:min-w-full text-pink-800 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                        <h6 className="md:-ml-7 md:min-w-full text-pink-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                             Admin Layout Pages
                         </h6>
                         {/* Navigation */}

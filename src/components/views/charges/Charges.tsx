@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {reportSelector, setUserTransactions} from '../../../state/report.state' 
 import {ReportModel} from '../../../models/report.model'
 import ReportService from '../../../services/reports.service';
-import TransactionService from '../../../services/transactions.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
@@ -117,7 +116,6 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     try{
         const res = await ReportService.dateFilter(startDate,endDate)
         const resReport = await ReportService.summaryReport(startDate,endDate)
-        const transactionResponse = await TransactionService.summary() 
 
         
         const transactions = res.data.map((d:any)=> new ReportModel(d)) 

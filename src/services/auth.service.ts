@@ -47,11 +47,11 @@ const update = (data:any) => fetch(
     }
 )
 
-
-
-export default {
+const authService = {
     login,
     addAdmin,
     getAdminAccess,
     update
 }
+
+export default authService;

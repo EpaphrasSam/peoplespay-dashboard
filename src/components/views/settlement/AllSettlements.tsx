@@ -1,4 +1,4 @@
-import {useEffect, useState, ChangeEvent, useRef} from 'react'
+import {useEffect, useState, ChangeEvent} from 'react'
 import SettlementsTable from '../../tables/SettlementsTable'
 import {useDispatch, useSelector} from 'react-redux';
 import {accountsSelector,setSettlementHistory} from '../../../state/account.state' 
@@ -8,9 +8,6 @@ import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import "react-datepicker/dist/react-datepicker.css";
 
-
-
-const swal = require('sweetalert2');
 
 function AllSettlements(){
 
@@ -71,12 +68,6 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
 }
 
 const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
-
-
- //Get Current rows
- const indexOfLastRow:number = currentIndex * rowsPerPage;
- const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
- //const currentRows = settlementHistory.slice(indexOfFirstRow,indexOfLastRow)
  
  //button actions
  const paginateFront = () => {setCurrentIndex(currentIndex + 1)};

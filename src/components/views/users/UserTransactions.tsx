@@ -5,7 +5,6 @@ import {reportSelector, setUserTransactions} from '../../../state/report.state'
 import {ReportModel} from '../../../models/report.model'
 import ReportService from '../../../services/reports.service';
 import transactionService from '../../../services/transactions.service';
-import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
@@ -56,7 +55,6 @@ const headers = [
 
     const [searchQuery, setSearchQuery] = useState('')
     //const [searchBy , setSearchBy] = useState('All')
-    const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
@@ -69,9 +67,6 @@ const headers = [
 
         const response = async()=> {
             try{
-                
-
-                setIsLoading(true)
                 const [res,resReport] = await Promise.all(
                     [
                         ReportService.dateFilter(startDate, endDate),
@@ -84,15 +79,13 @@ const headers = [
                 }
     
                 const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-                console.log(transactions)
                 dispatch(setUserTransactions(transactions))
+
                 //Update states
                 setAmount(resReport?.data?.paid[0].totalAmount)
                 setPaidCharges(resReport?.data?.paid[0].charges)
                 setFailedAmount(resReport?.data?.failed[0].totalAmount)
-                setTotalTransactionCount(transactions.length);
-
-                setIsLoading(false);
+                setTotalTransactionCount(res.data.length);
     
             }catch(err:any){}
         }
@@ -141,18 +134,12 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
   const clickDateFilter = async() => {
     try{
-
-        setIsLoading(true);
-
         const res = await ReportService.dateFilter(startDate,endDate)
         const resReport = await ReportService.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
         
         const transactions = res.data.map((d:any)=> new ReportModel(d)) 
         dispatch(setUserTransactions(transactions))
-        setIsLoading(false)
-
-            // console.log(transactions)
 
        //Update states
        setAmount(resReport?.data?.paid[0].totalAmount)
@@ -246,7 +233,8 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
      } 
      reverseIDArray.current.push(id);
     }
-
+console.log(totalTransactionCount)
+console.log(amount)
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
@@ -258,7 +246,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
             <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
                 <div>
                     <span className='bg-green-300 rounded-xl px-2'>transactions</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount??0}</h2>
+                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
                     <span className='bg-yellow-500 rounded-xl px-2'>amount</span>

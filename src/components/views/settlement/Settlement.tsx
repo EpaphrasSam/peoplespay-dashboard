@@ -1,5 +1,5 @@
 import React,{ChangeEvent, useEffect,useState} from 'react'
-import { merchantsSelector,setMerchants } from '../../../state/merchant.state';
+import { setMerchants } from '../../../state/merchant.state';
 import { useDispatch, useSelector } from 'react-redux';
 import MerchantsService from '../../../services/merchant.service'
 import AccountsService from '../../../services/accounts.service';
