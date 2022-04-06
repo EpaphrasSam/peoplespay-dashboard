@@ -11,7 +11,7 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
     {
     transactions.length > 0 ? transactions.map(t=>(
         <tr  className='cursor-pointer hover:bg-green-100 click:bg-green-200'>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <div className="flex items-center">
                     <div className="ml-3">
                         <p className="text-gray-900 whitespace-no-wrap">
@@ -20,12 +20,12 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                     </div>
                 </div>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {t.createdAt}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <span
                     className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                     <span aria-hidden
@@ -33,32 +33,27 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                     <span className="relative">{t.time}</span>
                 </span>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                <p className="text-gray-900 whitespace-no-wrap uppercase">
                     {t.customerName}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                <p className="text-gray-900 whitespace-no-wrap uppercase">
                     {t.recipientName}
                 </p>
             </td>
-            {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <p className="text-gray-900 whitespace-no-wrap">
-                    {t.customerPhone}
-                </p>
-            </td> */}
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {t.amount}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {t.charges}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             {
                     t.debit_status === 'paid' ? 
                     (
@@ -90,7 +85,7 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                 }
 
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 {
                     t.status === 'PAID' ? 
                     (

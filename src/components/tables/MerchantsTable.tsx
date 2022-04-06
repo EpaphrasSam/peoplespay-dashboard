@@ -30,7 +30,7 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
             <span className="relative">{m.lineOfBusiness || m.category}</span>
             </span>
         </td> 
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
             {m.submitted 
               ?
               (
@@ -53,7 +53,7 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
               }
         
         </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
             {m.active 
               ?
               (

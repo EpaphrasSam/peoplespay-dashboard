@@ -8,11 +8,9 @@ import AddUserForm from '../../forms/AddUserForm';
 import Spinner from '../layout/Spinner';
 
 export default function Users() {
-
+    const {users} = useSelector(usersSelector)
     const dispatch = useDispatch()
-   
     const {loading} = useSelector(usersSelector);
-
     const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage] = useState(10)
@@ -21,50 +19,42 @@ export default function Users() {
         try{
             const loadUsers = async() => {
                 const response =  await UsersService.getUsers();
-
                 if(!response.success){
-                    throw alert(response.message)
-                }
-                
+                    alert(response.message)
+                }  
                 const users = response?.data.map((d:any)=> d)
                 dispatch(setUsers(users))
                 setIsLoading(loading)
             }
-
             loadUsers()
-
         }catch(err:any){
-          throw alert(err.message)
+          alert(err.message)
         }
      },
      [loading,dispatch])
-
-     const {users} = useSelector(usersSelector)
-     //console.log(users)
 
      //Get Current rows
     const indexOfLastRow:number = currentIndex * rowsPerPage;
     const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
     const currentRows = users.slice(indexOfFirstRow,indexOfLastRow)
-    
     //buttonactions
     const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
     const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
 
     return (
-     <div className="relative md:pt-28 pb-10  w-full mb-12">
+     <div className="relative md:pt-20 pb-10  w-full mb-12">
           <div>
             <h2 className="text-2xl font-semibold leading-tight text-red-800">Users</h2>
         </div>
             <div className='flex flex-wrap'>
                 <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">  
-                <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+                <div className="relative md:pt-12 pb-10 p-2 w-full mb-12 px-4">
            <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
                         <select
-                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option>5</option>
                             <option>10</option>
                             <option>20</option>
@@ -159,7 +149,7 @@ export default function Users() {
                                 </th>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
                                  phone verified
                                 </th>

@@ -17,7 +17,7 @@ const swal = require('sweetalert2');
 function UserTransactions(){
 
     const {transactions} = useSelector(reportSelector)
-
+    const dispatch = useDispatch();
 
 const headers = [
     { label: "TRANSACTION ID", key: "_id" },
@@ -40,10 +40,6 @@ const headers = [
  ]
 
 
-    
-    const dispatch = useDispatch();
-    //console.log(loading)
-
     const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
@@ -51,8 +47,6 @@ const headers = [
     const [paidCharges, setPaidCharges] = useState<string>('0');
     const [failedAmount, setFailedAmount] = useState<string>('0');
     const [totalTransactionCount, setTotalTransactionCount] = useState<string>('0')
-
-
     const [searchQuery, setSearchQuery] = useState('')
     //const [searchBy , setSearchBy] = useState('All')
     const [currentIndex, setCurrentIndex] = useState(1)
@@ -64,7 +58,6 @@ const headers = [
     
 
     useEffect(()=>{
-
         const response = async()=> {
             try{
                 const [res,resReport] = await Promise.all(
@@ -72,47 +65,30 @@ const headers = [
                         ReportService.dateFilter(startDate, endDate),
                         ReportService.summaryReport(startDate,endDate)
                     ]
-                )
-                
+                )  
                 if(!res.success){
                     throw Error(res.message)
                 }
-    
                 const transactions = res.data.map((d:any)=> new ReportModel(d)) 
                 dispatch(setUserTransactions(transactions))
-
                 //Update states
                 setAmount(resReport?.data?.paid[0].totalAmount)
                 setPaidCharges(resReport?.data?.paid[0].charges)
                 setFailedAmount(resReport?.data?.failed[0].totalAmount)
                 setTotalTransactionCount(res.data.length);
-    
             }catch(err:any){}
         }
         response();
-    },[]) 
+    },[searchQuery]) 
 
-    
- 
-
-  
 const filterResults = transactions.filter((tr)=>{
-
      const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery)  
      const hasCategoryResults:boolean = tr?.payment_account_type === transactionCategory;
      const hasBoth:boolean = hasSearchResults && hasCategoryResults;
-     
-    if(hasCategoryResults && searchQuery === ""){
-        return tr; 
-    }else if(hasSearchResults && transactionCategory==="all"){
-             return tr;
-    }else if(hasBoth){
-         return tr;
-    }
-
+     if(hasSearchResults || hasCategoryResults || hasBoth){
+         return transactions
+     }
 })
-
-
 
 const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))

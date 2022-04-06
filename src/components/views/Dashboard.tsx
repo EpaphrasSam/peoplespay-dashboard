@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import moment from "moment";
 import TransactionService from "../../services/transactions.service";
 import MerchantService from "../../services/merchant.service";
 import ReportService from "../../services/reports.service";
@@ -14,28 +13,13 @@ import CardBarChart from "../cards/CardBarChart";
 import CardLineChart from "../cards/CardLineChart";
 import PaidHighLights from "../views/highlights/PaidTransactions";
 import FailedHighLights from "../views/highlights/FailedTransactions";
-const Moment = require("moment");
+
 
 type StateData = {} | any;
 
 function Dashboard() {
-  //let success_TrData: string[] = [];
-  //let failure_TrData: string[] = [];
-  //let sales_TrData: number[] = [];
-  //let cumulativeSales_TrData: number[] = [0];
-  //let slicedCumulativeData: number[] = [];
-  //let dates: string[] = [];
-
-  const [dates] = useState<Array<string>>([]);
-  const [success_TrData] = useState<Array<any>>([]);
-  const [failure_TrData] = useState<Array<any>>([]);
-  const [sales_TrData] = useState<Array<any>>([]);
-  const [cumulativeSales_TrData] = useState<Array<number>>([0]);
-  const [slicedCumulativeData] = useState<Array<number>>([])
-
   const startDate = new Date().toISOString();
   const endDate = new Date().toISOString();
-
   const [data, setData] = useState<StateData>({
     totalTransactions: 0,
     successfulCount: 0,
@@ -56,7 +40,6 @@ function Dashboard() {
 
   useEffect(() => {
     response();
-    loadGraph();
   }, []);
 
   async function response() {
@@ -124,82 +107,6 @@ function Dashboard() {
       });
     } catch (err: any) {}
   }
-
-  const loadGraph = async () => {
-    try {
-      const res = await ReportService.dateFilter("2021-01-01", endDate);
-      const trs = res.data;
-      const tr = trs?.sort(
-        (a: any, b: any) =>
-          new Moment(a.createdAt).format("YYYYMMDD") -
-          new Moment(b.createdAt).format("YYYYMMDD")
-      );
-
-      dates.push(moment(tr[0].createdAt).format("YYYY/MMM"));
-      //setDates([dates, ])
-      //@Loops tr
-      //@takes date month
-      for (let i = 0; i < tr.length; i++) {
-        let tr_year = moment(tr[i].createdAt).format("YYYY/MMM");
-
-        if (!dates?.includes(tr_year)) {
-          dates?.push(tr_year);
-        } else {
-          continue;
-        }
-      }
-
-      //@Loops tr
-      //@Groups transactions
-      for (let i = 0; i < dates?.length; i++) {
-        let sucessCount = 0;
-        let failureCount = 0;
-        let totalSales: number = 0;
-
-        for (let x = 0; x < tr.length; x++) {
-          const isSuccessful =
-            tr[x].status === "paid" && tr[x].debit_status === "paid";
-          const isFailure =
-            tr[x].status === "failed" || tr[x].debit_status === "failed";
-
-          //Calculate sales
-          if (moment(tr[x].createdAt).format("YYYY/MMM") === dates?.[i]) {
-            totalSales += parseInt(tr[x].charges);
-          }
-
-          //Check tr date in dates and increase count
-          if (
-            isSuccessful &&
-            moment(tr[x].createdAt).format("YYYY/MMM") === dates?.[i]
-          ) {
-            sucessCount += 1;
-          }
-
-          if (
-            isFailure &&
-            moment(tr[x].createdAt).format("YYYY/MMM") === dates?.[i]
-          ) {
-            failureCount += 1;
-          }
-        }
-        success_TrData?.push(sucessCount.toString());
-        failure_TrData?.push(failureCount.toString());
-        sales_TrData?.push(Math.round(totalSales));
-      }
-
-      for (let i = 0; i < sales_TrData.length; i++) {
-        cumulativeSales_TrData.push(
-          Number(sales_TrData?.[i]) + Number(cumulativeSales_TrData[i])
-        );
-      }
-
-      for (let i = 0; i < cumulativeSales_TrData.length; ++i) {
-        slicedCumulativeData.push(cumulativeSales_TrData[i + 1]);
-      }
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
 
   return (
     <>
@@ -326,14 +233,10 @@ function Dashboard() {
           {/**charts*/}
           <div className="flex flex-wrap pt-2">
             <div className="w-full xl:w-8/12 mb-12 xl:mb-0 md:pr-4">
-              <CardLineChart
-                dates={dates}
-                salesData={sales_TrData}
-                cumulativeData={slicedCumulativeData}
-              />
+              <CardBarChart/>
             </div>
             <div className="w-full xl:w-4/12 ">
-              <CardBarChart sucessData={success_TrData} failureData={failure_TrData} dates={dates}/>
+              <CardLineChart/>
             </div>
           </div>
 
