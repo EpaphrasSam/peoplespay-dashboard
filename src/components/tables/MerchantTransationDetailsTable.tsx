@@ -6,7 +6,6 @@ import {transactionsSelector} from '../../state/transactions.state'
 const MerchantTransactionDetails:React.FC = () => {
     
     const {selected} = useSelector(transactionsSelector)
-    console.log(selected)
 
     return(
         <><div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">

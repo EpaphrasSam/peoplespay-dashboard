@@ -32,7 +32,7 @@ export default function CardLineChart() {
               fill: false,
               backgroundColor: "#0284c7",
               borderColor: "#0284c7",
-              data: sales_TrData,
+              data: [],
             },
           ],
         },

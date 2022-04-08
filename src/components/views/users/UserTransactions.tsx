@@ -130,11 +130,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
   }
 
   const reverseSelectedTransactions = async(data:any) => {
-      console.log(data)
       try{
         const res = await transactionService.reverseTransaction(data)
         if(!res.success){
-            throw Error()
+            alert(res.message)
             }else{
                 swal.fire(
                 {
@@ -209,8 +208,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
      } 
      reverseIDArray.current.push(id);
     }
-console.log(totalTransactionCount)
-console.log(amount)
+
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}

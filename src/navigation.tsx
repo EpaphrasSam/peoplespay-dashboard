@@ -22,7 +22,7 @@ const Charges = lazy(()=> import('./components/views/charges/Charges'));
 const BroadCastMessage = lazy(()=>import('./components/views/broadcast/Broadcast'))
 const Settlement = lazy(()=>import('./components/views/settlement/Settlement'))
 const AllSettlements = lazy(()=>import('./components/views/settlement/AllSettlements'))
-
+const SettlementApprovals = lazy(()=>import('./components/views/settlement/Approvals'))
 
 // create a component
 const Navigation=()=>{
@@ -69,7 +69,8 @@ const Navigation=()=>{
 
                                 {/**Settlement */}
                                 <Route path="merchant-settlement/new"  element={<Settlement/>}/> 
-                                <Route path="merchant-settlement/all"  element={<AllSettlements/>}/> 
+                                <Route path="merchant-settlement/all"  element={<AllSettlements/>}/>
+                                <Route path="merchant-settlement/approvals"  element={<SettlementApprovals/>}/> 
                             </Route>
                         </Routes>
                     </Suspense>

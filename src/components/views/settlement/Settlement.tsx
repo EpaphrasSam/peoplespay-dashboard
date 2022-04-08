@@ -78,10 +78,9 @@ export default function Users() {
         
     }
 
-        const handleChange = (event:ChangeEvent<any>)=>{
-            setFormData({...formData,[event.target.name]: event.target.value})
-        }
-
+    const handleChange = (event:ChangeEvent<any>)=>{
+      setFormData({...formData,[event.target.name]: event.target.value})
+    }
 
      const loadMerchantsandIssuers=async()=>{
          try {
@@ -135,6 +134,18 @@ export default function Users() {
                     text:response.message
                 }
             )
+            setFormData({
+                merchantId : '',
+                accountType : '',
+                startDate : '',
+                endDate : '',
+                accountIssuer : '',
+                accountIssuerName : '',
+                accountNumber : '',
+                accountName : '',
+                description : '',
+                amount:''
+            })
         } catch (err:any) {
             setIsLoading(false);
             Swal.fire(
@@ -208,6 +219,7 @@ export default function Users() {
                                         value={formData.accountType}
                                         onChange = {handleChange}
                                    >
+                                       <option defaultValue="">choose type</option>
                                        <option value="momo">momo</option>
                                        <option value="bank">bank</option>
                                    </select>
@@ -370,7 +382,7 @@ export default function Users() {
                     </div>            
                 </div>
                 <button disabled={isLoading} onClick={pay} className='w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
-                     Settle Merchant Account
+                     Submit for Approval
                 </button>
              </div>
     </div>               

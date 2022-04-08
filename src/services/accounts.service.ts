@@ -49,6 +49,31 @@ const getSettlements=()=>fetch(
     }
 ).then(res=>res.json())
 
+const getPendingSettlements=()=>fetch(
+    `${BASE_URL}/settlements/get/pending`,
+    {
+        method:'GET',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization':Utils.AuthToken()
+        }
+    }
+).then(res=>res.json())
 
-const AccountsService = {getIssuers,nec,getSettlements,settle}
+const approve = (id:any) =>fetch(
+    `${BASE_URL}/settlements/approve`,
+    {
+        method:'PUT',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization':Utils.AuthToken()
+        },
+        body : JSON.stringify({id})
+    }
+).then(res=>{
+    return res.json()}
+    )
+
+
+const AccountsService = {getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
 export default AccountsService;

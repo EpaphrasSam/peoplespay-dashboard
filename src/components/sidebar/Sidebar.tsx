@@ -97,6 +97,11 @@ const routes:Route[]=[
                 icon:'fas fa-eye mr-1',
                 title:'All Settlements'
             },
+            {
+                path:'merchant-settlement/approvals',
+                icon:'fas fa-eye mr-1',
+                title:'Approvals'
+            }
         ]
     },
     {
