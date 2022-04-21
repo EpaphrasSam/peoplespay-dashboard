@@ -94,7 +94,7 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
 }
 
-const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
+const transactionCategoryHandler = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
 
 
 const results:any[] = filterResults.length === 0 ? transactions : filterResults
@@ -384,7 +384,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < results.length ? (currentIndex * rowsPerPage): transactions.length}</span> of <span>{results.length}</span>{' '}Transactions
+                        Showing <span>{currentIndex * rowsPerPage - 10 < 0 ? 0 : currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < results.length ? (currentIndex * rowsPerPage): transactions.length}</span> of <span>{results.length}</span>{' '}Transactions
                     </span> 
                     <div className="inline-flex mt-2 xs:mt-0">
                         {

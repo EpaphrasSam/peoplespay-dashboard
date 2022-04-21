@@ -38,6 +38,29 @@ const routes:Route[]=[
         ]
     },
     {
+        path:'merchant-settlement/new',
+        title:'Settlement',
+        icon:'fas fa-hand-holding-usd mr-1',
+        hasChild : true,
+        children:[
+            {
+                path:'merchant-settlement/new',
+                icon:'fas fa-hand-holding-usd mr-2',
+                title:'Make Settlement'
+            },
+            {
+                path:'merchant-settlement/all',
+                icon:'fas fa-eye mr-1',
+                title:'All Settlements'
+            },
+            {
+                path:'merchant-settlement/approvals',
+                icon:'fas fa-eye mr-1',
+                title:'Approvals'
+            }
+        ]
+    },
+    {
         path:'merchants',
         title:'Merchants',
         icon:'fas fa-users mr-1',
@@ -61,6 +84,13 @@ const routes:Route[]=[
         ]
     },
     {
+        path:'wallets',
+        title:'Wallets',
+        icon:'fas fa-wallet mr-1',
+        hasChild : false,
+        children:[]
+    },
+    {
         path:'agents',
         title:'Agents',
         icon:'fas fa-users mr-2',
@@ -73,36 +103,6 @@ const routes:Route[]=[
         icon:'fas fa-registered mr-1',
         hasChild : false,
         children:[]
-    },
-    {
-        path:'wallets',
-        title:'Wallets',
-        icon:'fas fa-wallet mr-1',
-        hasChild : false,
-        children:[]
-    },
-    {
-        path:'merchant-settlement/new',
-        title:'Settlement',
-        icon:'fas fa-hand-holding-usd mr-1',
-        hasChild : true,
-        children:[
-            {
-                path:'merchant-settlement/new',
-                icon:'fas fa-hand-holding-usd mr-2',
-                title:'Make Settlement'
-            },
-            {
-                path:'merchant-settlement/all',
-                icon:'fas fa-eye mr-1',
-                title:'All Settlements'
-            },
-            {
-                path:'merchant-settlement/approvals',
-                icon:'fas fa-eye mr-1',
-                title:'Approvals'
-            }
-        ]
     },
     {
         path:'broadcast-messaage',

@@ -11,7 +11,7 @@ const SettlementsTable = ({data}:AppProps):JSX.Element => (
         <tr  className='cursor-pointer hover:bg-green-100 click:bg-green-200'>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {moment(s.createdAt).format('DD/MM/YYYY')}
+                    {moment(s.createdAt).isSame(moment(), "day") ? "today" : moment(s.createdAt).isSame(moment().subtract(1, 'day'), "day")? "yesterday":moment(s.createdAt).format('DD/MM/YYYY')}
                 </p>
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">

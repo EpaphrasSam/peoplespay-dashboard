@@ -10,22 +10,16 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 function AllSettlements(){
-
     
     const dispatch = useDispatch()
-    //console.log(loading)
-
-
     const [searchQuery, setSearchQuery] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
-    const [transactionCategory, setTransactionCategory] = useState<string>('')
     
-
     useEffect(()=>{
         response();
-    },[]) 
+    },[searchQuery]) 
 
     const response = async()=> {
         try{ 
@@ -41,13 +35,31 @@ function AllSettlements(){
             //Update states
         }catch(err:any){}
     }
-
-    
  
 const {settlementHistory} = useSelector(accountsSelector)
 
+const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
+    setRowsPerPage(parseInt(e.target.value))
+}
 
-const headers = [
+ 
+const filterResults = settlementHistory?.filter((r:any)=>{
+  const hasSearchResults:boolean = r?.accountName?.toLowerCase().includes(searchQuery)
+  if((hasSearchResults))return r;
+})
+
+const results:any[] = filterResults.length === 0 ? settlementHistory : filterResults
+
+//Get Current Rows
+const indexofLastRow:number = currentIndex*rowsPerPage;
+const indexofFirstRow:number = indexofLastRow - rowsPerPage; 
+const currentRows = results.slice(indexofFirstRow,indexofLastRow)
+
+ //button actions
+ const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
+ const paginateBack = () => setCurrentIndex(currentIndex - 1)
+
+ const headers = [
     { label: "Date", key: "createdAt" },
     { label: "Merchant Id", key: "merchantId" },
     { label: "Description", key: "description" },
@@ -59,21 +71,6 @@ const headers = [
     { label: "Amount", key: "amount" },
     { label: "Status", key: "actualAmount" },
  ]
-
-  
-
-
-const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
-    setRowsPerPage(parseInt(e.target.value))
-}
-
-const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
- 
- //button actions
- const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
- const paginateBack = () => setCurrentIndex(currentIndex - 1)
-
-
 
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
@@ -131,24 +128,6 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                         <option>40</option>
                         <option>50</option>
                         <option>80</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
-                <div className="relative">
-                    <select
-                        onChange = {transactionCategoryHandler}
-                        value = {transactionCategory}
-                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>all</option>
-                        <option>paid</option>
-                        <option>failed</option>
-                        <option>account type bank</option>
-                        
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -216,13 +195,13 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                            isLoading ?
                            <Spinner/>
                            :
-                           <SettlementsTable data={settlementHistory}/>
+                           <SettlementsTable data={currentRows}/>
                        }
                     </tbody>
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < settlementHistory.length ? (currentIndex * rowsPerPage): settlementHistory.length}</span> of <span>{settlementHistory.length}</span>{' '}Transactions
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < settlementHistory.length ? (currentIndex * rowsPerPage): settlementHistory.length}</span> of <span>{settlementHistory.length}</span>{' '}settlements
                     </span> 
                     <div className="inline-flex mt-2 xs:mt-0">
                         {
@@ -258,7 +237,6 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                             </button>
                             )
                         }       
-                        
                     </div>
                 </div>
             </div>
