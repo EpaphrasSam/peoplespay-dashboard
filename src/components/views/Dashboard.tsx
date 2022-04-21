@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {motion} from 'framer-motion';
 import TransactionService from "../../services/transactions.service";
 import MerchantService from "../../services/merchant.service";
 import ReportService from "../../services/reports.service";
@@ -18,6 +19,17 @@ import FailedHighLights from "../views/highlights/FailedTransactions";
 type StateData = {} | any;
 
 function Dashboard() {
+  const group1Motion = {
+    initial: { opacity: 0, x: 0 },
+    animate: { opacity: 1, y: 10, transition: { duration: 2 } },
+    exit: { opacity: 0, x: 0, transition: { duration: 2 } }
+  };
+  const group2Motion = {
+    initial: { opacity: 0, x: 0 },
+    animate: { opacity: 1, x: 10, transition: { duration: 2 } },
+    exit: { opacity: 0, x: 0, transition: { duration: 2 } }
+  };
+
   const startDate = new Date().toISOString();
   const endDate = new Date().toISOString();
   const [data, setData] = useState<StateData>({
@@ -109,11 +121,13 @@ function Dashboard() {
   }
 
   return (
-    <>
-      {/** */}
       <div className="relative md:pt-16 pb-12 pt-12">
-        {/** */}
         <div className="md:pl-1 md:px-2 mx-auto w-full">
+        <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group1Motion}>
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 w-full">
             <Link to="/user-transactions">
               <HeaderCard
@@ -212,6 +226,13 @@ function Dashboard() {
               />
             </Link>
           </div>
+         </motion.div>
+      
+         <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group2Motion}>
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 w-full mb-2 mt-3">
             <StatCard
               succ_amount={`GH¢ ${Number.parseFloat(
@@ -229,8 +250,14 @@ function Dashboard() {
               c={data.card}
             />
           </div>
-
+        </motion.div>
+  
           {/**charts*/}
+         <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group1Motion}>
           <div className="flex flex-wrap pt-2">
             <div className="w-full xl:w-8/12 mb-12 xl:mb-0 md:pr-4">
               <CardBarChart/>
@@ -239,8 +266,14 @@ function Dashboard() {
               <CardLineChart/>
             </div>
           </div>
+          </motion.div>
 
           {/**highlights */}
+          <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group2Motion}>
           <div className="flex flex-wrap mt-4">
             <div className="w-full xl:w-8/12 mb-12 xl:mb-0 md:pr-1">
               <PaidHighLights transactions={data.paidSliced} />
@@ -249,9 +282,10 @@ function Dashboard() {
               <FailedHighLights transactions={data.failedSliced} />
             </div>
           </div>
+         </motion.div>
         </div>
       </div>
-    </>
+  
   );
 }
 

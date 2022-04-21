@@ -17,12 +17,11 @@ function Merchants(){
     const [searchQuery, setSearchQuery] = React.useState('')
     const [isLoading, setIsLoading] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(1)
-    const [rowsPerPage] = React.useState(10)
+    const [rowsPerPage,setRowsPerPage] = React.useState(10)
 
     const [merchantCategory, setMerchantCategory] = useState<string>('')
 
     React.useEffect(()=>{ 
-
         const response = async()=>{
             try{
                 setIsLoading(true)
@@ -49,14 +48,33 @@ function Merchants(){
 
     const {merchants} = useSelector(merchantsSelector)
    
-    
+    const filterResults = merchants.filter((mr)=>{
+        switch(merchantCategory){
+        case "name":
+          const hasSearchResults:boolean = mr?.merchant_tradeName?.toLowerCase().includes(searchQuery)
+          if(hasSearchResults) return mr;
+          break;
+        case "category":
+            const hasSearchResults2:boolean = mr?.lineOfBusiness?.toLowerCase().includes(searchQuery)
+            if(hasSearchResults2) return mr;  
+            break;
+        default:
+            return mr;
+        }   
+    })
+
 const merchantCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setMerchantCategory(e.target.value);
 
+const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
+    setRowsPerPage(parseInt(e.target.value))
+}
+
+const results:any[] = filterResults.length === 0 ? merchants : filterResults
 
 //Get Current rows
 const indexOfLastRow:number = currentIndex * rowsPerPage;
 const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-const currentRows = merchants.slice(indexOfFirstRow,indexOfLastRow)
+const currentRows = results?.slice(indexOfFirstRow,indexOfLastRow)
 
 //buttonactions
 const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
@@ -101,6 +119,8 @@ const handleSelectedId:Function = async (id:string) => {
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
                         <select
+                            onChange = {pageRowsHandler}
+                            value={rowsPerPage}
                             className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option>5</option>
                             <option>10</option>
@@ -118,9 +138,9 @@ const handleSelectedId:Function = async (id:string) => {
                         onChange = {merchantCategoryHandler}
                         value = {merchantCategory}
                         className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>all</option>
-                        <option>Approved</option>
-                        <option>Pending</option>
+                        <option>column search</option>
+                        <option value="name">comp name</option>
+                        <option value="category">comp category</option>
                 </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -130,7 +150,7 @@ const handleSelectedId:Function = async (id:string) => {
                     </div>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by company name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search by ${merchantCategory}`}/>
         </div>
             <div
                 className=

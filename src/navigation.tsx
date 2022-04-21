@@ -1,6 +1,6 @@
 import React, {  Suspense,lazy } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
-
+import { HashRouter, Route, Routes} from 'react-router-dom';
+import {AnimatePresence}  from 'framer-motion';
 import Layout from './components/views/layout/Layout'
 import PageLoading from './components/views/layout/PageLoading'
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
@@ -31,7 +31,8 @@ const Navigation=()=>{
                 <div className='App'>
                 <ErrorBoundary>
                     <Suspense fallback={<PageLoading/>}>
-                    <Routes>
+                        <AnimatePresence exitBeforeEnter>
+                          <Routes>
                             <Route  path='login' element={<Login/>} />
                             <Route  path='' element={<Layout/>}>
                                 <Route path="" element={<Dashboard/>}/>
@@ -73,6 +74,7 @@ const Navigation=()=>{
                                 <Route path="merchant-settlement/approvals"  element={<SettlementApprovals/>}/> 
                             </Route>
                         </Routes>
+                       </AnimatePresence>
                     </Suspense>
                 </ErrorBoundary>
                 </div>
@@ -80,7 +82,4 @@ const Navigation=()=>{
     )
 };
 
-
-
-//make this component available to the app
 export default Navigation;

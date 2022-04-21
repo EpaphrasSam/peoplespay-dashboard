@@ -4,7 +4,7 @@ import {RootState} from './state';
 
 interface StateModel {
     loading : boolean,
-    merchants : {}[],
+    merchants : any[],
     categories : any[],
     selected : any
     docx : any[]

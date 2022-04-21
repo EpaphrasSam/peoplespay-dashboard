@@ -1,4 +1,5 @@
 import {useEffect, useState, ChangeEvent, useRef} from 'react'
+import { motion } from 'framer-motion';
 import Transaction from '../../tables/UserTransactionsTable'
 import {useDispatch, useSelector} from 'react-redux';
 import {reportSelector, setUserTransactions} from '../../../state/report.state' 
@@ -15,6 +16,17 @@ import "react-datepicker/dist/react-datepicker.css";
 const swal = require('sweetalert2');
 
 function UserTransactions(){
+    const group1Motion = {
+        initial: { opacity: 0, x: 0 },
+        animate: { opacity: 1, y: 10, transition: { duration: 2 } },
+        exit: { opacity: 0, x: 0, transition: { duration: 2 } }
+      };
+    const group2Motion = {
+        initial: { opacity: 0, x: 0 },
+        animate: { opacity: 1, x: 10, transition: { duration: 2 } },
+        exit: { opacity: 0, x: 0, transition: { duration: 2 } }
+      };
+
 
     const {transactions} = useSelector(reportSelector)
     const dispatch = useDispatch();
@@ -82,12 +94,19 @@ const headers = [
     },[searchQuery]) 
 
 const filterResults = transactions.filter((tr)=>{
-     const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery)  
-     const hasCategoryResults:boolean = tr?.payment_account_type === transactionCategory;
-     const hasBoth:boolean = hasSearchResults && hasCategoryResults;
-     if(hasSearchResults || hasCategoryResults || hasBoth){
-         return transactions
-     }
+    switch(transactionCategory){
+    case "name":
+      const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery)
+      if(hasSearchResults) return tr;
+      break;
+    case "phone":
+        const hasSearchResults2:boolean = tr?.customerPhone?.toLowerCase().includes(searchQuery)
+        if(hasSearchResults2) return tr;  
+        break;
+    default:
+        return tr;
+    }
+   
 })
 
 const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
@@ -212,6 +231,11 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
+         <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group1Motion}>
            <div className='mb-10'>
               <h2 className="text-2xl font-semibold leading-tight text-red-800">User Transactions</h2>
            </div>
@@ -235,6 +259,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
             </div>
+            </motion.div>
 
         {/**download button */}
         <div className="float-right space-x-2 mr-12">
@@ -307,10 +332,9 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                         onChange = {transactionCategoryHandler}
                         value = {transactionCategory}
                         className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>all</option>
-                        <option>momo</option>
-                        <option>card</option>
-                        <option>wallet</option>
+                        <option value="none" selected disabled hidden>search column</option>
+                        <option value="phone">customer phone</option>
+                        <option value="name">customer name</option>
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -320,8 +344,13 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     </div>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search by customer name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder={`Search ${transactionCategory}`}/>
         </div>
+        <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group2Motion}>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
                 <table className="min-w-full leading-normal">
@@ -425,6 +454,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 </div>
             </div>
         </div>
+        </motion.div>
      </div>
     )
 }

@@ -1,4 +1,5 @@
 import {useEffect, useState, ChangeEvent} from 'react'
+import{motion} from 'framer-motion'
 import SettlementsTable from '../../tables/SettlementsTable'
 import {useDispatch, useSelector} from 'react-redux';
 import {accountsSelector,setSettlementHistory} from '../../../state/account.state' 
@@ -10,6 +11,16 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 function AllSettlements(){
+    const group1Motion = {
+        initial: { opacity: 0, x: 0 },
+        animate: { opacity: 1, y: 10, transition: { duration: 2 } },
+        exit: { opacity: 0, x: 0, transition: { duration: 2 } }
+      };
+    const group2Motion = {
+        initial: { opacity: 0, x: 0 },
+        animate: { opacity: 1, x: 10, transition: { duration: 2 } },
+        exit: { opacity: 0, x: 0, transition: { duration: 2 } }
+      };
     
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState('')
@@ -75,6 +86,11 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
+         <motion.div 
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={group1Motion}>
            <div className='mb-10'>
               <h2 className="text-2xl font-semibold leading-tight text-red-800">Settlements History</h2>
            </div>
@@ -139,6 +155,13 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search merchant name ...'/>
         </div>
+        </motion.div>
+        
+        <motion.div 
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={group2Motion}>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
                 <table className="overflow-x-scroll min-w-full leading-normal">
@@ -241,6 +264,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                 </div>
             </div>
         </div>
+        </motion.div>
      </div>
     )
 }
