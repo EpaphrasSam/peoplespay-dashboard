@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export default function Navbar() {
     const {user} = useSelector(authSelector); 
     return (
-            <nav className="absolute top-0 left-0 w-full z-1 bg-white md:flex-row md:flex-nowrap md:justify-start flex items-center border-b-2 border-gray-100">
+            <nav className="absolute top-0 left-0 w-full z-1 md:flex-row md:flex-nowrap md:justify-start flex items-center bg-white">
                 <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 md:pl-1 px-4">
                     {/* Brand */}
                     <span className="hidden md:block md:mr-2">

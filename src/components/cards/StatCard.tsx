@@ -6,6 +6,7 @@ interface StatProps{
     fail_amount : any
     succ_count :any
     fail_count : any
+    pending_count:any
     m  : any
     v: any
     w : any
@@ -13,7 +14,7 @@ interface StatProps{
     c : any
 
 }
-export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_count, m,v,a,c,w}:StatProps) {
+export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_count,pending_count, m,v,a,c,w}:StatProps) {
   const data1 = {
     labels: ["1", "2", "3", "4", "5", "6", "7"],
     datasets: [
@@ -123,15 +124,21 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
             <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
               <div className="text-base text-gray-400 ">Transactions</div>
               <div className="relative z-10 flex items-center pt-1">
-                <div className="text-2xl font-bold text-gray-900 ">{succ_count}</div>
-                <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-green-600 bg-green-100 rounded">
+                <div className="text-xl font-bold text-gray-900 ">{succ_count}</div>
+                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-green-600 bg-green-100 rounded">
                   <span>successful</span>
                 </span> 
               </div>
               <div className="flex">    
-                <div className="text-2xl font-bold text-gray-900 ">{fail_count}</div> 
-                <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-red-600 bg-red-100 rounded">
+                <div className="text-xl font-bold text-gray-900 ">{fail_count}</div> 
+                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-red-600 bg-red-100 rounded">
                   <span>failed</span>
+                </span> 
+              </div>
+              <div className="flex">    
+                <div className="text-xl font-bold text-gray-900 ">{pending_count}</div> 
+                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-yellow-600 bg-yellow-100 rounded">
+                  <span>pending</span>
                 </span> 
               </div>
               <div className="absolute bottom-0 inset-x-0 z-0">

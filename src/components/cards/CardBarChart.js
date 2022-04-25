@@ -11,6 +11,11 @@ export default function CardBarChart() {
   const [successData] = useState([]);
   const [failureData] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [period, setPeriod] = useState("MMM/DD")
+
+  const handleChange=(e)=>{
+    setPeriod( e.target.value);
+ }
   
   useEffect(() => {
 
@@ -19,13 +24,13 @@ export default function CardBarChart() {
       let config = {
         type: "bar",
         data: {
-          labels: dates,
+          labels: dates.reverse(),
           datasets: [
             {
               label: 'successful transactions',
               backgroundColor: "#aeedfc",
               borderColor: "#ed64a6",
-              data: successData,
+              data: successData.reverse(),
               fill: false,
               barThickness: 8,
             },
@@ -34,7 +39,7 @@ export default function CardBarChart() {
               fill: false,
               backgroundColor: "#f25a66",
               borderColor: "#4c51bf",
-              data: failureData,
+              data: failureData.reverse(),
               barThickness: 8,
             },
           ],
@@ -107,46 +112,53 @@ export default function CardBarChart() {
        }  
     })
     setLoading(false);
-  }, []);
+  }, [period]);
 
   const loadGraph = async () => {
     try {
-      const res = await ReportService.dateFilter("2022-01-01", new Date().toISOString());
-      const trs = res.data;
-      const tr = trs?.sort(
-        (a, b) =>
-          new Moment(a.createdAt).format("YYYYMMDD") -
-          new Moment(b.createdAt).format("YYYYMMDD")
-      );
+      const _m = new Date().getMonth();
+      const y = new Date().getFullYear();
+      const __m = `0${_m}`
+      const m = _m < 10 ? __m : _m;
 
-      dates.push(moment(tr[0].createdAt).format("YYYY/MMM"));
+      console.log(y,m)
+      const res = await ReportService.dateFilter(`${y}-04-01`, new Date().toISOString());;
+       
+      const trs = res.data;
+      // const trs = trs?.sort(
+      //   (a, b) =>
+      //     new Moment(b.createdAt).format("YYYYMMMDD") - new Moment(b.createdAt).format("YYYYMMMDD")
+      // );
+      // console.log(trs);
+
+      dates.push(moment(trs[0].createdAt).format(period));
       
-      //@Loops tr
+      //@Loops trs
       //@takes year month 
-      for (let i = 0; i < tr.length; i++) {
-        let tr_year = moment(tr[i].createdAt).format("YYYY/MMM");
+      for (let i = 0; i < trs.length; i++) {
+        let tr_year = moment(trs[i].createdAt).format(period);
         if (!dates?.includes(tr_year)) {
           dates?.push(tr_year);
         } else {
           continue;
         }
       }
-      //@Loops tr
+      //@Loops trs
       //@Groups transactions
       for (let i = 0; i < dates?.length; i++) {
         let sucessCount = 0;
         let failureCount = 0;
 
-        for (let x = 0; x < tr.length; x++) {
-          const isSuccessful= tr[x].status === "paid" && tr[x].debit_status === "paid";
-          const isFailure= tr[x].debit_status === "failed" 
+        for (let x = 0; x < trs.length; x++) {
+          const isSuccessful= trs[x].status === "paid" && trs[x].debit_status === "paid";
+          const isFailure= trs[x].debit_status === "failed" 
 
-          //Check tr date in dates and increase count
-          if (isSuccessful && moment(tr[x].createdAt).format("YYYY/MMM") === dates?.[i]) {
+          //Check trs date in dates and increase count
+          if (isSuccessful && moment(trs[x].createdAt).format(period) === dates?.[i]) {
             sucessCount += 1;
           }
 
-          if (isFailure && moment(tr[x].createdAt).format("YYYY/MMM") === dates?.[i]) {
+          if (isFailure && moment(trs[x].createdAt).format(period) === dates?.[i]) {
             failureCount += 1;
           }
         }
@@ -162,17 +174,39 @@ export default function CardBarChart() {
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded h-auto">
         <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
-          <div className="flex flex-wrap items-center">
             <div className="relative w-full max-w-full flex-grow flex-1">
               <h6 className="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
-                Realtime App Performance
+                Daily App Performance
               </h6>
               <h2 className="text-gray-700 text-xl font-semibold">
                 Total transactions
                 {!isLoading && <ChartLoader/>}
               </h2>
+              {/* { isLoading &&
+              (
+              <div className="flex justify-center">
+                <div className="form-check form-check-inline text-sm align-center mr-3">
+                  <input className="form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                   type="radio" 
+                   name="period" 
+                   id="1" 
+                   value="MMM/DD"
+                   onChange={handleChange}/>
+                  <label className="form-check-label inline-block text-gray-800" for="inlineRadio10">DAILY</label>
+                </div>
+                <div className="form-check form-check-inline text-sm align-center mr-3">
+                  <input className="form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                   type="radio"
+                   name="period" 
+                   id="2" 
+                   value="YYYY/MMM"
+                   onChange={handleChange}/>
+                  <label className="form-check-label inline-block text-gray-800" for="inlineRadio20">MONTHLY</label>
+                </div>
+              </div>
+              )
+              } */}
             </div>
-          </div>
         </div>
         <div className="p-4 flex-auto">
           {/* Chart */}

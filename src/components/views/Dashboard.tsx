@@ -36,6 +36,7 @@ function Dashboard() {
     totalTransactions: 0,
     successfulCount: 0,
     failedCount: 0,
+    pendingCount:0,
     totalAmountPaid: 0,
     paidCharges: 0,
     totalAmountFailed: 0,
@@ -74,7 +75,7 @@ function Dashboard() {
       const _paidSliced = paidTransactions.slice(0, 5);
 
       const failedTransactions = transactions?.filter(
-        (t: any) => t.debit_status === "failed" || t.status === "FAILED"
+        (t: any) => t.debit_status === "failed"
       );
       const _failedSliced = failedTransactions.slice(0, 5);
 
@@ -103,6 +104,7 @@ function Dashboard() {
         totalTransactions: transactions.length,
         successfulCount: paidTransactions.length,
         failedCount: failedTransactions.length,
+        pendingCount : transactions.length - (paidTransactions.length + failedTransactions.length),
         totalAmountPaid: resReport?.data?.paid[0]?.totalAmount,
         paidCharges: resReport?.data?.paid[0]?.charges,
         totalAmountFailed: resReport?.data?.failed[0]?.totalAmount,
@@ -243,6 +245,7 @@ function Dashboard() {
               ).toFixed(2)}`}
               succ_count={data?.successfulCount ?? 0}
               fail_count={data?.failedCount ?? 0}
+              pending_count={data?.pendingCount ?? 0}
               m={data.mtn}
               v={data.voda}
               a={data.airteltigo}
