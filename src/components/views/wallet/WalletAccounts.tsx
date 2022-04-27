@@ -16,7 +16,7 @@ function Wallets(){
     const [isLoading, setIsLoading] = useState(loading)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
-    
+    const [category,setCategory] = useState('merchant')
 
     useEffect(()=>{ 
         const loadWallets = async()=>{
@@ -41,8 +41,18 @@ function Wallets(){
      const {wallets} = useSelector(reportSelector)
      
      const filterResults = wallets.filter((cus)=>{
-          const hasSearchResults:boolean = cus?.customerId?.fullname.toLowerCase().includes(searchQuery)
-          if(hasSearchResults) return cus;
+        switch(category){
+            case "merchant":
+              const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName.toLowerCase().includes(searchQuery)
+              if(hasSearchResults) return cus;
+              break;
+            case "customer":
+                const hasSearchResults2:boolean = cus?.customerId?.fullname.toLowerCase().includes(searchQuery)
+                if(hasSearchResults2) return cus;  
+                break;
+            default:
+                return cus;
+            }
         }
      )
 
@@ -88,8 +98,23 @@ function Wallets(){
                             </svg>
                         </div>
                 </div>
+                <div className="relative">
+                    <select
+                        onChange = {(e:ChangeEvent<HTMLSelectElement>)=>setCategory(e.target.value)}
+                        value = {category}
+                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                        <option value="merchant">merchants</option>
+                        <option value="customer">customers</option>
+                    </select>
+                    <div
+                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                    </div>
+                </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search customer name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
@@ -106,6 +131,10 @@ function Wallets(){
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Type
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Name
                             </th>
                             <th
@@ -115,10 +144,6 @@ function Wallets(){
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Actual Balance
-                            </th>
-                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Date Created
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
