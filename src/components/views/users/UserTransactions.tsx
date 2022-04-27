@@ -91,7 +91,7 @@ const headers = [
             }catch(err:any){}
         }
         response();
-    },[searchQuery]) 
+    },[]) 
 
 const filterResults = transactions.filter((tr)=>{
     switch(transactionCategory){
@@ -106,7 +106,6 @@ const filterResults = transactions.filter((tr)=>{
     default:
         return tr;
     }
-   
 })
 
 const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{

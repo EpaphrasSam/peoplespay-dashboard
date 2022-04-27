@@ -167,7 +167,7 @@ export default function Users() {
             <div className='flex flex-wrap'>
                 <div className="w-full mb-2 px-4">  
                     <div className="relative pb-10 p-2 w-full mb-12 px-4">
-                    <div className='relative md:pt-28 pb-10 p-2'>
+                    <div className='relative md:pt-4 pb-10 p-2'>
                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0">
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between">

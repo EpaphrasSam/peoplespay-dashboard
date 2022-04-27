@@ -6,7 +6,6 @@ import ReportService from '../../../services/reports.service'
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 
-
 function Wallets(){
    
     const dispatch = useDispatch()
@@ -16,19 +15,10 @@ function Wallets(){
     const [searchQuery, setSearchQuery] = useState('')
     const [isLoading, setIsLoading] = useState(loading)
     const [currentIndex, setCurrentIndex] = useState(1)
-    const [rowsPerPage] = useState(10)
-
+    const [rowsPerPage,setRowsPerPage] = useState(10)
+    
 
     useEffect(()=>{ 
-        
-        // const response =  ReportService.getWallets().then(res=> res.data).catch(err=> {throw alert(err)})
-        // //response.then(res=> console.log(res))
-        // console.log(response)
-        // response.then(data=> {
-        //         let walletAccounts= data.map((w:any) => w)
-        //          dispatch(setWalletAccounts(walletAccounts))
-        //          setIsLoading(loading)
-        // })
         const loadWallets = async()=>{
              try{
                 const res =  await ReportService.getWallets();
@@ -46,22 +36,31 @@ function Wallets(){
         }
         loadWallets();
      },
-     [loading,dispatch])
+     [loading])
 
      const {wallets} = useSelector(reportSelector)
      
-     
+     const filterResults = wallets.filter((cus)=>{
+          const hasSearchResults:boolean = cus?.customerId?.fullname.toLowerCase().includes(searchQuery)
+          if(hasSearchResults) return cus;
+        }
+     )
 
+     const results:any[] = filterResults.length === 0 ? wallets : filterResults
+     
      //Get Current rows
     const indexOfLastRow:number = currentIndex * rowsPerPage;
     const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-    const currentRows = wallets.slice(indexOfFirstRow,indexOfLastRow)
+    const currentRows = results.slice(indexOfFirstRow,indexOfLastRow)
     
     //buttonactions
    const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
    const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
-    
+   const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
+    setRowsPerPage(parseInt(e.target.value))
+}
+
     return(
         <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
         <div>
@@ -72,12 +71,16 @@ function Wallets(){
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
-                <select
-                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>20</option>
-                        </select>
+                  <select
+                        onChange = {pageRowsHandler}
+                        value={rowsPerPage}
+                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option>5</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>30</option>
+                        <option>40</option>
+                    </select>  
                         <div
                             className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -85,22 +88,8 @@ function Wallets(){
                             </svg>
                         </div>
                 </div>
-                <div className="relative">
-                    <select
-                        className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>All</option>
-                        <option>Active</option>
-                        <option>Inactive</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by merchant name ...'/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search customer name ...'/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
@@ -114,10 +103,6 @@ function Wallets(){
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Customer ID
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Type
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">

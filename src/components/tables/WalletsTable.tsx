@@ -12,24 +12,19 @@ const WalletsTable = ({wallets}:{wallets:AppProps}): JSX.Element=>(
         <tr>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
             <div className="flex items-center">
-                <div className="ml-3">
-                    <p className="text-gray-900 whitespace-no-wrap">
+                <div>
+                    <p className="text-gray-900 whitespace-no-wrap text-left">
                         {t?.walletId}
                     </p>
                 </div>
             </div>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
-            <p className="text-gray-900 whitespace-no-wrap">{t.merchantId?._id}</p>
+            <p className="text-gray-900 whitespace-no-wrap">{t.customerId?._id}</p>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
-            <p className="text-gray-900 whitespace-no-wrap">
-                {t.type}
-            </p>
-        </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
-            <p className="text-gray-900 whitespace-no-wrap">
-                {t.merchantId?.merchant_tradeName}
+            <p className="text-gray-900 whitespace-no-wrap uppercase">
+                {t.customerId?.fullname}
             </p>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
