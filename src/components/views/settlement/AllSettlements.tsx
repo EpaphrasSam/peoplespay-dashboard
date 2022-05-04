@@ -30,7 +30,7 @@ function AllSettlements(){
     
     useEffect(()=>{
         response();
-    },[])
+    },[searchQuery])
 
     const response = async()=> {
         try{ 

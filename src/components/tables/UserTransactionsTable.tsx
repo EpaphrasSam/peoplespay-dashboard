@@ -54,6 +54,11 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                <p className="text-gray-900 whitespace-no-wrap">
+                    GHS{t.elevyCharges}
+                </p>
+            </td>
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             {
                     t.debit_status === 'paid' ? 
                     (

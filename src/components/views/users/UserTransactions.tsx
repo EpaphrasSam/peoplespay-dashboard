@@ -103,6 +103,10 @@ const filterResults = transactions.filter((tr)=>{
         const hasSearchResults2:boolean = tr?.customerPhone?.toLowerCase().includes(searchQuery)
         if(hasSearchResults2) return tr;  
         break;
+    case "refcode":
+            const hasSearchResults3:boolean = tr?.reference?.toLowerCase().includes(searchQuery)
+            if(hasSearchResults3) return tr;  
+            break;
     default:
         return tr;
     }
@@ -331,9 +335,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                         onChange = {transactionCategoryHandler}
                         value = {transactionCategory}
                         className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option value="none" selected disabled hidden>search column</option>
+                        <option value="none" selected >search column</option>
                         <option value="phone">customer phone</option>
                         <option value="name">customer name</option>
+                        <option value="refcode">reference code</option>
                     </select>
                     <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -382,6 +387,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 charge
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                E-levy
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">

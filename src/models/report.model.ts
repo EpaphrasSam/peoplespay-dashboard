@@ -31,6 +31,7 @@ export class ReportModel {
     bill_transaction:any;
     ecard_transaction:any;
     reversal_status : string;
+    elevyCharges: string;
 
 
     constructor(report:any){
@@ -64,6 +65,7 @@ export class ReportModel {
         this.description = report.description;
         this.payment_account_type=report.payment_account_type;
         this.reversal_status = report.reversal_status;
+        this.elevyCharges = report.elevyCharges;
     };
 
     getStatus(status:string){
