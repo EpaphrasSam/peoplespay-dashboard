@@ -10,7 +10,7 @@ import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-
+import Loader from './Loader';
 
 
 const swal = require('sweetalert2');
@@ -33,6 +33,7 @@ function UserTransactions(){
 
 const headers = [
     { label: "TRANSACTION ID", key: "_id" },
+    { label: "NARRATION", key: "description" },
     { label: "CUSTOMER REFERENCE", key: "reference" },
     { label: "TRANSACTION DATE", key: "createdAt" },
     { label: "TRANSACTION TIME", key: "time" },
@@ -43,6 +44,7 @@ const headers = [
     { label: "PAYMENT ACCOUNT ISSUER", key: "paymentIssuer" },
     { label: "AMOUNT", key: "actualAmount" },
     { label: "CHARGES", key: "charges" },
+    { label: "E-LEVY CHARGES", key: "elevyCharges" },
     { label: "TOTAL AMOUNT", key: "amount" },
     { label: "RECIPIENT NAME", key: "recipientName" },
     { label: "RECIPIENT NUMBER", key: "recipientNumber"},
@@ -55,6 +57,7 @@ const headers = [
     const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
+    const [loading, setLoading]=useState(false)
     const [amount, setAmount] = useState<string>('0');
     const [paidCharges, setPaidCharges] = useState<string>('0');
     const [failedAmount, setFailedAmount] = useState<string>('0');
@@ -132,6 +135,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
   const clickDateFilter = async() => {
     try{
+        setLoading(true)
         const res = await ReportService.dateFilter(startDate,endDate)
         const resReport = await ReportService.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
@@ -144,9 +148,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
        setPaidCharges(resReport?.data?.paid[0].charges)
        setFailedAmount(resReport?.data?.failed[0].totalAmount)
        setTotalTransactionCount(transactions.length)
-
+       setLoading(false)
 
     }catch(err:any){
+        setLoading(false)
         alert(err.message)
     }
   }
@@ -259,7 +264,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 </div>
                 <div>
                     <span className='bg-blue-300 rounded-xl px-2'>charges</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl font-semibold leading-tight text-red-800 pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
             </div>
             </motion.div>
@@ -268,10 +273,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         <div className="float-right space-x-2 mr-12">
             <CSVLink 
                 headers = {headers}
-                data = {transactions}
+                data = {results}
                 filename={'report.csv'}
                 className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
-                    Download CSV
+                    {loading ? 'preparing...' : 'Download CSV'}
             </CSVLink>
             <button 
                     className="outline outline-2  outline-offset-2  py-2 px-1 bg-blue-500 text-white font-semibold rounded uppercase shadow hover:shadow hover:bg-blue-500 focus:outline-none ease-linear transition-all duration-150"
@@ -303,7 +308,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
        {/**filter btn */}
        <button 
             onClick={()=>clickDateFilter()}
-            className='rounded-md bg-red-800 text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
+            className={`rounded-md ${loading?'bg-white':'bg-red-800'} text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow ease-linear transition-all duration-150`}>{loading? <Loader/> : 'Filter'}</button>
      </div>
      {/**end date */}
 

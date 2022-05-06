@@ -1,6 +1,3 @@
-
-
-
 const ghippsMsgs:any= {
   '000' : 'Approved',
   '001' : 'Approved with ID',
@@ -82,7 +79,6 @@ const ghippsMsgs:any= {
 '994' : 'Transaction processing error',
 '990': 'Transaction status unknown'
 }
-
    
 export { 
     ghippsMsgs

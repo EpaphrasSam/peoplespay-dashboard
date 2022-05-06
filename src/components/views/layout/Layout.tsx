@@ -41,7 +41,7 @@ export default function Admin() {
                     <Navbar />
 
                 {/* Header */}
-                <div className="px-4 md:px-10 mx-auto w-full -m-24 mt-2">
+                <div className="px-4 md:px-10 mx-auto w-full -m-24 mt-12">
                     
                     <Outlet/>
 

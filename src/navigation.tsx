@@ -5,6 +5,7 @@ import Layout from './components/views/layout/Layout'
 import PageLoading from './components/views/layout/PageLoading'
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
+
 const Dashboard = lazy(()=>import('./components/views/Dashboard'))
 const Login = lazy(()=> import('./components/views/auth/Login'))
 const UserTransactions = lazy(()=>import('./components/views/users/UserTransactions'))
@@ -23,7 +24,8 @@ const BroadCastMessage = lazy(()=>import('./components/views/broadcast/Broadcast
 const Settlement = lazy(()=>import('./components/views/settlement/Settlement'))
 const AllSettlements = lazy(()=>import('./components/views/settlement/AllSettlements'))
 const SettlementApprovals = lazy(()=>import('./components/views/settlement/Approvals'))
-
+const ElevyTransactions = lazy(()=>import('./components/views/elevy/Transactions'))
+const ElevyTransactionsDetails = lazy(()=>import('./components/views/elevy/TransactionDetails'))
 // create a component
 const Navigation=()=>{
     return (
@@ -71,7 +73,12 @@ const Navigation=()=>{
                                 {/**Settlement */}
                                 <Route path="merchant-settlement/new"  element={<Settlement/>}/> 
                                 <Route path="merchant-settlement/all"  element={<AllSettlements/>}/>
-                                <Route path="merchant-settlement/approvals"  element={<SettlementApprovals/>}/> 
+                                <Route path="merchant-settlement/approvals"  element={<SettlementApprovals/>}/>
+
+                                {/**Settlement */} 
+                                <Route path="e-levy"  element={<ElevyTransactions/>}/>
+                                <Route path="elevytransactions"  element={<ElevyTransactionsDetails/>}/>
+                                
                             </Route>
                         </Routes>
                        </AnimatePresence>

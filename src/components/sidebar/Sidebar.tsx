@@ -38,6 +38,13 @@ const routes:Route[]=[
         ]
     },
     {
+        path:'e-levy',
+        title:'E-Levy',
+        icon:'fas fa-money-bill mr-1',
+        hasChild : false,
+        children:[]
+    },
+    {
         path:'merchant-settlement/new',
         title:'Settlement',
         icon:'fas fa-hand-holding-usd mr-1',
@@ -145,7 +152,7 @@ export default function Sidebar() {
 
     return (
         <>
-            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-md bg-white flex flex-wrap items-center justify-between relative md:w-56 z-10 py-4 px-6 md:border-1">
+            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-lg bg-white flex flex-wrap items-center justify-between relative md:w-56 z-10 py-4 px-6 border-none">
                 <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     {/* Toggler */}
                     <button

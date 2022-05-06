@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import loader from './loadchart.gif';
 
-const chartLoader = () => (
+
+
+const Loader = () => (
   <Fragment>
     <img
       src={loader}
@@ -16,4 +18,4 @@ const chartLoader = () => (
   </Fragment>
 );
 
-export default chartLoader;
+export default Loader;

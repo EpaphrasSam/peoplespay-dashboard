@@ -62,7 +62,7 @@ const SettlementsTable = ({data}:AppProps):JSX.Element => (
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {s.amount}
+                    GHS{Number.parseFloat(s.amount).toFixed(2)}
                 </p>
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">

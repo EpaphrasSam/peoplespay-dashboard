@@ -5,6 +5,7 @@ import Users from './users.state';
 import Merchants from './merchant.state'
 import Transactions from './transactions.state'
 import Accounts from './account.state'
+import Elevy from './elevy.state'
 
 const state =configureStore(
     {
@@ -14,7 +15,8 @@ const state =configureStore(
             users : Users,
             merchants : Merchants,
             transactions : Transactions,
-            accounts : Accounts
+            accounts : Accounts,
+            elevy : Elevy
         },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
