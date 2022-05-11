@@ -52,7 +52,7 @@ export class ReportModel {
         this.transaction_type=report.transaction_type;
         this.actualAmount=`GHS${report.actualAmount}`;
         this.charges=`GHS${report.charges}`;
-        this.amount=`GHS${report.amount}`;
+        this.amount=`GHS${Number.parseFloat(report.amount).toFixed(2)}`;
         this.paymentNumber=report.payment_account_number;
         this.paymentName=report.payment_account_name;
         this.recipientName=report.recipient_account_name;

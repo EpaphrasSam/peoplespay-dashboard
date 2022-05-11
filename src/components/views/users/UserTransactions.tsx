@@ -214,12 +214,13 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                              transactions : reverseIDArray.current,
                              otp : input.value
                              }
-                console.log(input.value)
+                //console.log(input.value)
                 reverseSelectedTransactions(data)
                }
-                
-                })
+               
+            })
    }catch(err){
+    
     swal(
         {
             html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
@@ -237,7 +238,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     }
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative md:pt-20 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
          <motion.div 
           initial="initial"
