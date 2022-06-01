@@ -51,7 +51,7 @@ export class ReportModel {
         this.customerPhone=report.customerId?.phone;
         this.transaction_type=report.transaction_type;
         this.actualAmount=`GHS${report.actualAmount}`;
-        this.charges=`GHS${report.charges}`;
+        this.charges=`GHS${Number.parseFloat(report.charges).toFixed(2)}`;
         this.amount=`GHS${Number.parseFloat(report.amount).toFixed(2)}`;
         this.paymentNumber=report.payment_account_number;
         this.paymentName=report.payment_account_name;

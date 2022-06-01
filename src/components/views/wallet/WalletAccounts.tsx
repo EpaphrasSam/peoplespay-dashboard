@@ -43,11 +43,11 @@ function Wallets(){
      const filterResults = wallets.filter((cus)=>{
         switch(category){
             case "merchant":
-              const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName.toLowerCase().includes(searchQuery)
+              const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName?.toLowerCase().includes(searchQuery?.toLowerCase())
               if(hasSearchResults) return cus;
               break;
             case "customer":
-                const hasSearchResults2:boolean = cus?.customerId?.fullname.toLowerCase().includes(searchQuery)
+                const hasSearchResults2:boolean = cus?.customerId?.fullname?.toLowerCase().includes(searchQuery?.toLowerCase())
                 if(hasSearchResults2) return cus;  
                 break;
             default:

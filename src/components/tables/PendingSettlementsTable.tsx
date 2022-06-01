@@ -1,11 +1,12 @@
 import moment from "moment";
 
 interface AppProps{
-    data : any[],
-    approve: Function
+    data : any[];
+    approve: Function;
+    loading:boolean;
 }
 
-const PendingSettlementsTable = ({data,approve}:AppProps):JSX.Element => (
+const PendingSettlementsTable = ({data,approve,loading}:AppProps):JSX.Element => (
     <>
     {
     Array.isArray(data) && data.map(s=>(
@@ -78,7 +79,7 @@ const PendingSettlementsTable = ({data,approve}:AppProps):JSX.Element => (
                 onClick = {()=>approve(s._id)}
                 >
                     <i className="fas fa-thumbs-up mr-1 "/>
-                    APPROVE
+                     {loading? 'approving...':'approve'}
                 </button>
             </td>
 </tr>

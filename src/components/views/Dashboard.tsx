@@ -110,7 +110,7 @@ function Dashboard() {
         totalAmountFailed: resReport?.data?.failed[0]?.totalAmount,
         totalAmountSuccess: 0,
         merchantsNumb:
-          merchantResponse.data && merchantResponse?.data[0]?.count,
+        merchantResponse.data && merchantResponse?.data[0]?.count,
         paidSliced: _paidSliced,
         failedSliced: _failedSliced,
         mtn: mtncount,

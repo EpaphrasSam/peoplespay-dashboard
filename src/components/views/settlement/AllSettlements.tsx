@@ -30,7 +30,7 @@ function AllSettlements(){
     
     useEffect(()=>{
         response();
-    },[searchQuery])
+    },[])
 
     const response = async()=> {
         try{ 
@@ -55,7 +55,7 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
 
  
 const filterResults = settlementHistory?.filter((r:any)=>{
-  const hasSearchResults:boolean = r?.accountName?.toLowerCase().includes(searchQuery)
+  const hasSearchResults:boolean = r?.accountName?.toLowerCase().includes(searchQuery.toLowerCase())
   if((hasSearchResults))return r;
 })
 

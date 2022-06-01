@@ -51,11 +51,11 @@ function Merchants(){
     const filterResults = merchants.filter((mr)=>{
         switch(merchantCategory){
         case "name":
-          const hasSearchResults:boolean = mr?.merchant_tradeName?.toLowerCase().includes(searchQuery)
+          const hasSearchResults:boolean = mr?.merchant_tradeName?.toLowerCase().includes(searchQuery.toLowerCase())
           if(hasSearchResults) return mr;
           break;
         case "category":
-            const hasSearchResults2:boolean = mr?.lineOfBusiness?.toLowerCase().includes(searchQuery)
+            const hasSearchResults2:boolean = mr?.lineOfBusiness?.toLowerCase().includes(searchQuery.toLowerCase())
             if(hasSearchResults2) return mr;  
             break;
         default:

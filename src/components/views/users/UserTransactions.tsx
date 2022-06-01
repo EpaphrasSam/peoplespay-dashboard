@@ -11,6 +11,7 @@ import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Loader from './Loader';
+import { reverse } from 'dns';
 
 
 const swal = require('sweetalert2');
@@ -70,7 +71,7 @@ const headers = [
 
 
     const reverseIDArray  = useRef(new Array());
-    
+    const [checked, setChecked]=useState(false)
 
     useEffect(()=>{
         const response = async()=> {
@@ -99,7 +100,7 @@ const headers = [
 const filterResults = transactions.filter((tr)=>{
     switch(transactionCategory){
     case "name":
-      const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery)
+      const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery.toLowerCase())
       if(hasSearchResults) return tr;
       break;
     case "phone":
@@ -230,11 +231,16 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
  }
 
  const addIdToReverseIDs = (id:any)=> {
-     const i = reverseIDArray.current.indexOf(id)
-     if(i > -1){
-       return  reverseIDArray.current.splice(i,1);
-     } 
-     reverseIDArray.current.push(id);
+     if(reverseIDArray.current.includes(id)){
+        reverseIDArray.current.splice(0,reverseIDArray.current.length);
+       return setChecked(false)
+     }
+     if(reverseIDArray.current.length>0){
+          alert('no')
+     }else{
+        reverseIDArray.current.push(id);
+        setChecked(true);
+     }
     }
 
     return(
@@ -421,7 +427,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                         //    isLoading ?
                         //    <Spinner/>
                         //    :
-                           <Transaction transactions={currentRows} addId={addIdToReverseIDs}/>
+                           <Transaction transactions={currentRows} addId={addIdToReverseIDs} reverseIds={reverseIDArray.current} checked={checked}/>
                        }
                     </tbody>
                 </table>

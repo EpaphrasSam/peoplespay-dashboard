@@ -3,10 +3,12 @@ const swal = require('@sweetalert/with-react');
 
 interface AppProps{
     transactions : any[],
-    addId : Function
+    addId : Function,
+    reverseIds:any[]
+    checked:boolean
 }
 
-const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
+const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProps):JSX.Element => (
     <>
     {
     transactions.length > 0 ? transactions.map(t=>(
@@ -152,8 +154,8 @@ const UserTransactionsTable = ({transactions, addId}:AppProps):JSX.Element => (
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <input 
                         className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:border-red-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" 
-                        type="checkbox" 
-                        value="" id="flexCheckDefault"
+                        type="checkbox"
+                        disabled={checked && reverseIds.includes(t._id)===false?true:false}
                         onClick={()=>addId(t._id)}
                 />
                 <i className="far fa-eye" onClick={()=>{

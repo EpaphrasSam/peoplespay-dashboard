@@ -134,7 +134,7 @@ export default function Users() {
                     text:response.message
                 }
             )
-            setFormData({
+          return  setFormData({
                 merchantId : '',
                 accountType : '',
                 startDate : '',

@@ -7,10 +7,11 @@ import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2'
+import { setLabels } from 'react-chartjs-2/dist/utils';
 
 function AllSettlements(){
     const dispatch = useDispatch()
-
+    const [loading, setLoading] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
@@ -27,17 +28,19 @@ function AllSettlements(){
             const res = await AccountsService.getPendingSettlements() 
             //console.log(res);
             if(!res.success){
-                alert(res.message)
+                setIsLoading(false)
+               return  alert(res.message)     
             }
             dispatch(setPendingSettlements(res.data))
             setIsLoading(false)
 
             //Update states
-        }catch(err:any){}
+        }catch(err:any){setIsLoading(false)}
     }
 
 const approve = (id:string) => {
    try{
+       setLoading(true)
     Swal.fire({  
         title: 'Confirm Approval',  
         showDenyButton: true,  
@@ -47,12 +50,15 @@ const approve = (id:string) => {
           if (result.isConfirmed) {   
             const res = await AccountsService.approve(id)
             if(!res.success){
-                return Swal.fire( res.message, '', 'success')  
+                setLoading(false)
+                return Swal.fire( res.message, '', 'error')  
             }else{
-                Swal.fire( res.message, '', 'info')
+                setLoading(false)
+              return Swal.fire( res.message, '', 'success')
             }   
-          } else if (result.isDenied) {    
-              Swal.fire('Settlement not approved', '', 'info')  
+          } else if (result.isDenied) {
+              setLoading(false)    
+             return Swal.fire('Settlement not approved', '', 'error')  
            }
       });
      }
@@ -201,7 +207,7 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                            isLoading ?
                            <Spinner/>
                            :
-                           <PendingSettlementsTable data={pendingSettlements} approve={approve}/>
+                           <PendingSettlementsTable data={pendingSettlements} approve={approve} loading={loading}/>
                        }
                     </tbody>
                 </table>
