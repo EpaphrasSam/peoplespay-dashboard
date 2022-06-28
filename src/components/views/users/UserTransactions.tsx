@@ -11,7 +11,7 @@ import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Loader from './Loader';
-import { reverse } from 'dns';
+
 
 
 const swal = require('sweetalert2');
@@ -107,10 +107,14 @@ const filterResults = transactions.filter((tr)=>{
         const hasSearchResults2:boolean = tr?.customerPhone?.toLowerCase().includes(searchQuery)
         if(hasSearchResults2) return tr;  
         break;
+    case "transId":
+         const hasSearchResults3:boolean = tr?._id?.toLowerCase().includes(searchQuery)
+         if(hasSearchResults3) return tr;  
+         break;
     case "refcode":
-            const hasSearchResults3:boolean = tr?.reference?.toLowerCase().includes(searchQuery)
-            if(hasSearchResults3) return tr;  
-            break;
+         const hasSearchResults4:boolean = tr?.reference?.toLowerCase().includes(searchQuery)
+         if(hasSearchResults4) return tr;  
+         break;
     default:
         return tr;
     }
@@ -350,6 +354,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                         <option value="none" selected >search column</option>
                         <option value="phone">customer phone</option>
                         <option value="name">customer name</option>
+                        <option value="transId">transactionId</option>
                         <option value="refcode">reference code</option>
                     </select>
                     <div

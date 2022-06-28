@@ -112,7 +112,7 @@ const routes:Route[]=[
         children:[]
     },
     {
-        path:'broadcast-messaage',
+        path:'broadcast-message',
         title:'Broadcast',
         icon:'fas fa-bullhorn mr-1',
         hasChild : false,
