@@ -12,7 +12,9 @@ export default function BroadCastMessage(){
   const sendMessage = async() => {
       try{
         setLoading(true)
-        const response = await MessageService.sendMessage(message);
+        const response = await MessageService.sendMessage({
+          "message": message
+        });
 
         if(response.success){
           setLoading(false)
@@ -21,10 +23,18 @@ export default function BroadCastMessage(){
                 html : "<div>Broadcast message has been successfully sent to users</div>"
             }
         )
+        }else{
+          setLoading(false)
+          return swal.fire(
+            {
+                html : "<div>Couldn't send message</div>"
+            }
+        )
         }
 
       }catch(err:any){
         const error = err.message;
+        setLoading(false)
         swal.fire(
           {
               html : "<div>" + error + "</div>"
