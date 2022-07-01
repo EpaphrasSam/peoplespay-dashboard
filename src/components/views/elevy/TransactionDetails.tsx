@@ -1,7 +1,7 @@
 import {useEffect, useState, ChangeEvent} from 'react'
 import{motion} from 'framer-motion'
 import ElevyTransactionsDetailsTable from '../../tables/ElevyTransactionsDetailsTable'
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {elevySelector} from '../../../state/elevy.state' 
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';

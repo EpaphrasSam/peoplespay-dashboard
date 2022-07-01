@@ -7,7 +7,7 @@ import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2'
-import { setLabels } from 'react-chartjs-2/dist/utils';
+
 
 function AllSettlements(){
     const dispatch = useDispatch()

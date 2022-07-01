@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import AuthService from "../../../services/auth.service";
-import { authSelector, setAdmins } from "../../../state/auth.state";
 import Utils from "../../../utils/AuthToken";
 
 function Login() {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   
-  const { admins } = useSelector(authSelector);
+  //const { admins } = useSelector(authSelector);
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -15,19 +13,19 @@ function Login() {
     password: "",
   });
 
-  useEffect(() => {
-    getAdmins();
-  }, []);
+  // useEffect(() => {
+    //getadmins
+  // }, []);
 
-  const getAdmins = async () => {
-    try {
-      const response = await AuthService.getAdminAccess();
-      if (!response.success) {
-        alert("loading admin failed");
-      }
-      dispatch(setAdmins(response.data));
-    } catch (err) {}
-  };
+  // const getAdmins = async () => {
+  //   try {
+  //     const response = await AuthService.getAdminAccess();
+  //     if (!response.success) {
+  //       alert("loading admin failed");
+  //     }
+  //     dispatch(setAdmins(response.data));
+  //   } catch (err) {}
+  // };
 
   const login = async () => {
     try {
@@ -44,7 +42,7 @@ function Login() {
         throw Error(response.message);
       }
 
-      console.log(response.data);
+      //console.log(response.data);
       setLoading(false);
       Utils.setAuthToken(response.token);
       sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
@@ -76,7 +74,7 @@ function Login() {
                 Admin Login
               </h1>
               <div>
-                <div>
+                {/* <div>
                   <label className="block text-sm">Choose your Account</label>
                   <select
                     className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-600 placeholder:text-gray-200"
@@ -93,12 +91,24 @@ function Login() {
                       </option>
                     ))}
                   </select>
+                </div> */}
+                <div>
+                  <label className="block mt-4 text-sm">Email</label>
+                  <input
+                    className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue- placeholder:text-gray-200"
+                    placeholder="Enter email"
+                    type="email"
+                    name="email"
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label className="block mt-4 text-sm">Password</label>
                   <input
                     className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue- placeholder:text-gray-200"
-                    placeholder="enter password"
+                    placeholder="Enter password"
                     type="password"
                     name="password"
                     onChange={(e) =>

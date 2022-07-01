@@ -8,6 +8,7 @@ interface StateModel {
     categories : any[],
     selected : any
     docx : any[]
+    banks:any[]
 }
 
 const initialState:StateModel={
@@ -15,7 +16,8 @@ const initialState:StateModel={
     merchants:[],
     categories:[],
     selected :[],
-    docx :[]
+    docx :[],
+    banks:[]
 }
 
 
@@ -50,11 +52,17 @@ const state = createSlice(
                     ...state,
                     docx : action.payload
                 }
+            },
+            setBanks:(state,action)=>{
+                return{
+                    ...state,
+                    banks : action.payload
+                }
             }
         }
     }
 )
 
 export const merchantsSelector=(state:RootState)=>state.merchants;
-export const {setMerchants , setCategories, setSelected, setDocuments}=state.actions;
+export const {setMerchants , setCategories, setSelected, setDocuments,setBanks}=state.actions;
 export default state.reducer;

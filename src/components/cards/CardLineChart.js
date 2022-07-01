@@ -129,7 +129,7 @@ export default function CardLineChart() {
       }  
       
     }) 
-  },[]);
+  },[dates]);
 
   const loadGraph = async () => {
     try {

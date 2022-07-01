@@ -1,5 +1,5 @@
 import moment from "moment";
-const swal = require('sweetalert')
+//const swal = require('sweetalert')
 interface AppProps{
     data : any[],
 }
