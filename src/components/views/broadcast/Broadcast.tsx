@@ -7,7 +7,7 @@ export default function BroadCastMessage(){
 
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('') 
+  const [message, setMessage] = useState('')
   
   const sendMessage = async() => {
       try{

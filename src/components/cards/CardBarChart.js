@@ -3,7 +3,7 @@ import {Chart} from "chart.js";
 import ReportService from "../../services/reports.service";
 import moment from "moment";
 import ChartLoader from './LoadChart'
-const Moment = require("moment");
+//const Moment = require("moment");
 
 export default function CardBarChart() {
 
@@ -11,11 +11,11 @@ export default function CardBarChart() {
   const [successData] = useState([]);
   const [failureData] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [period, setPeriod] = useState("MMM/DD")
+  const [period, /**setPeriod**/] = useState("MMM/DD")
 
-  const handleChange=(e)=>{
-    setPeriod( e.target.value);
- }
+//   const handleChange=(e)=>{
+//     setPeriod( e.target.value);
+//  }
   
   useEffect(() => {
 
@@ -112,7 +112,7 @@ export default function CardBarChart() {
        }  
     })
     setLoading(false);
-  }, [period]);
+  }, [dates,failureData,successData]);
 
   const loadGraph = async () => {
     try {

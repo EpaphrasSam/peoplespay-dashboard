@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { merchantsSelector, setDocuments } from "../../state/merchant.state";
+import { merchantsSelector, setDocuments,setBanks } from "../../state/merchant.state";
 import merchantsService from "../../services/merchant.service";
 //const QRCode = require("qrcode.react");
 
@@ -75,15 +75,30 @@ const MerchantDetails: React.FC = () => {
     }
   };
 
+  const getBankAccounts=async()=>{
+    try{
+      if (selected._id !== undefined) {
+        const response = await merchantsService.getMerchantBank(selected._id)
+        if (!response.success) {
+          throw alert(response.message);
+        }
+        //console.log(response.data)
+        const data = response.data.map((t: any) => t);
+        dispatch(setBanks(data));
+      }
+    }catch(err){}
+  }
+
   React.useEffect(() => {
     try {
-      getDocuments();
+      getDocuments()
+      getBankAccounts()
     } catch (err: any) {
       alert(err.message);
     }
   }, [selected]);
 
-  const { docx } = useSelector(merchantsSelector);
+  const { docx,banks } = useSelector(merchantsSelector);
 
   return (
     <>
@@ -362,22 +377,25 @@ const MerchantDetails: React.FC = () => {
                         </tr>
                     </thead>
                 <tbody>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Name</td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {selected?.bank_account_name}
-                    </td>
+                  {banks.map(b=>
+                  (
+                    <>
+                      <tr>
+                      <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Name</td>
+                      <td className="border border-slate-300 px-6 py-3">
+                          {b?.account_name}
+                      </td>
                     </tr>
                     <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Issuer</td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {selected?.bank_account_issuer}
-                    </td>
+                      <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Issuer</td>
+                      <td className="border border-slate-300 px-6 py-3">
+                          {b?.account_issuer_name}
+                      </td>
                     </tr>
                     <tr>
                     <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Number</td>
                     <td className="border border-slate-300 px-6 py-3">
-                        {selected?.bank_account_number}
+                        {b?.account_number}
                     </td>
                     </tr>
                     <tr>
@@ -385,7 +403,7 @@ const MerchantDetails: React.FC = () => {
                         Momo Account Name
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                        {selected?.momo_account_name}
+                        {b?.momo_account_name}
                     </td>
                     </tr>
                     <tr>
@@ -393,7 +411,7 @@ const MerchantDetails: React.FC = () => {
                         Momo Account Issuer
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                        {selected?.momo_account_issuer}
+                        {b?.momo_account_issuer}
                     </td>
                     </tr>
                     <tr>
@@ -401,9 +419,12 @@ const MerchantDetails: React.FC = () => {
                         Momo Account Number
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                        {selected?.momo_account_number}
+                        {b?.momo_account_number}
                     </td>
                     </tr>
+                    </>
+                  ))}
+                    
               </tbody>
             </table>
               ) :

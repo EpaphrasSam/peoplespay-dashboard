@@ -238,7 +238,16 @@ const blockMerchant = (body:any) =>fetch(
     }
 ).then(res=>res.json())
 
-
+const getMerchantBank = (id:string)=>fetch(
+    `${BASE_URL}/beneficiaries/get/customer/${id}`,
+    {
+        method:'GET',
+        headers : {
+            'Content-type' : 'Application/json',
+           'Authorization' : Utils.AuthToken()
+    },
+    }
+).then(res=>res.json())
 
 const merchantsService =  {
     getMerchants,
@@ -252,6 +261,7 @@ const merchantsService =  {
     createMerchant,
     getDocuments,
     approveMerchant,
-    blockMerchant
+    blockMerchant,
+    getMerchantBank
 }
 export default merchantsService;

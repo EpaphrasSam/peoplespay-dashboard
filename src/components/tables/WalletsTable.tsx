@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from "moment"
-import { type } from 'os';
 
 
 type AppProps = any[]
