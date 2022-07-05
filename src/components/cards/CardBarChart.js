@@ -122,7 +122,7 @@ export default function CardBarChart() {
       const m = _m < 10 ? __m : _m;
 
       console.log(y,m)
-      const res = await ReportService.dateFilter(`${y}-06-01`, new Date().toISOString());;
+      const res = await ReportService.dateFilter(`${y}-07-01`, new Date().toISOString());;
        
       const trs = res.data;
       // const trs = trs?.sort(

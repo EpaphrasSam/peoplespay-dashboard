@@ -1,7 +1,6 @@
 import Utils from "../utils/AuthToken";
 import { BASE_URL } from "../utils/url";
 
-
 const getMerchants=()=>fetch(
     `${BASE_URL}/merchants/get`,
     {
