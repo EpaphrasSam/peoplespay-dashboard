@@ -59,7 +59,7 @@ export class ReportModel {
         this.recipientNumber=report.recipient_account_number;
         this.recipientIssuer = report.recipient_account_issuer_name;
         this.reference=report.reference;
-        this.paymentIssuer = report.payment_account_issuer_name ? report.payment_account_issuer_name : "WALLET" 
+        this.paymentIssuer = report.payment_account_issuer ? report.payment_account_issuer : "WALLET" 
         this.status = report.status;
         this.getStatus(report.status);
         this.description = report.description;
