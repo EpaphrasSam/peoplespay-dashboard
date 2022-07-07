@@ -43,7 +43,25 @@ const WalletsTable = ({wallets}:{wallets:AppProps}): JSX.Element=>(
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                <span className="relative">{`₵${Number.parseFloat(t?.lastBalance).toFixed(2)}`}</span>
+            </span>
+        </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <span
+                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                <span aria-hidden
+                    className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
                 <span className="relative">{`₵${Number.parseFloat(t?.balance).toFixed(2)}`}</span>
+            </span>
+        </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <span
+                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                <span aria-hidden
+                    className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                <span className="relative">
+                    {`₵${Number(t?.totalBalance-t?.balance).toFixed(2)}`}
+                </span>
             </span>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
