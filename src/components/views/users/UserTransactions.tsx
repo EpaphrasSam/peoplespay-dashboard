@@ -43,6 +43,7 @@ const headers = [
     { label: "CUSTOMER PHONE NUMBER", key: "customerPhone" },
     { label: "PAYMENT ACCOUNT NUMBER", key: "paymentNumber" },
     { label: "PAYMENT ACCOUNT ISSUER", key: "paymentIssuer" },
+    { label: "PAYMENT ACCOUNT TYPE", key: "payment_account_type" },
     { label: "AMOUNT", key: "actualAmount" },
     { label: "CHARGES", key: "charges" },
     { label: "E-LEVY CHARGES", key: "elevyCharges" },
