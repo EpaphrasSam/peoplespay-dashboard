@@ -1,6 +1,6 @@
 import React,{useEffect, useState, ChangeEvent} from 'react'
 import WalletAccounts from '../../tables/WalletsTable';
-import {reportSelector, setWalletAccounts} from '../../../state/report.state'
+import {reportSelector, setWalletAccounts, setWalletTransactions,setCustomerName} from '../../../state/report.state'
 import {useDispatch, useSelector} from 'react-redux';
 import ReportService from '../../../services/reports.service'
 import Spinner from '../layout/Spinner';
@@ -27,7 +27,6 @@ function Wallets(){
                     throw alert(res.message);
                 }
              const wallets = res.data.map((w:any)=>w);
-             console.log(wallets);
              dispatch(setWalletAccounts(wallets))
              setIsLoading(loading);
              }catch(err:any){
@@ -39,6 +38,17 @@ function Wallets(){
      [loading])
 
      const {wallets} = useSelector(reportSelector)
+
+     const goTo=async(id:string,name:any)=>{
+        try{
+            const res=await ReportService.getWalletTransactions(id)
+            if(res.success){
+                dispatch(setWalletTransactions(res.data))
+                dispatch(setCustomerName(name))
+                window.location.href="/#/wallettransactions"
+            }
+        }catch(err){}
+     }
      
      const filterResults = wallets.filter((cus)=>{
         switch(category){
@@ -72,9 +82,9 @@ function Wallets(){
 }
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
         <div>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Wallets</h2>
+            <h2 className="text-2xl leading-tight">Wallets</h2>
         </div>
 
 {/**filters */}
@@ -117,49 +127,53 @@ function Wallets(){
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
+            <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="min-w-full leading-normal">
                     <thead>
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Wallet ID
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Customer ID
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Type
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Total Balance
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Last Balance
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Actual Balance
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Charge
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Date Updated
                             </th>   
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Active
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
+                                Status
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
+                                Action
                             </th>                    
                         </tr>
                     </thead>
@@ -169,15 +183,15 @@ function Wallets(){
                             ? 
                            <Spinner/>
                            :
-                           <WalletAccounts wallets={currentRows}/>
+                           <WalletAccounts wallets={currentRows} goTo={goTo}/>
                        }       
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                    <span className="text-xs xs:text-sm text-gray-900">
+                <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between          ">
+                    <span className="text-sm sm:text-sm text-gray-900">
                         Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{wallets.length}</span>{' '}Entries
                     </span>
-                    <div className="inline-flex mt-2 xs:mt-0">
+                    <div className="inline-flex mt-2 sm:mt-0">
                         {
                             currentIndex === 1 ? 
                             (

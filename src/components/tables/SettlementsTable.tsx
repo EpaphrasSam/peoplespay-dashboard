@@ -8,7 +8,7 @@ const SettlementsTable = ({data}:AppProps):JSX.Element => (
     <>
     {
     Array.isArray(data) && data.map(s=>(
-        <tr  className='cursor-pointer hover:bg-green-100 click:bg-green-200'>
+        <tr  className='cursor-pointer'>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {moment(s.createdAt).isSame(moment(), "day") ? "today" : moment(s.createdAt).isSame(moment().subtract(1, 'day'), "day")? "yesterday":moment(s.createdAt).format('DD/MM/YYYY')}
@@ -65,24 +65,24 @@ const SettlementsTable = ({data}:AppProps):JSX.Element => (
                     GHS{Number.parseFloat(s.amount).toFixed(2)}
                 </p>
             </td>
-            <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="text-left px-5 py-2 border-b border-gray-200 bg-white text-sm">
             {
                     s.status === 'PAID' ? 
                     (
                     <span
-                        className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                        className="relative inline-block px-4 py-1 font-semibold text-white leading-tight">
                         <span aria-hidden
-                            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                        <span className="relative">{s.status}</span>
+                            className="absolute inset-0 bg-sgreen rounded-md tracking-widest leading-7"></span>
+                        <span className="relative">Paid</span>
                     </span>
                     )
                     : 
                     (
                         <span
-                    className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                    className="relative inline-block px-4 font-semibold text-white tracking-widest leading-7">
                     <span aria-hidden
-                        className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                    <span className="relative">FAILED</span>
+                        className="absolute inset-0 bg-red-500 rounded-md"></span>
+                    <span className="relative">Failed</span>
                 </span>
                     )
                 }

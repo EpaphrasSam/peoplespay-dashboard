@@ -74,7 +74,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
  ]
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
             {/**page heading */}
          <motion.div 
             initial="initial"
@@ -82,7 +82,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             exit="exit"
             variants={group1Motion}>
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">Elevy Transactions</h2>
+              <h2 className="text-2xl leading-tight">Elevy Transactions</h2>
            </div>
 
         {/**download button */}

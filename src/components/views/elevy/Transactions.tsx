@@ -51,7 +51,6 @@ const {records} = useSelector(elevySelector)
 
 const goTo = (data:any) => {
    dispatch(setTransactions(data));
-   console.log(data);
    window.location.href="/#/elevytransactions"
 
 }
@@ -93,20 +92,8 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             exit="exit"
             variants={group1Motion}>
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">Elevy Records</h2>
-           </div>
-
-        {/**download button */}
-        <div className="float-right space-x-2 mr-12">
-            <CSVLink 
-                headers = {headers}
-                data = {records}
-                filename={'elevyrecords.csv'}
-                className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
-                    Download CSV
-            </CSVLink>
-        </div>
-        
+              <h2 className="text-2xl leading-tight font-segoe">Elevy Records</h2>
+           </div>        
        
         {/**date picker */}
         <div className="flex items-center">
@@ -122,9 +109,16 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             </div>
        </div>
 
-       {/**filter btn */}
-       <button 
-            className='rounded-md bg-red-800 text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
+       {/**csv btn */}
+       <div className="space-x-2">
+            <CSVLink 
+                headers = {headers}
+                data = {records}
+                filename={'elevyrecords.csv'}
+                className='py-3 px-2 bg-green-500 text-white rounded shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
+                    Download CSV
+            </CSVLink>
+        </div>
      </div>
      {/**end date */}
 
@@ -161,34 +155,42 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
           animate="animate"
           exit="exit"
           variants={group2Motion}>
-        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
+        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto font-segoe">
+            <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="overflow-x-scroll min-w-full leading-normal">
                     <thead>
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md  tracking-wider">
                                 Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
                                  Id
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                amount
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                 Number of Transactions
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Number of transactions
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                 Total Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                 View transactions
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                Taxable Amount
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                Accumulated Elevy
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                 Action
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='text-md'>
                        {
                            isLoading ?
                            <Spinner/>
@@ -197,21 +199,21 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                        }
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-                    <span className="text-xs xs:text-sm text-gray-900">
+                <div className="px-5 py-5 bg-white border-t flex flex-col  items-center justify-center">
+                    <div className="text-md md:text-sm text-gray-900">
                         Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < records.length ? (currentIndex * rowsPerPage): records.length}</span> of <span>{records.length}</span>{' '}settlements
-                    </span> 
-                    <div className="inline-flex mt-2 xs:mt-0">
+                    </div> 
+                    <div className="inline-flex mt-2 md:mt-0">
                         {
                             currentIndex === 1 ? 
                             (
-                             <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
+                             <button className="text-sm bg-gray-100 text-gray-800 py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
                              >
                             Prev
                         </button>
                             )
                             :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
+                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-l"
                                     onClick = {paginateBack}
                                 >
                                     Prev
@@ -220,7 +222,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                          {
                             currentIndex * rowsPerPage === records.length ? 
                             (
-                                <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
+                                <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
                                 onClick = {paginateFront}
                                 >
                                     Next
@@ -228,7 +230,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                             )
                             :
                             (
-                            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
+                            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
                             onClick = {paginateFront}
                             >
                                 Next

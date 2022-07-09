@@ -70,7 +70,7 @@ function Login() {
               <div className="flex justify-center">
                 <img className="h-20 mb-5" src="/assets/logo.png" alt="pic" />
               </div>
-              <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
+              <h1 className="mb-4 text-2xl text-center font-poppins">
                 Admin Login
               </h1>
               <div>
@@ -92,7 +92,7 @@ function Login() {
                     ))}
                   </select>
                 </div> */}
-                <div>
+                <div className="font-segoe">
                   <label className="block mt-4 text-sm">Email</label>
                   <input
                     className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue- placeholder:text-gray-200"
@@ -104,7 +104,7 @@ function Login() {
                     }
                   />
                 </div>
-                <div>
+                <div className="font-segoe">
                   <label className="block mt-4 text-sm">Password</label>
                   <input
                     className="w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue- placeholder:text-gray-200"
@@ -116,18 +116,18 @@ function Login() {
                     }
                   />
                 </div>
-                <p className="mt-4">
+                {/* <p className="mt-4">
                   <a
                     className="text-sm text-blue-600 hover:underline"
                     href="./forgot-password.html"
                   >
                     Forgot your password?
                   </a>
-                </p>
+                </p> */}
 
                 <button
                   onClick={login}
-                  className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-blue"
+                  className="block w-full px-4 py-2 mt-4 text-md leading-5 text-center text-white transition-colors duration-150 bg-pink border border-transparent rounded-lg active:bg-red-600 focus:outline-none focus:shadow-outline-blue font-segoe "
                   type="submit"
                 >
                   {loading ? <div>Loggin in...</div> : <div>Login</div>}

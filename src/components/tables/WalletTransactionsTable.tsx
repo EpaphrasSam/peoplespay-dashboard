@@ -1,14 +1,12 @@
+import { formatDate, formatTime } from "../../utils/Date";
 
 const swal = require('@sweetalert/with-react');
 
 interface AppProps{
     transactions : any[],
-    addId : Function,
-    reverseIds:any[]
-    checked:boolean
 }
 
-const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProps):JSX.Element => (
+const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
     <>
     {
     transactions.length > 0 ? transactions.map(t=>(
@@ -24,7 +22,7 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {t.createdAt}
+                    {formatDate(t?.createdAt)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -32,13 +30,8 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
                     className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                     <span aria-hidden
                         className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                    <span className="relative">{t.time}</span>
+                    <span className="relative">{formatTime(t?.time)}</span>
                 </span>
-            </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
-                <p className="text-gray-900 whitespace-no-wrap uppercase">
-                    {t.customerName}
-                </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap uppercase">
@@ -94,7 +87,7 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 {
-                    t.status === 'PAID' ? 
+                    t.status === 'paid' ? 
                     (
                     <span
                         className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
@@ -103,7 +96,7 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
                         <span className="relative">Paid</span>
                     </span>
                     )
-                    :  t.status === 'FAILED' ? 
+                    :  t.status === 'failed' ?
                     (
                         <span
                     className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
@@ -152,12 +145,6 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <input 
-                        className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:border-red-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" 
-                        type="checkbox"
-                        disabled={checked && reverseIds?.includes(t._id)===false?true:false}
-                        onClick={()=>addId(t._id)}
-                />
                 <i className="far fa-eye" onClick={()=>{
                     swal(
                         <div>
@@ -229,10 +216,10 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
                                     <h3 className='text-red-800'>Payment Issuer</h3>
                                         <h5>{t?.paymentIssuer}</h5>
                                 </div>
-                                <div className='mb-2'>
+                                {/* <div className='mb-2'>
                                     <h3 className='text-red-800'>Reason</h3>
-                                        <h5>{t.getReason() || ''}</h5>
-                                </div>
+                                        <h5>{t?.getReason() || ''}</h5>
+                                </div> */}
                                 </div> 
                             </div>
                                 )
@@ -244,4 +231,4 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
     }
     </>
 )
-export default UserTransactionsTable;
+export default WalletTransactionsTable;

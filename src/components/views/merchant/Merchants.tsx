@@ -98,9 +98,9 @@ const handleSelectedId:Function = async (id:string) => {
 }
 
     return (
-        <div className="relative md:pt-28 pb-10  w-full mb-12">
+        <div className="relative md:pt-10 pb-10  w-full mb-12 font-segoe">
           <div className='mb-20'>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Merchants</h2>
+            <h2 className="text-2xl leading-tight">Merchants</h2>
         </div>
         {/**date picker */}
           <div className="flex items-center">
@@ -176,35 +176,28 @@ const handleSelectedId:Function = async (id:string) => {
                             <tr>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                    date created
+                                    Date created
                                 </th>
                                 <th
                                     className={
-                                        "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                        "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                     }
                                 >
                                    Company Name
                                 </th>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-
-                                >
-                                    Category
-                                </th>
-                                <th
-                                    className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
                                  Submitted
                                 </th>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                                 >
-                                 status
+                                 Status
                                 </th>
                             </tr>
                         </thead>

@@ -45,7 +45,7 @@ export class ReportModel {
         this.ecard_transaction=report.ecard_transaction;
         
         this._id=report._id;
-        this.createdAt=moment(report.createdAt).format('YYYY/MM/DD');
+        this.createdAt=moment(report.createdAt).format('DD/MM/YYYY');
         this.time=moment(report.createdAt).format('HH:mm A');
         this.customerName=report.customerId?.fullname || report.customerId?.merchant_tradeName;
         this.customerPhone=report.customerId?.phone;

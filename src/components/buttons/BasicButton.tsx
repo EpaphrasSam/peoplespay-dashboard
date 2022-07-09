@@ -1,15 +1,16 @@
 type ButtonProps={
     value:string;
     action:Function;
+    color:string
 }
 
-const BasicButton=({value,action}:ButtonProps)=>(
+const PrimaryButton=({value,action,color}:ButtonProps)=>(
     <button
-       className={`bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
+       className={`py-3 px-2 bg-${color}-500 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-${color}-800 tracking-wide font-segoe`}
        type="button"
-       onClick={()=>action}
+       onClick={()=>action()}
         >
         {value}
     </button>
 )
-export default BasicButton;
+export default PrimaryButton;

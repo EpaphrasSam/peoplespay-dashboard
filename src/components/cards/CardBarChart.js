@@ -172,13 +172,13 @@ export default function CardBarChart() {
   
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded h-auto">
+      <div className="font-bold relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded h-auto">
         <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
             <div className="relative w-full max-w-full flex-grow flex-1">
-              <h6 className="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
+              <h6 className="uppercase mb-1 text-xs font-bold">
                 Daily App Performance
               </h6>
-              <h2 className="text-gray-700 text-xl font-semibold">
+              <h2 className="text-xl font-semibold">
                 Total transactions
                 {!isLoading && <ChartLoader/>}
               </h2>

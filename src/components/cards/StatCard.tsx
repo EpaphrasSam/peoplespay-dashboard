@@ -121,23 +121,23 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
 
   return (
        <>
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Transactions</div>
-              <div className="relative z-10 flex items-center pt-1">
+            <div className="relative p-5 pb-16 overflow-hidden shadow-md bg-white border border-gray-100">
+              <div className="text-base font-segoe">Transaction Summary</div>
+              <div className="relative z-10 flex items-center pt-1 space-y-1">
                 <div className="text-xl font-bold text-gray-900 ">{succ_count}</div>
-                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-green-600 bg-green-100 rounded">
+                <span className="font-poppins flex items-center px-2 py-0.1 mx-2 text-sm text-green-600 bg-green-100 rounded">
                   <span>successful</span>
                 </span> 
               </div>
-              <div className="flex">    
+              <div className="flex space-y-1">    
                 <div className="text-xl font-bold text-gray-900 ">{fail_count}</div> 
-                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-red-600 bg-red-100 rounded">
+                <span className="font-poppins flex items-center px-2 py-0.1 mx-2 text-sm text-red-600 bg-red-100 rounded">
                   <span>failed</span>
                 </span> 
               </div>
-              <div className="flex">    
+              <div className="flex space-y-1">    
                 <div className="text-xl font-bold text-gray-900 ">{pending_count}</div> 
-                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-yellow-600 bg-yellow-100 rounded">
+                <span className="font-poppins flex items-center px-2 py-0.1 mx-2 text-sm text-yellow-500 bg-yellow-50 rounded">
                   <span>pending</span>
                 </span> 
               </div>
@@ -147,8 +147,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
             </div>
             
             
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Successful Amount</div>
+            <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
+              <div className="text-base font-segoe">Successful Amount</div>
               <div className="relative z-10 flex items-center pt-1">
                 <div className="text-2xl font-bold text-gray-900 ">
                   {succ_amount}
@@ -168,8 +168,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
                 <Line height={80} data={data2} options={chartOptions} />
               </div>
             </div>
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Failed Amount</div>
+            <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
+              <div className="text-base font-segoe ">Failed Amount</div>
               <div className="relative z-10 flex items-center pt-1">
                 <div className="text-2xl font-bold text-gray-900 ">{fail_amount}</div>
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-red-600 bg-red-100 rounded">
@@ -185,8 +185,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
               </div>
             </div>
 
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Source Channels</div>
+            <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
+              <div className="text-base font-segoe">Source Channels</div>
               <div className="relative z-10 flex items-center pt-1">
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm rounded">
                 <div className='grid grid-cols-5 divide-x- divide-green-500 text-xs pt-1 gap-2'>
@@ -207,7 +207,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
                     <h6 className="text-xs font-semibold leading-tight  py-1 pt-2">{c}</h6>
                 </div>
                 <div>
-                <span className='bg-pink-700 rounded px-2  font-bold'>W</span>
+                <span className='bg-pink rounded px-2  font-bold'>W</span>
                     <h6 className="text-xs font-semibold leading-tight  py-1 pt-2">{w}</h6>
                 </div>
             </div>

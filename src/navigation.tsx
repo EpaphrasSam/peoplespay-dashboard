@@ -26,6 +26,8 @@ const AllSettlements = lazy(()=>import('./components/views/settlement/AllSettlem
 const SettlementApprovals = lazy(()=>import('./components/views/settlement/Approvals'))
 const ElevyTransactions = lazy(()=>import('./components/views/elevy/Transactions'))
 const ElevyTransactionsDetails = lazy(()=>import('./components/views/elevy/TransactionDetails'))
+const WalletTrasactions=lazy(()=>import('./components/views/wallet/WalletTransactions'))
+
 // create a component
 const Navigation=()=>{
     return (
@@ -63,6 +65,7 @@ const Navigation=()=>{
                                 
                                 {/**Wallet account route */}
                                 <Route path="wallets"  element={<Wallets/>} />
+                                <Route path="wallettransactions"  element={<WalletTrasactions/>} />
 
                                 {/**Agents account route */}
                                 <Route path="agents"  element={<Agents/>}/> 
