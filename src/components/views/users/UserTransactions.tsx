@@ -11,7 +11,7 @@ import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Loader from './Loader';
-import PrimaryButton from '../../buttons/BasicButton';
+import {OutlinedButton} from '../../buttons/BasicButton';
 
 
 
@@ -265,19 +265,19 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
             <div className='grid grid-cols-4 divide-x divide-green-500 mb-10 font-segoe'>
                 <div>
                     <span className='bg-green-300 rounded-md px-2'>Transactions</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount}</h2>
+                    <h2 className="text-3xl font-semibold leading-tight py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
                     <span className='bg-yellow-500 rounded-md px-2'>Amount</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
                 </div>
                 <div>
                     <span className='bg-red-400 rounded-md px-2'>Failed</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
                 </div>
                 <div>
                     <span className='bg-blue-300 rounded-md px-2'>Charges</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl font-semibold leading-tight pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
             </div>
             </motion.div>
@@ -288,10 +288,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 headers = {headers}
                 data = {results}
                 filename={'report.csv'}
-                className='py-3 px-2 bg-green-500 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-800 tracking-wide font-segoe'>
+                className='py-3 px-2 text-green-700 rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-100 tracking-wide font-segoe border border-green-600'>
                     {loading ? 'Preparing...' : 'Download Report'}
             </CSVLink>
-            <PrimaryButton
+            <OutlinedButton
              value="Reverse Transaction"
              color="blue"
              action={initiateReversal}
@@ -326,7 +326,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
        {/**filter btn */}
        <button 
             onClick={()=>clickDateFilter()}
-            className={`rounded ${loading?'bg-white':'bg-transparent border border-indigo-700'} text-indigo-700 py-2 px-7 ml-2 font-segoe font-semibold tracking-widest leading-tight outline hover:shadow ease-linear transition-all duration-150`}>{loading? <Loader/> : 'Filter'}
+            className={`rounded ${loading?'bg-white':'bg-gray-50'} text-indigo-700 font-medium py-3 px-7 ml-2 font-segoe tracking-widest leading-tight outline hover:shadow ease-linear transition-all duration-150 hover:bg-indigo-400`}>{loading? <Loader/> : 'Filter'}
        </button>
      </div>
      {/**end date */}

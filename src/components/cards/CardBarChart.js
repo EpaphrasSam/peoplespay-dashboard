@@ -121,7 +121,7 @@ export default function CardBarChart() {
       const __m = `0${_m}`
       const m = _m < 10 ? __m : _m;
 
-      console.log(y,m)
+      //console.log(y,m)
       const res = await ReportService.dateFilter(`${y}-07-01`, new Date().toISOString());;
        
       const trs = res.data;
@@ -166,7 +166,7 @@ export default function CardBarChart() {
         failureData?.push(failureCount.toString());
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
   

@@ -1,32 +1,18 @@
 import { Menu } from '@headlessui/react'
 
-function ProfileDropdown() {
+const say=()=>window.alert("hi");
+//window.localStorage.clear();window.location.href = '/'
+function ProfileDropdown({name}:{name:string}) {
   return (
-    <Menu>
-      <Menu.Button>Mark Tutu</Menu.Button>
-      <Menu.Items>
-        <Menu.Item>
-          {({ active }) => (
-            <a
-              className={`${active && 'bg-blue-500'}`}
-              href="/account-settings"
-            >
-              Account settings
+    <Menu as="div" className="relative">
+      <Menu.Button>{name}</Menu.Button>
+      <Menu.Items className="absolute mt-2 right-0">
+        <Menu.Item as="button"
+        onClick={(e)=>say()}>
+            <a 
+              className="bg-red-100 rounded px-10 py-2 text-red-700 cursor:pointer">
+               Logout
             </a>
-          )}
-        </Menu.Item>
-        <Menu.Item>
-          {({ active }) => (
-            <a
-              className={`${active && 'bg-blue-500'}`}
-              href="/account-settings"
-            >
-              Documentation
-            </a>
-          )}
-        </Menu.Item>
-        <Menu.Item disabled>
-          <span className="opacity-75">Invite a friend (coming soon!)</span>
         </Menu.Item>
       </Menu.Items>
     </Menu>

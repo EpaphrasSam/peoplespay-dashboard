@@ -96,26 +96,28 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
            </div>        
        
         {/**date picker */}
-        <div className="flex items-center">
-          <div className="relative">
-            <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-            />
-         </div>
-        <span className="mx-4 text-gray-500">to</span>
-        <div className="relative">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
             <div className="relative">
                 <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
                 />
             </div>
+            <span className="mx-4 text-gray-500">to</span>
+            <div className="relative">
+                <div className="relative">
+                    <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
+                    />
+                </div>
+            </div>
        </div>
 
        {/**csv btn */}
-       <div className="space-x-2">
+       <div>
             <CSVLink 
                 headers = {headers}
                 data = {records}
                 filename={'elevyrecords.csv'}
-                className='py-3 px-2 bg-green-500 text-white rounded shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
+                className='py-3 px-2 text-green-700 rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-100 tracking-wide font-segoe border border-green-600'>
                     Download CSV
             </CSVLink>
         </div>

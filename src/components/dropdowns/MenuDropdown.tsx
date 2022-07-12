@@ -32,7 +32,7 @@ export default function MenuItem({data}:any) {
       <Menu.Items className="bg-pink px-5 text-left absolute right-0 mt-2 origin-top-right rounded-none ring-1 ring-black ring-opacity-5 focus:outline-none w-full">
        <div>
        {data.children && data.children.map((item:any,i:number)=>
-       (<><Menu.Item key={i.toString()}><Link to={item.path} className="flex items-center py-4 text-md  text-white hover:">
+       (<><Menu.Item key={i.toString()}><Link to={item.path} className="flex items-center py-4 text-md  text-white">
          <i className={item.icon} />
          {item.title}
        </Link>

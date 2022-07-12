@@ -223,11 +223,6 @@ export default function Sidebar() {
                         </ul>
                          {/* Divider */}
                          <hr className="my-4 md:min-w-full" />
-                         <button className='uppercase leading-tight font-semibold bg-red-900 text-white py-3 shadow hover:shadow-inner rounded '
-                         onClick={() => {window.localStorage.clear();window.location.href = '/'}}
-                         >
-                             LOGOUT
-                             </button>
                     </div>
                 </div>
             </nav>
