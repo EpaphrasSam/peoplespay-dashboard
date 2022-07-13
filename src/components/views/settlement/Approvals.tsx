@@ -80,10 +80,10 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
  const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+        <div className="font-segoe relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">Pending Settlements</h2>
+              <h2 className="text-2xl leading-tight">Pending Settlements</h2>
            </div>    
         {/**date picker */}
         <div className="flex items-center">
@@ -153,56 +153,56 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                     <thead>
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Merchant Id
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Description
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Start Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 End Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Number
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                Acc_Number
                             </th>
                              <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Name
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                Acc_Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Issuer
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                Acc_Issuer
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Type
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                Acc_Type
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Action
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-md">
                        {
                            isLoading ?
                            <Spinner/>
@@ -211,11 +211,11 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                        }
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-                    <span className="text-xs xs:text-sm text-gray-900">
+                <div className="px-5 py-5 bg-white border-t flex flex-col items-center md:justify-center">
+                    <div className="text-md md:text-sm text-gray-900">
                         Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < pendingSettlements.length ? (currentIndex * rowsPerPage): pendingSettlements.length}</span> of <span>{pendingSettlements.length}</span>{' '}Settlements
-                    </span> 
-                    <div className="inline-flex mt-2 xs:mt-0">
+                    </div> 
+                    <div className="inline-flex mt-2 md:mt-0">
                         {
                             currentIndex === 1 ? 
                             (

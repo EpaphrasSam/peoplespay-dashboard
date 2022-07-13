@@ -69,17 +69,17 @@ const PendingSettlementsTable = ({data,approve,loading}:AppProps):JSX.Element =>
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <span className="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
-                <span aria-hidden className="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                <span aria-hidden className="absolute inset-0 bg-yellow-200 opacity-50 rounded-md"></span>
                 <span className="relative">{s.status}</span>
              </span>
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <button 
-                className="font-semibold rounded-full bg-green-200 flex items-center text-green-500 whitespace-no-wrap px-3 py-1"
+                className="font-semibold rounded-md bg-sgreen flex items-center text-green-500 whitespace-no-wrap px-3 py-1"
                 onClick = {()=>approve(s._id)}
                 >
-                    <i className="fas fa-thumbs-up mr-1 "/>
-                     {loading? 'approving...':'approve'}
+                    <i className="fas fa-thumbs-up mr-1 text-white"/>
+                     <span className="text-white">{loading? 'Approving...':'Approve'}</span>
                 </button>
             </td>
 </tr>

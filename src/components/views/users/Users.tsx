@@ -43,9 +43,9 @@ export default function Users() {
 
 
     return (
-     <div className="relative md:pt-20 pb-10  w-full mb-12">
+     <div className="font-segoe relative md:pt-20 pb-10  w-full mb-12">
           <div>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Users</h2>
+            <h2 className="text-2xl leading-tight">Users</h2>
         </div>
             <div className='flex flex-wrap'>
                 <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">  

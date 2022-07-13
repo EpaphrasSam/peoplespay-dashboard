@@ -11,6 +11,7 @@ import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Loader from './Loader';
+import {OutlinedButton} from '../../buttons/BasicButton';
 
 
 
@@ -249,7 +250,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     }
 
     return(
-        <div className="relative md:pt-20 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
          <motion.div 
           initial="initial"
@@ -257,26 +258,26 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
           exit="exit"
           variants={group1Motion}>
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">User Transactions</h2>
+              <h2 className="text-2xl leading-tight font-segoe">User Transactions</h2>
            </div>
 
             {/**deviders */}
-            <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
+            <div className='grid grid-cols-4 divide-x divide-green-500 mb-10 font-segoe'>
                 <div>
-                    <span className='bg-green-300 rounded-xl px-2'>transactions</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount}</h2>
+                    <span className='bg-green-300 rounded-md px-2'>Transactions</span>
+                    <h2 className="text-3xl font-semibold leading-tight py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
-                    <span className='bg-yellow-500 rounded-xl px-2'>amount</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
+                    <span className='bg-yellow-500 rounded-md px-2'>Amount</span>
+                    <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-red-400 rounded-xl px-2'>failed</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
+                    <span className='bg-red-400 rounded-md px-2'>Failed</span>
+                    <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-blue-300 rounded-xl px-2'>charges</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
+                    <span className='bg-blue-300 rounded-md px-2'>Charges</span>
+                    <h2 className="text-3xl font-semibold leading-tight pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
             </div>
             </motion.div>
@@ -287,15 +288,20 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 headers = {headers}
                 data = {results}
                 filename={'report.csv'}
-                className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
-                    {loading ? 'preparing...' : 'Download CSV'}
+                className='py-3 px-2 text-green-700 rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-100 tracking-wide font-segoe border border-green-600'>
+                    {loading ? 'Preparing...' : 'Download Report'}
             </CSVLink>
-            <button 
+            <OutlinedButton
+             value="Reverse Transaction"
+             color="blue"
+             action={initiateReversal}
+            />
+            {/* <button 
                     className="outline outline-2  outline-offset-2  py-2 px-1 bg-blue-500 text-white font-semibold rounded uppercase shadow hover:shadow hover:bg-blue-500 focus:outline-none ease-linear transition-all duration-150"
-                    onClick={()=>initiateReversal()}
+                    onClick={()=>}
                     >
                 Reverse Transactions
-            </button>
+            </button> */}
         </div>
         
        
@@ -320,7 +326,8 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
        {/**filter btn */}
        <button 
             onClick={()=>clickDateFilter()}
-            className={`rounded-md ${loading?'bg-white':'bg-red-800'} text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow ease-linear transition-all duration-150`}>{loading? <Loader/> : 'Filter'}</button>
+            className={`rounded ${loading?'bg-white':'bg-gray-50'} text-indigo-700 font-medium py-3 px-7 ml-2 font-segoe tracking-widest leading-tight outline hover:shadow ease-linear transition-all duration-150 hover:bg-indigo-400`}>{loading? <Loader/> : 'Filter'}
+       </button>
      </div>
      {/**end date */}
 
@@ -374,56 +381,56 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
           exit="exit"
           variants={group2Motion}>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
+            <div className="inline-block min-w-full shadow-lg overflow-hidden font-segoe">
                 <table className="min-w-full leading-normal">
                     <thead>
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Customer Description
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                 Description
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Transaction date
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                transaction time
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Transaction Time
                             </th>
                              <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Customer name
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Customer Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Recipient name
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Recipient Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
                                 Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                charge
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Charge
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
                                 E-levy
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                debit status
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Debit Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                credit status
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Credit Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                pay_acc_type
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                Pay_Acc_Type
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
                                 Actions
                             </th>
                         </tr>

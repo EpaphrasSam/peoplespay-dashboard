@@ -1,5 +1,5 @@
 import React from "react";
-
+import{formatDate} from '../../utils/Date'
 type AppPops = any;
 
 const  PaidHighLightTable = ({transactions}:{transactions:AppPops}):JSX.Element => (
@@ -7,17 +7,17 @@ const  PaidHighLightTable = ({transactions}:{transactions:AppPops}):JSX.Element 
     {
       
       transactions?.map((t:any) => (
-        <tr>
-          <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-              {t?.createdAt}
+        <tr className="text-sm">
+          <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+              {formatDate(t?.createdAt)}
           </th>
-          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
               {t.time}
           </td>
-          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
                 {t.customerName}
           </td>
-          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">             
+          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">             
           <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
@@ -25,7 +25,7 @@ const  PaidHighLightTable = ({transactions}:{transactions:AppPops}):JSX.Element 
                 <span className="relative">{t.amount}</span>
             </span>
           </td>
-          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
           <p className="text-gray-900 whitespace-no-wrap text-left">
             {
                 t.payment_account_type === 'momo' ? 

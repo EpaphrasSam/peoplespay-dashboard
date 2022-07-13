@@ -11,12 +11,12 @@ export default function MenuItem({data}:any) {
       <Link to={data.path}>
         <i className={data.icon}></i>
         <Menu.Button>
-          <span className='cursor-pointer font-sans'>{data.title}</span>
+          <span>{data.title}</span>
         </Menu.Button>
       </Link>
       :(
       <><i className={data.icon}></i><Menu.Button>
-            <span className='cursor-pointer font-sans'>{data.title}</span>
+            <span className='cursor-pointer'>{data.title}</span>
           </Menu.Button></>)
       }
       
@@ -29,10 +29,10 @@ export default function MenuItem({data}:any) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-      <Menu.Items className="bg-red-700 absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-       <div className='bg-red-700'>
+      <Menu.Items className="bg-pink px-5 text-left absolute right-0 mt-2 origin-top-right rounded-none ring-1 ring-black ring-opacity-5 focus:outline-none w-full">
+       <div>
        {data.children && data.children.map((item:any,i:number)=>
-       (<><Menu.Item key={i.toString()}><Link to={item.path} className="flex items-center px-4 py-4 text-xs text-white hover:bg-red-800">
+       (<><Menu.Item key={i.toString()}><Link to={item.path} className="flex items-center py-4 text-md  text-white">
          <i className={item.icon} />
          {item.title}
        </Link>

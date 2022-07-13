@@ -12,6 +12,8 @@ interface StateModel {
     wallets: any[];
     paidTransactions : any[];
     failedTransactions:any[];
+    walletTransactions:any[];
+    customerName:string
 }
 
 const initialState:StateModel={
@@ -24,7 +26,9 @@ const initialState:StateModel={
     selected: null,
     wallets: [],
     paidTransactions :[],
-    failedTransactions:[]
+    failedTransactions:[],
+    walletTransactions:[],
+    customerName:""
 }
 
 
@@ -74,6 +78,18 @@ const state=createSlice(
                     failedTransactions : action.payload,
                     loading: false
                 }
+            },
+            setWalletTransactions: (state,action)=>{
+                return{
+                    ...state,
+                    walletTransactions : action.payload,
+                }
+            },
+            setCustomerName: (state,action)=>{
+                return{
+                    ...state,
+                    customerName : action.payload,
+                }
             }
         }
     }
@@ -84,7 +100,9 @@ export const {setUserTransactions,
              setReferals,
              setAgents,
              setPaidTransactions,
-             setFailedTransactions
+             setFailedTransactions,
+             setWalletTransactions,
+             setCustomerName
             } = state.actions;
 export const reportSelector = (state : RootState) => state.report;
 export default state.reducer;

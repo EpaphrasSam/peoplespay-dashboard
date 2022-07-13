@@ -15,7 +15,7 @@ const routes:Route[]=[
     {
         path:'/',
         title:'Dashboard',
-        icon:'fas fa-home mr-1',
+        icon:'fas fa-home mr-3',
         hasChild : false,
         children:[]
     },
@@ -27,12 +27,12 @@ const routes:Route[]=[
         children:[
             {
                 path:'user-transactions',
-                icon:'fas fa-dollar-sign mr-2',
+                icon:'fas fa-dollar-sign mr-3',
                 title:'User Transactions'
             },
             {
                 path:'users',
-                icon:'fas fa-users mr-2',
+                icon:'fas fa-users mr-3',
                 title:'Users'
             }
         ]
@@ -40,29 +40,29 @@ const routes:Route[]=[
     {
         path:'e-levy',
         title:'E-Levy',
-        icon:'fas fa-money-bill mr-1',
+        icon:'fas fa-money-bill mr-3',
         hasChild : false,
         children:[]
     },
     {
         path:'merchant-settlement/new',
         title:'Settlement',
-        icon:'fas fa-hand-holding-usd mr-1',
+        icon:'fas fa-hand-holding-usd mr-3',
         hasChild : true,
         children:[
             {
                 path:'merchant-settlement/new',
-                icon:'fas fa-hand-holding-usd mr-2',
+                icon:'fas fa-hand-holding-usd mr-3',
                 title:'Make Settlement'
             },
             {
                 path:'merchant-settlement/all',
-                icon:'fas fa-eye mr-1',
+                icon:'fas fa-eye mr-3',
                 title:'All Settlements'
             },
             {
                 path:'merchant-settlement/approvals',
-                icon:'fas fa-eye mr-1',
+                icon:'fas fa-eye mr-3',
                 title:'Approvals'
             }
         ]
@@ -70,22 +70,22 @@ const routes:Route[]=[
     {
         path:'merchants',
         title:'Merchants',
-        icon:'fas fa-users mr-1',
+        icon:'fas fa-users mr-3',
         hasChild : true,
         children:[
             {
                 path:'merchants',
-                icon:'fas fa-users mr-2',
+                icon:'fas fa-users mr-3',
                 title:'Merchants'
             },
             {
                 path:'merchant-transactions',
-                icon:'fas fa-coins mr-2',
+                icon:'fas fa-coins mr-3',
                 title:'Transactions'
             },
             {
                 path:'merchant-categories',
-                icon:'fas fa-list-alt mr-2',
+                icon:'fas fa-list-alt mr-3',
                 title:'Categories'
             },
         ]
@@ -93,28 +93,28 @@ const routes:Route[]=[
     {
         path:'wallets',
         title:'Wallets',
-        icon:'fas fa-wallet mr-1',
+        icon:'fas fa-wallet mr-3',
         hasChild : false,
         children:[]
     },
     {
         path:'agents',
         title:'Agents',
-        icon:'fas fa-users mr-2',
+        icon:'fas fa-users mr-3',
         hasChild : false,
         children:[]
     },
     {
         path:'referrals',
         title:'Referrals',
-        icon:'fas fa-registered mr-1',
+        icon:'fas fa-registered mr-3',
         hasChild : false,
         children:[]
     },
     {
         path:'broadcast-message',
         title:'Broadcast',
-        icon:'fas fa-bullhorn mr-1',
+        icon:'fas fa-bullhorn mr-3',
         hasChild : false,
         children:[]
     },
@@ -152,7 +152,7 @@ export default function Sidebar() {
 
     return (
         <>
-            <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-lg bg-white flex flex-wrap items-center justify-between relative md:w-56 z-10 py-4 px-6 border-none">
+            <nav className="font-segoe md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-lg bg-white flex flex-wrap  justify-between relative md:w-56 z-10 py-4 px-6 border-none">
                 <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     {/* Toggler */}
                     <button
@@ -178,7 +178,7 @@ export default function Sidebar() {
                     {/* Collapse */}
                     <div
                         className={
-                            "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded " +
+                            "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto  flex-1 rounded " +
                             collapseShow
                         }
                     >
@@ -208,14 +208,14 @@ export default function Sidebar() {
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full" />
                         {/* Heading */}
-                        <h6 className="md:-ml-7 md:min-w-full text-pink-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                        <h6 className="text-left md:min-w-full text-pink-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                             Admin Layout Pages
                         </h6>
                         {/* Navigation */}
 
-                        <ul className="md:flex-col md:min-w-full flex flex-col list-none -ml-14">
+                        <ul className="text-left flex flex-col list-none">
                             {paths.map((p:any,i:number)=>
-                            (<li className="py-7  text-gray-600">
+                            (<li className="group py-7  text-gray-600 hover:text-pink">
                                 <MenuItem key={i.toString()} data={p}/>
                             </li>
                             ))
@@ -223,11 +223,6 @@ export default function Sidebar() {
                         </ul>
                          {/* Divider */}
                          <hr className="my-4 md:min-w-full" />
-                         <button className='uppercase leading-tight font-semibold font-sans bg-red-900 text-white py-3 shadow hover:shadow-inner rounded '
-                         onClick={() => {window.localStorage.clear();window.location.href = '/'}}
-                         >
-                             LOGOUT
-                             </button>
                     </div>
                 </div>
             </nav>

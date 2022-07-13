@@ -1,6 +1,6 @@
 import  moment from "moment";
 import { ghippsMsgs } from "../utils/ghipps_code";
-
+import { EnumTransactionTypes } from "./transactiontypes.enum";
 
 export class ReportModel {
 
@@ -45,11 +45,12 @@ export class ReportModel {
         this.ecard_transaction=report.ecard_transaction;
         
         this._id=report._id;
-        this.createdAt=moment(report.createdAt).format('YYYY/MM/DD');
+        this.createdAt=moment(report.createdAt).format('DD/MM/YYYY');
         this.time=moment(report.createdAt).format('HH:mm A');
         this.customerName=report.customerId?.fullname || report.customerId?.merchant_tradeName;
         this.customerPhone=report.customerId?.phone;
         this.transaction_type=report.transaction_type;
+        this.getTransactionType(report.transaction_type);
         this.actualAmount=`GHS${report.actualAmount}`;
         this.charges=`GHS${Number.parseFloat(report.charges).toFixed(2)}`;
         this.amount=`GHS${Number.parseFloat(report.amount).toFixed(2)}`;
@@ -76,6 +77,64 @@ export class ReportModel {
             default:
                 this.status=status.toUpperCase();
                 break;
+        }
+    }
+
+    getTransactionType(type:string){
+        switch(type){
+            case'RF':
+            this.transaction_type= EnumTransactionTypes.RF;
+            break;
+            case 'DB':
+              this.transaction_type= EnumTransactionTypes.DB;
+              break;
+            case 'CA':
+                this.transaction_type= EnumTransactionTypes.CA;
+             break;
+            case 'SM':
+              this.transaction_type= EnumTransactionTypes.SM;
+              break;
+            case 'RM':
+              this.transaction_type= EnumTransactionTypes.RM;
+              break;
+            case 'PB':
+               this.transaction_type= EnumTransactionTypes.PB;
+                break;
+            case 'AT':
+                this.transaction_type= EnumTransactionTypes.AT;
+                break;
+            case 'PP':
+                this.transaction_type= EnumTransactionTypes.PP;
+                break;
+            case 'QRP':
+                this.transaction_type= EnumTransactionTypes.QRP;
+                break;
+            case 'VCI':
+                this.transaction_type= EnumTransactionTypes.VCI;
+                break;
+            case 'VCT':
+                this.transaction_type= EnumTransactionTypes.VCT;
+                break;
+            case 'APIC':
+               this.transaction_type= EnumTransactionTypes.APIC;
+               break;
+            case 'ECARDS':
+                this.transaction_type= EnumTransactionTypes.ECARDS;
+                break;
+            case 'VCTR':
+                this.transaction_type= EnumTransactionTypes.VCTR;
+                break;
+            case 'WF':
+                this.transaction_type= EnumTransactionTypes.WF;
+                break;
+            case 'ST':
+                this.transaction_type= EnumTransactionTypes.ST;
+                break;
+            case 'BI':
+                 this.transaction_type= EnumTransactionTypes.BI;
+                 break;
+            default:
+                this.transaction_type=type
         }
     }
 

@@ -1,46 +1,21 @@
-import React from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import {Link} from 'react-router-dom';
+import { Menu } from '@headlessui/react'
 
-
-export default function UsersDropdown() {
+const say=()=>window.alert("hi");
+//window.localStorage.clear();window.location.href = '/'
+function ProfileDropdown({name}:{name:string}) {
   return (
-    <Menu as={React.Fragment}>
-      <i className='fas fa-user text-sm text-red-900'></i>
-      <Menu.Button>
-              <span className='text-red-900 uppercase text-xs font-semibold cursor-pointer font-sans'>Mark Tutu</span>
-      </Menu.Button>
-      
-           <Transition
-          as={React.Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-      <Menu.Items className="bg-red-700 absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-       <div>
-        <Menu.Item>
-              {() => (
-                <>
-              <i className='fas fa-dollar-sign mr-2'/>
-                Mark Tutu
-              </>
-          )}
+    <Menu as="div" className="relative">
+      <Menu.Button>{name}</Menu.Button>
+      <Menu.Items className="absolute mt-2 right-0">
+        <Menu.Item as="button"
+        onClick={(e)=>say()}>
+            <a 
+              className="bg-red-100 rounded px-10 py-2 text-red-700 cursor:pointer">
+               Logout
+            </a>
         </Menu.Item>
-        <Menu.Item>
-              {() => (
-                <>
-              <i className='fas fa-dollar-sign mr-2'/>
-                Mark Tutu
-              </>
-          )}
-        </Menu.Item>
-          </div>
-        </Menu.Items>
-        </Transition>
-      </Menu>
+      </Menu.Items>
+    </Menu>
   )
 }
+export default ProfileDropdown;

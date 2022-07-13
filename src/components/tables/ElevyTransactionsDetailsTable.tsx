@@ -61,27 +61,27 @@ const ElevyTransactionsDetailsTable = ({data}:AppProps):JSX.Element => (
                     t.debit_status === 'paid' ? 
                     (
                     <span
-                        className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                        className="relative inline-block px-3 py-1 font-semibold text-white leading-tight">
                         <span aria-hidden
-                            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                        <span className="relative">PAID</span>
+                            className="absolute inset-0 bg-sgreen rounded-md"></span>
+                        <span className="relative">Paid</span>
                     </span>
                     )
                     : 
                     t.debit_status === 'failed' ? 
                     (
                         <span
-                    className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                    className="relative inline-block px-3 py-1 font-semibold text-white leading-tight">
                     <span aria-hidden
-                        className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                    <span className="relative">FAILED</span>
+                        className="absolute inset-0 bg-red-500  rounded-md"></span>
+                    <span className="relative">Failed</span>
                 </span>
                     ):
                     (
                     <span
                     className="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                     <span aria-hidden
-                        className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
+                        className="absolute inset-0 bg-gray-200 rounded-md"></span>
                     <span className="relative uppercase">{t.debit_status}</span>
                 </span>
                     )
@@ -90,29 +90,29 @@ const ElevyTransactionsDetailsTable = ({data}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 {
-                    t.status === 'PAID' ? 
+                    t.status === 'paid' ? 
                     (
                     <span
-                        className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                        className="relative inline-block px-3 py-1 font-semibold text-white leading-tight">
                         <span aria-hidden
-                            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                        <span className="relative">{t.status}</span>
+                            className="absolute inset-0 bg-sgreen rounded-md"></span>
+                        <span className="relative">Paid</span>
                     </span>
                     )
-                    :  t.status === 'FAILED' ? 
+                    :  t.status === 'failed' ? 
                     (
                         <span
-                    className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                    className="relative inline-block px-3 py-1 font-semibold text-white leading-tight">
                     <span aria-hidden
-                        className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                    <span className="relative">{t.status}</span>
+                        className="absolute inset-0 bg-red-500 rounded-md"></span>
+                    <span className="relative">Failed</span>
                 </span>
                     ):
                     (
                         <span
                     className="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
                     <span aria-hidden
-                        className="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                        className="absolute inset-0 bg-yellow-200 rounded-md"></span>
                     <span className="relative">{t.status}</span>
                 </span>
                 )
@@ -126,21 +126,21 @@ const ElevyTransactionsDetailsTable = ({data}:AppProps):JSX.Element => (
                         (
                         <>
                         <i className="fas fa-circle text-yellow-300 mr-2"></i>
-                        {t.payment_account_type}
+                        Momo
                         </>
                         )
                         : t.payment_account_type === 'wallet' ? 
                         (
                             <>
                         <i className="fas fa-circle text-indigo-500 mr-2"></i>
-                        {t.payment_account_type}
+                        Wallet
                         </> 
                         ) 
                         :
                         (
                             <>
                             <i className="fas fa-circle text-green-500 mr-2"></i>
-                        {t.payment_account_type}
+                        Card
                             </>
                         )
                     }

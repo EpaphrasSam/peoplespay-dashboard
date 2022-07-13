@@ -144,29 +144,29 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
   
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4 font-segoe">
             {/**page heading */}
            <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">Successful Transactions</h2>
+              <h2 className="text-2xl leading-tight">Successful Transactions</h2>
            </div>
 
             {/**deviders */}
             <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
                 <div>
-                    <span className='bg-green-300 rounded-xl px-2'>transactions</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{totalTransactionCount}</h2>
+                    <span className='bg-green-300 rounded px-2'>transactions</span>
+                    <h2 className="text-3xl leading-tight py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
-                    <span className='bg-yellow-500 rounded-xl px-2'>amount</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
+                    <span className='bg-yellow-500 rounded px-2'>amount</span>
+                    <h2 className="text-3xl leading-tight py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-blue-300 rounded-xl px-2'>charges</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
+                    <span className='bg-blue-300 rounded px-2'>charges</span>
+                    <h2 className="text-3xl leading-tight py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-red-400 rounded-xl px-2'>failed</span>
-                    <h2 className="text-3xl font-semibold leading-tight text-red-800 py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
+                    <span className='bg-red-400 rounded px-2'>failed</span>
+                    <h2 className="text-3xl leading-tight py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
                 </div>
             </div>
 
@@ -175,7 +175,7 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
             headers = {headers}
             data = {paidTransactions}
             filename={'successful transactions report.csv'}
-            className='float-right py-3 px-7 bg-green-100 text-green-700 font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150'>
+            className='float-right py-3 px-7 bg-green-100 text-green-700 font-semibold rounded shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150'>
                 Download CSV
         </CSVLink>
        
@@ -211,7 +211,7 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
                     <select
                         onChange = {pageRowsHandler}
                         value={rowsPerPage}
-                        className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                         <option>5</option>
                         <option>10</option>
                         <option>20</option>
@@ -229,7 +229,7 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
                 </div>
                 <div className="relative">
                     <select
-                        className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>All</option>
                         <option>Momo</option>
                         <option>Cards</option>
@@ -246,53 +246,53 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder='Search by customer name ...'/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
+            <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="min-w-full leading-normal">
                     <thead>
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
                                 Customer Description
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Transaction date
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Transaction Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                transaction time
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Transaction Time
                             </th>
                              <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Customer name
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Customer Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Recipient name
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Recipient Name
                             </th>
                             {/* <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
                                 customer #
                             </th> */}
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
                                 Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                charge
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Charge
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                debit status
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Debit Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                credit status
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Credit Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                pay_acc_type
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-600 tracking-wider">
+                                Pay_Acc_Type
                             </th>
                         </tr>
                     </thead>
@@ -305,11 +305,11 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
                        }
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-                    <span className="text-xs xs:text-sm text-gray-900">
+                <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between">
+                    <span className="text-sm sm:text-sm text-gray-900">
                         Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < paidTransactions.length ? (currentIndex * rowsPerPage): paidTransactions.length}</span> of <span>{paidTransactions.length}</span>{' '}Transactions
                     </span>
-                    <div className="inline-flex mt-2 xs:mt-0">
+                    <div className="inline-flex mt-2 sm:mt-0">
                         {
                             currentIndex === 1 ? 
                             (
