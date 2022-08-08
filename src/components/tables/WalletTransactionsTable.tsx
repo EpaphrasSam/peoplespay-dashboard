@@ -40,17 +40,17 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {t.amount}
+                    GHS{Number.parseFloat(t.amount).toFixed(2)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {t.charges}
+                GHS{Number.parseFloat(t.charges).toFixed(2)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    GHS{t.elevyCharges}
+                GHS{Number.parseFloat(t.elevyCharges).toFixed(2)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">

@@ -9,11 +9,14 @@ import transactionService from '../../../services/transactions.service';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
 import Loader from './Loader';
 import {OutlinedButton} from '../../buttons/BasicButton';
-
-
+import {TiArrowForwardOutline} from 'react-icons/ti'
+import {HiDownload} from 'react-icons/hi'
+import{BiFilterAlt}from 'react-icons/bi'
+import RowNumberSelector from '../../buttons/RowNumberSelector';
+import PageHeader from '../../header/PageHeader';
+//import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 
 const swal = require('sweetalert2');
 
@@ -102,19 +105,19 @@ const headers = [
 const filterResults = transactions.filter((tr)=>{
     switch(transactionCategory){
     case "name":
-      const hasSearchResults:boolean = tr?.customerName?.toLowerCase().includes(searchQuery.toLowerCase())
+      const hasSearchResults:boolean = tr?.customerName?.toLowerCase().startsWith(searchQuery.toLowerCase())
       if(hasSearchResults) return tr;
       break;
     case "phone":
-        const hasSearchResults2:boolean = tr?.customerPhone?.toLowerCase().includes(searchQuery)
+        const hasSearchResults2:boolean = tr?.customerPhone?.toLowerCase().startsWith(searchQuery)
         if(hasSearchResults2) return tr;  
         break;
     case "transId":
-         const hasSearchResults3:boolean = tr?._id?.toLowerCase().includes(searchQuery)
+         const hasSearchResults3:boolean = tr?._id?.toLowerCase().startsWith(searchQuery)
          if(hasSearchResults3) return tr;  
          break;
     case "refcode":
-         const hasSearchResults4:boolean = tr?.reference?.toLowerCase().includes(searchQuery)
+         const hasSearchResults4:boolean = tr?.reference?.toLowerCase().startsWith(searchQuery)
          if(hasSearchResults4) return tr;  
          break;
     default:
@@ -184,9 +187,9 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
           )
       }
   }
+  
 
  const initiateReversal = async() => {
-
    try{
     if(reverseIDArray.current.length < 1){
         return swal.fire(
@@ -205,8 +208,6 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
              }
         )
     }
- 
-    
     swal.fire(
         {   
             title: "Enter the OTP received",
@@ -225,7 +226,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 reverseSelectedTransactions(data)
                }
                
-            })
+         })
    }catch(err){
     
     swal(
@@ -242,7 +243,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
        return setChecked(false)
      }
      if(reverseIDArray.current.length>0){
-          alert('no')
+          alert('Sorry, you can select one transaction to reverse')
      }else{
         reverseIDArray.current.push(id);
         setChecked(true);
@@ -257,26 +258,25 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
           animate="animate"
           exit="exit"
           variants={group1Motion}>
-           <div className='mb-10'>
-              <h2 className="text-2xl leading-tight font-segoe">User Transactions</h2>
-           </div>
+           
+              <PageHeader title="User Transactions"/>
 
             {/**deviders */}
-            <div className='grid grid-cols-4 divide-x divide-green-500 mb-10 font-segoe'>
+            <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
                 <div>
-                    <span className='bg-green-300 rounded-md px-2'>Transactions</span>
+                    <span className='bg-green-100 rounded-md px-2'>Transactions</span>
                     <h2 className="text-3xl font-semibold leading-tight py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
-                    <span className='bg-yellow-500 rounded-md px-2'>Amount</span>
+                    <span className='bg-yellow-100 rounded-md px-2'>Amount</span>
                     <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-red-400 rounded-md px-2'>Failed</span>
+                    <span className='bg-red-100 rounded-md px-2'>Failed</span>
                     <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
                 </div>
                 <div>
-                    <span className='bg-blue-300 rounded-md px-2'>Charges</span>
+                    <span className='bg-blue-100 rounded-md px-2'>Charges</span>
                     <h2 className="text-3xl font-semibold leading-tight pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
                 </div>
             </div>
@@ -288,12 +288,15 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 headers = {headers}
                 data = {results}
                 filename={'report.csv'}
-                className='py-3 px-2 text-green-700 rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-100 tracking-wide font-segoe border border-green-600'>
-                    {loading ? 'Preparing...' : 'Download Report'}
+                className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
+                    <HiDownload/>
+                    <span>{loading ? 'Preparing...' : 'Download Report'}</span>
             </CSVLink>
             <OutlinedButton
              value="Reverse Transaction"
              color="blue"
+             borderVisible
+             icon={<TiArrowForwardOutline/>}
              action={initiateReversal}
             />
             {/* <button 
@@ -306,54 +309,49 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         
        
         {/**date picker */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
           <div className="relative">
-            <DatePicker selected = {startDate}
-                        onChange = {(date)=>setStartDate(date)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-            />
-         </div>
-        <span className="mx-4 text-gray-500">to</span>
-        <div className="relative">
-        <DatePicker selected = {endDate}
+             <DatePicker 
+                      selected = {startDate}
+                      value={startDate}
+                      onChange = {(date)=>setStartDate(date)}
+                      className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500" 
+                      dateFormat="dd/MM/yyyy"
+                      selectsStart
+                      startDate={startDate}
+                      endDate={endDate}              
+                    />
+           </div>
+           <span className="mx-4 text-gray-500">to</span>
+           <div className="relative">
+             <DatePicker 
+                    selected = {endDate}
                     value = {endDate}
-                        //locale = 'en-CA'
-                        onChange = {(date)=>setEndDate(date)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-         />
+                    onChange = {(date)=>{setEndDate(date)}}
+                    className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500" 
+                    dateFormat="dd/MM/yyyy"
+                    selectsEnd
+                    endDate={endDate}
+                    minDate={startDate}
+                  
+               />
        </div>
 
        {/**filter btn */}
-       <button 
-            onClick={()=>clickDateFilter()}
-            className={`rounded ${loading?'bg-white':'bg-gray-50'} text-indigo-700 font-medium py-3 px-7 ml-2 font-segoe tracking-widest leading-tight outline hover:shadow ease-linear transition-all duration-150 hover:bg-indigo-400`}>{loading? <Loader/> : 'Filter'}
-       </button>
+       <OutlinedButton 
+        value={loading? <Loader/> : 'Filter'}
+        action={()=>clickDateFilter()}
+        color="gray"
+        paddingWide
+        icon={<BiFilterAlt/>}
+       />
      </div>
      {/**end date */}
 
 {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
-                <div className="relative">
-                    <select
-                        onChange = {pageRowsHandler}
-                        value={rowsPerPage}
-                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                        <option>40</option>
-                        <option>50</option>
-                        <option>80</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
+                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
                 <div className="relative">
                     <select
                         onChange = {transactionCategoryHandler}
@@ -365,12 +363,6 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                         <option value="transId">transactionId</option>
                         <option value="refcode">reference code</option>
                     </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
                 </div>
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder={`Search ${transactionCategory}`}/>

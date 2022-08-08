@@ -1,61 +1,41 @@
 import React,{ChangeEvent,useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { merchantsSelector, setMerchants } from '../../../state/merchant.state';
+import { merchantsSelector} from '../../../state/merchant.state';
 import MerchantsService from '../../../services/merchant.service'
-
 import MerchantDetailsTable from '../../tables/MerchantsDetailsTable';
 import MerchantsTable from '../../tables/MerchantsTable';
 import Spinner from '../layout/Spinner';
 import { setSelected } from '../../../state/merchant.state';
 import SearchForm from '../../forms/SearchForm';
+import RowNumberSelector from '../../buttons/RowNumberSelector';
+//import ValueFilterSelector from '../../buttons/ValueFilterSelector';
+import PageHeader from '../../header/PageHeader';
+import useFetchMerchants from './useFetchMerchants';
+import { OutlinedButton } from '../../buttons/BasicButton';
+import Loader from '../users/Loader';
+import { BiFilterAlt } from 'react-icons/bi';
 
 
 function Merchants(){
-
-    const dispatch = useDispatch()
-    
+    useFetchMerchants()
+    const {merchants,loading} = useSelector(merchantsSelector)
+    const dispatch=useDispatch()
+    const [startDate, setStartDate] = useState<any>()
+    const [endDate, setEndDate] = useState<any>()
     const [searchQuery, setSearchQuery] = React.useState('')
-    const [isLoading, setIsLoading] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(1)
     const [rowsPerPage,setRowsPerPage] = React.useState(10)
-
+    
     const [merchantCategory, setMerchantCategory] = useState<string>('')
-
-    React.useEffect(()=>{ 
-        const response = async()=>{
-            try{
-                setIsLoading(true)
-                const res = await MerchantsService.getMerchants();
-                if(!res.success){
-                    throw alert( res.message )
-                }
-               
-                let merchants = res.data.filter((t:any) => t.type ==="PPAY")
-                dispatch(setMerchants(merchants))
-                setIsLoading(false)
-                
-            }catch(err:any){
-                setIsLoading(false)
-              alert(err.message)
-            }
-        }
-
-        response();
-        },
-     [])
-
-     
-
-    const {merchants} = useSelector(merchantsSelector)
    
     const filterResults = merchants.filter((mr)=>{
         switch(merchantCategory){
         case "name":
-          const hasSearchResults:boolean = mr?.merchant_tradeName?.toLowerCase().includes(searchQuery.toLowerCase())
+          const hasSearchResults:boolean = mr?.merchant_tradeName?.toLowerCase().startsWith(searchQuery.toLowerCase())
           if(hasSearchResults) return mr;
           break;
         case "category":
-            const hasSearchResults2:boolean = mr?.lineOfBusiness?.toLowerCase().includes(searchQuery.toLowerCase())
+            const hasSearchResults2:boolean = mr?.lineOfBusiness?.toLowerCase().startsWith(searchQuery.toLowerCase())
             if(hasSearchResults2) return mr;  
             break;
         default:
@@ -89,7 +69,6 @@ const handleSelectedId:Function = async (id:string) => {
         }else if(response?.data === null){
             return alert('Merchant details is empty')
         }
-        console.log(response)
         return  dispatch(setSelected(response.data))
        
     }catch(err:any){
@@ -98,56 +77,48 @@ const handleSelectedId:Function = async (id:string) => {
 }
 
     return (
-        <div className="relative md:pt-10 pb-10  w-full mb-12 font-segoe">
-          <div className='mb-20'>
-            <h2 className="text-2xl leading-tight">Merchants</h2>
-        </div>
+        <div className="relative md:pt-10 pb-10  w-full mb-12">
+         <PageHeader title='Merchants Onboarding'/>
+
         {/**date picker */}
-          <div className="flex items-center">
-            <div className="relative">
-             <input name="start" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date start" />
-             </div>
-             <span className="mx-4 text-gray-500">to</span>
-             <div className="relative">
-             <input name="end" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Select date end" />
-         </div>
-        </div>
+          <div className="flex items-center space-x-2">
+                <div>
+                <input type="date" 
+                    className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Start date'
+                    onChange={(date:any)=>setStartDate(date.target.value)}
+                    value={startDate}/>
+                </div>
+                <div>
+                <input type="date" 
+                        className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                        placeholder='End date'
+                        onChange={(date:any)=>setEndDate(date.target.value)}
+                        value={endDate}/>  
+                </div>
+                {/**filter btn */}
+              <OutlinedButton 
+                value={loading? <Loader/> : 'Filter'}
+                action={()=>{}}
+                color="gray"
+                icon={<BiFilterAlt/>}
+                />
+          </div>
             <div className='flex flex-wrap -mt-24'>
-                <div className="w-full xl:w-5/12 mb-12 xl:mb-0">  
+                <div className="w-full sm:w-6/12 mb-12 md:mb-0">  
                 <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 ">
            <div className="my-2 flex sm:flex-row flex-col mt-0 pt-0">
             <div className="flex flex-row mb-1 sm:mb-0">
+                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
                 <div className="relative">
-                        <select
-                            onChange = {pageRowsHandler}
-                            value={rowsPerPage}
-                            className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>20</option>
-                        </select>
-                        <div
-                            className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
-                        </div>
-                </div>
-                <div className="relative">
-                 <select
-                        onChange = {merchantCategoryHandler}
-                        value = {merchantCategory}
-                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>column search</option>
-                        <option value="name">comp name</option>
-                        <option value="category">comp category</option>
-                </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
+                    <select
+                            onChange = {merchantCategoryHandler}
+                            value = {merchantCategory}
+                            className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                            <option>column search</option>
+                            <option value="name">comp name</option>
+                            <option value="category">comp category</option>
+                    </select>
                 </div>
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search by ${merchantCategory}`}/>
@@ -171,7 +142,7 @@ const handleSelectedId:Function = async (id:string) => {
                 </div>
                 <div className="block w-full overflow-x-auto">
                     {/* Projects table */}
-                    <table className="items-center w-full bg-transparent border-collapse">
+                    <table className="items-center w-full bg-transparent border-collapse text-sm">
                         <thead>
                             <tr>
                                 <th
@@ -199,11 +170,17 @@ const handleSelectedId:Function = async (id:string) => {
                                 >
                                  Status
                                 </th>
+                                <th
+                                    className=
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                >
+                                 Declined
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                         {
-                           isLoading
+                           loading
                             ? 
                            <Spinner/>
                            :
@@ -243,7 +220,7 @@ const handleSelectedId:Function = async (id:string) => {
             </div>
         </div>
         </div>
-        <div className="w-full xl:w-7/12">
+        <div className="w-full sm:w-6/12">
             <MerchantDetailsTable/>
         </div>
       </div>

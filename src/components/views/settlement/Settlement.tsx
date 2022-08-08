@@ -5,6 +5,7 @@ import MerchantsService from '../../../services/merchant.service'
 import AccountsService from '../../../services/accounts.service';
 import { setIssuers } from '../../../state/account.state';
 import Swal from 'sweetalert2';
+import PageHeader from '../../header/PageHeader';
 
 
 export default function Users() {
@@ -160,9 +161,9 @@ export default function Users() {
 
 
     return (
-     <div className="relative md:pt-28 pb-10  w-full mb-12">
+     <div className="relative md:pt-10 pb-10  w-full mb-12">
           
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Merchant Settlement</h2>
+           <PageHeader title="Merchant Settlement" />
           
             <div className='flex flex-wrap'>
                 <div className="w-full mb-2 px-4">  

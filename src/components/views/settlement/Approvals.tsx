@@ -7,7 +7,11 @@ import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2'
-
+import RowNumberSelector from '../../buttons/RowNumberSelector';
+import ValueFilterSelector from '../../buttons/ValueFilterSelector';
+import { OutlinedButton } from '../../buttons/BasicButton';
+import { BiFilterAlt } from 'react-icons/bi';
+import PageHeader from '../../header/PageHeader';
 
 function AllSettlements(){
     const dispatch = useDispatch()
@@ -17,7 +21,8 @@ function AllSettlements(){
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
-    
+    const [startDate,setStartDate]=useState('')
+    const [endDate,setEndDate]=useState('')
     useEffect(()=>{
         response();
     },[]) 
@@ -82,68 +87,39 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
     return(
         <div className="font-segoe relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
-           <div className='mb-10'>
-              <h2 className="text-2xl leading-tight">Pending Settlements</h2>
-           </div>    
+           <PageHeader title="Pending Settlements"/>    
         {/**date picker */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
           <div className="relative">
-            <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-            />
-         </div>
+            <input type="date" 
+                className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                placeholder='End date'
+                onChange={(date:any)=>setStartDate(date.target.value)}
+                value={startDate}/>   
+          </div>
         <span className="mx-4 text-gray-500">to</span>
         <div className="relative">
-            <div className="relative">
-                <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-                />
-            </div>
+            <input type="date" 
+                className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                placeholder='End date'
+                onChange={(date:any)=>setEndDate(date.target.value)}
+                value={endDate}/>   
        </div>
        {/**filter btn */}
-       <button 
-            className='rounded-md bg-red-800 text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
+       <OutlinedButton 
+        value={'Filter'}
+        action={()=>{}}
+        color="gray"
+        paddingWide
+        icon={<BiFilterAlt/>}
+       />
      </div>
      {/**end date */}
 {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
-                <div className="relative">
-                    <select
-                        onChange = {pageRowsHandler}
-                        value={rowsPerPage}
-                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                        <option>40</option>
-                        <option>50</option>
-                        <option>80</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
-                <div className="relative">
-                    <select
-                        onChange = {transactionCategoryHandler}
-                        value = {transactionCategory}
-                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option>all</option>
-                        <option>paid</option>
-                        <option>failed</option>
-                        <option>account type bank</option>
-                        
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
+                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
+                <ValueFilterSelector setFilter={transactionCategoryHandler} value={transactionCategory} options={['name']}/>
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search merchant name ...'/>
         </div>

@@ -3,15 +3,16 @@ import {Chart} from "chart.js";
 import ReportService from "../../services/reports.service";
 import moment from "moment";
 import ChartLoader from './LoadChart'
+
 //const Moment = require("moment");
 
 export default function CardBarChart() {
-
+  //const [date,setDate]=useState()
   const [dates] = useState([]);
   const [successData] = useState([]);
   const [failureData] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [period, /**setPeriod**/] = useState("MMM/DD")
+  const [period, /**setPeriod**/] = useState("MMM/DD") //variable formatter for the date display
 
 //   const handleChange=(e)=>{
 //     setPeriod( e.target.value);
@@ -116,13 +117,13 @@ export default function CardBarChart() {
 
   const loadGraph = async () => {
     try {
-      const _m = new Date().getMonth();
+      const _m = new Date().getMonth()+1;
       const y = new Date().getFullYear();
       const __m = `0${_m}`
       const m = _m < 10 ? __m : _m;
 
-      //console.log(y,m)
-      const res = await ReportService.dateFilter(`${y}-07-01`, new Date().toISOString());;
+    
+      const res = await ReportService.dateFilter(`${y}-${m}-01`, new Date().toISOString());;
        
       const trs = res.data;
       // const trs = trs?.sort(
@@ -179,33 +180,16 @@ export default function CardBarChart() {
                 Daily App Performance
               </h6>
               <h2 className="text-xl font-semibold">
-                Total transactions
+                Total Transactions
                 {!isLoading && <ChartLoader/>}
               </h2>
-              {/* { isLoading &&
-              (
-              <div className="flex justify-center">
-                <div className="form-check form-check-inline text-sm align-center mr-3">
-                  <input className="form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                   type="radio" 
-                   name="period" 
-                   id="1" 
-                   value="MMM/DD"
-                   onChange={handleChange}/>
-                  <label className="form-check-label inline-block text-gray-800" for="inlineRadio10">DAILY</label>
-                </div>
-                <div className="form-check form-check-inline text-sm align-center mr-3">
-                  <input className="form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                   type="radio"
-                   name="period" 
-                   id="2" 
-                   value="YYYY/MMM"
-                   onChange={handleChange}/>
-                  <label className="form-check-label inline-block text-gray-800" for="inlineRadio20">MONTHLY</label>
-                </div>
-              </div>
-              )
-              } */}
+              {/* <DatePicker
+                className="tracking-wide font-segoe bg-indigo-50 text-indigo-500 active:bg-indigo-600 hover:underline text-sm font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                dateFormat="MM/yyyy"
+                showMonthYearPicker
+              /> */}
             </div>
         </div>
         <div className="p-4 flex-auto">

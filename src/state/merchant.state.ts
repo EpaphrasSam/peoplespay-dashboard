@@ -1,23 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {RootState} from './state';
 
-
 interface StateModel {
     loading : boolean,
     merchants : any[],
+    approvedMerchants:any[],
+    merchantName:string,
     categories : any[],
     selected : any
     docx : any[]
-    banks:any[]
+    banks:any[],
+    apps:any[]
 }
 
 const initialState:StateModel={
     loading :true,
     merchants:[],
+    approvedMerchants:[],
     categories:[],
     selected :[],
     docx :[],
-    banks:[]
+    banks:[],
+    apps:[],
+    merchantName:''
 }
 
 
@@ -33,6 +38,13 @@ const state = createSlice(
                     loading: false
                 }
             }, 
+            setApprovedMerchants:(state,action)=>{
+                return {
+                       ...state,
+                       approvedMerchants : action.payload,
+                       loading: false
+                   }
+               }, 
             setCategories : (state,action)=> {
                 return {
                     ...state,
@@ -50,19 +62,31 @@ const state = createSlice(
             setDocuments : (state,action)=>{
                 return{
                     ...state,
-                    docx : action.payload
+                    docx : action.payload,
+                    loading:false
                 }
             },
             setBanks:(state,action)=>{
                 return{
                     ...state,
-                    banks : action.payload
+                    banks : action.payload,
+                    loading:false
                 }
+            },
+            setApps:(state,action)=>{
+                return{
+                    ...state,
+                    apps : action.payload,
+                    loading:false
+                }
+            },
+            setMerchantName:(state,action)=>{
+                state.merchantName=action.payload
             }
         }
     }
 )
 
 export const merchantsSelector=(state:RootState)=>state.merchants;
-export const {setMerchants , setCategories, setSelected, setDocuments,setBanks}=state.actions;
+export const {setMerchantName,setMerchants ,setApprovedMerchants, setCategories, setSelected, setDocuments,setBanks,setApps}=state.actions;
 export default state.reducer;

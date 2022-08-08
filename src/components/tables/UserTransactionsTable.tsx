@@ -240,7 +240,7 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
             </td>
 </tr>
     )) :
-     "NO transactions to display"
+     "No transactions to display"
     }
     </>
 )

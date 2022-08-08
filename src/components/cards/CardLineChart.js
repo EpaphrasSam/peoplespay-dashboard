@@ -166,7 +166,7 @@ export default function CardLineChart() {
           }
         }
         sales_TrData?.push(totalSales);
-        console.log(sales_TrData)
+        //console.log(sales_TrData)
       }
 
       for (let i = 0; i < sales_TrData.length; i++) {

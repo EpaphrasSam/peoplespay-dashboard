@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import MessageService from '../../../services/broadcast.service'
+import PageHeader from '../../header/PageHeader';
 
 const swal = require('sweetalert2');
 
@@ -44,10 +45,8 @@ export default function BroadCastMessage(){
   }
 
 return (
-    <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
-           <div>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">BroadCast Message</h2>
-          </div>
+    <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
+           <PageHeader title="Broadcast Message"/>
 
           <div className="flex justify-center">
             <div className="mb-4  w-1/2">

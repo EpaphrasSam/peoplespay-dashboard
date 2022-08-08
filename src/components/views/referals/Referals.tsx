@@ -1,20 +1,19 @@
 import React from 'react'
+import PageHeader from '../../header/PageHeader';
 import ReferalsTable from '../../tables/ReferalsTable';
 
 function Wallets(){
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
-           <div>
-            <h2 className="text-2xl font-semibold leading-tight text-red-800">Referals</h2>
-        </div>
+        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
+        <PageHeader title="Referrals" />
 
 {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
                         <select
-                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option>5</option>
                             <option>10</option>
                             <option>20</option>
@@ -28,7 +27,7 @@ function Wallets(){
                 </div>
                 <div className="relative">
                     <select
-                        className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>All</option>
                         <option>Active</option>
                         <option>Inactive</option>

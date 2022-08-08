@@ -2,6 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { merchantsSelector, setDocuments,setBanks } from "../../state/merchant.state";
 import merchantsService from "../../services/merchant.service";
+import { OutlinedButton } from "../buttons/BasicButton";
+import {FcCancel} from 'react-icons/fc'
+import{IoMdCheckmarkCircle}from 'react-icons/io'
+import BlockReasonModal from "../modal/BlockReasonModal";
+import { alertResponse } from "../sweetalert/SweetAlert";
+
 //const QRCode = require("qrcode.react");
 
 const swal = require("sweetalert2");
@@ -12,6 +18,10 @@ const MerchantDetails: React.FC = () => {
   const { selected } = useSelector(merchantsSelector);
 
   const [title, setTitle] = React.useState("BASIC");
+  
+  /**Decline Modal */
+  const[showModal,setShowModal]=React.useState(false)
+  const[reason,setReason]=React.useState('')
 
   const confirmMerchantApproval = async () => {
     try {
@@ -89,6 +99,48 @@ const MerchantDetails: React.FC = () => {
     }catch(err){}
   }
 
+  const approve=()=>{
+    try {
+       if (selected._id === undefined) {
+        swal.fire({
+          text: "No merchant selected",
+        });
+      } else {
+        swal
+          .fire({
+            text: " Confirm merchant approval",
+            showDenyButton: true,
+            denyButtonText: "Cancel Approval",
+            confirmButtonText: "Confirm Approval",
+          })
+          .then((result: any) => {
+            if (result.isConfirmed) {
+              confirmMerchantApproval();
+            }
+          });
+      }
+      return;
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
+
+  const declineMerchant=async():Promise<any>=>{
+    try{
+      if(reason==="" ||reason=== null)return alert('Please provide a reason')
+      const data={
+        id:selected?._id,
+        declineReason:reason
+      }
+      const res=await merchantsService.declineMerchant(data)
+      await alertResponse({
+       icon:res.success?'success':'error',
+       response:res.success?res.message:'Sorry, please check your internet and try again'
+      })
+      if(res.success)return setShowModal(false)
+    }catch(err){}
+  }
+
   React.useEffect(() => {
     try {
       getDocuments()
@@ -102,6 +154,13 @@ const MerchantDetails: React.FC = () => {
 
   return (
     <>
+     <BlockReasonModal 
+          showModal={showModal} 
+          action={()=>declineMerchant()} 
+          type="Decline" reason={reason} 
+          onChange={(e:any)=>setReason(e.target.value)}
+          cancel={()=>setShowModal(false)}
+          />
       <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
           <div className="rounded-t mb-0 px-4 py-3 border-0">
@@ -109,53 +168,31 @@ const MerchantDetails: React.FC = () => {
               <h3 className="font-semibold text-lg text-blueGray-700">
                 Details
               </h3>
-              <button
-                className={`font-sans ${selected?.active? 'bg-gray-900':'bg-red-800'} text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
-                type="button"
-                onClick={() => {
-                  try {
-                    if(selected?.active){
-                      return swal
-                        .fire({
-                          text: "Are you sure to block this merchant ?",
-                          showDenyButton: true,
-                          denyButtonText: "No",
-                          confirmButtonText: "Yes",
-                        })
-                        .then((result: any) => {
-                          if (result.isConfirmed) {
-                              //blockMerchant();
-                              return alert('This feature will be effected in next update')
-                          }
-                        });
-                    }
-
-                    else if (selected._id === undefined) {
-                      swal.fire({
-                        text: "No merchant selected",
-                      });
-                    } else {
-                      swal
-                        .fire({
-                          text: " Confirm merchant approval",
-                          showDenyButton: true,
-                          denyButtonText: "Cancel Approval",
-                          confirmButtonText: "Confirm Approval",
-                        })
-                        .then((result: any) => {
-                          if (result.isConfirmed) {
-                            confirmMerchantApproval();
-                          }
-                        });
-                    }
-                    return;
-                  } catch (err: any) {
-                    alert(err.message);
+              <div className="space-x-2">
+                <button
+                  className={`inline-flex items-center space-x-3 ${selected?.active?'opacity-75':''} bg-blue-500 text-white font-bold text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
+                  type="button"
+                  disabled={selected?.active}
+                  onClick={() =>{approve()}}
+                  >
+                  <IoMdCheckmarkCircle/>
+                  {selected?.active ? 'Approved' : 'Approve Merchant'}
+                </button>
+                {!selected.active &&<OutlinedButton
+                   action={()=>{
+                    if(selected._id===undefined){return alert('No merchant selected')}
+                    else if(!selected?.active && !selected?.decline){return alert('Merchant has not submitted business details')}
+                    else if(selected?.decline)return alert('This merchant has been declined')
+                    setShowModal(true)}
                   }
-                }}
-              >
-                {selected?.active ? 'Block Merchant' : 'Approve Merchant'}
-              </button>
+                   value="Decline"
+                   color="red"
+                   borderVisible
+                   paddingWide
+                   icon={<FcCancel/>}
+                 />}
+              </div>
+              
             </div>
           </div>
           <hr />
@@ -166,14 +203,13 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                    ${title === 'BASIC' ? 'bg-red-800 text-white' : 'bg-gray-100'}
+                    ${title === 'BASIC' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
                     nav-link
                     w-full
                     block
                     font-medium
-                    text-xs
+                    text-sm
                     leading-tight
-                    uppercase
                     rounded
                     px-6
                     ml-2
@@ -182,7 +218,7 @@ const MerchantDetails: React.FC = () => {
                     cursor-pointer
                 `}
               >
-                BASIC
+                Basic
               </p>
             </li>
             <li
@@ -191,14 +227,13 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                ${title === 'CONTACT' ? 'bg-red-800 text-white' : 'bg-gray-100'}
+                ${title === 'CONTACT' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
                 nav-link
                 w-full
                 block
                 font-medium
-                text-xs
+                text-sm
                 leading-tight
-                uppercase
                 rounded
                 px-6
                 py-3
@@ -206,7 +241,7 @@ const MerchantDetails: React.FC = () => {
                 cursor-pointer
             `}
               >
-                CONTACT PERSONS
+                Contacts
               </p>
             </li>
             <li
@@ -215,14 +250,13 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                ${title === 'BANK' ? 'bg-red-800 text-white' : 'bg-gray-100'}
+                ${title === 'BANK' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
                 nav-link
                 w-full
                 block
                 font-medium
-                text-xs
+                text-sm
                 leading-tight
-                uppercase
                 rounded
                 px-6
                 py-3
@@ -230,7 +264,7 @@ const MerchantDetails: React.FC = () => {
                 cursor-pointer
             `}
               >
-                BANK ACCOUNTS
+                Accounts
               </p>
             </li>
             <li
@@ -239,14 +273,13 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                ${title === 'DOCX' ? 'bg-red-800 text-white' : 'bg-gray-100'}
+                ${title === 'DOCX' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
                 nav-link
                 w-full
                 block
                 font-medium
-                text-xs
+                text-sm
                 leading-tight
-                uppercase
                 rounded
                 px-6
                 py-3
@@ -254,7 +287,7 @@ const MerchantDetails: React.FC = () => {
                 cursor-pointer
             `}
               >
-                DOCUMENTS
+                Documents
               </p>
             </li>
           </ul>
@@ -444,7 +477,7 @@ const MerchantDetails: React.FC = () => {
                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">{d.name}</td>
                                  <td className="border border-slate-300 px-6 py-4 whitespace-nowrap flex justify-center"><img src={d?.data} alt={d.name} className="w-22 h-20"/></td>
                                  <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">
-                                   <button className="font-sans bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                                   <button className="bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
                                    onClick={()=>{
                                   
                                     let w = window.open('about:blank');

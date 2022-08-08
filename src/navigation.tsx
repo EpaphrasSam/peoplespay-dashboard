@@ -4,7 +4,8 @@ import {AnimatePresence}  from 'framer-motion';
 import Layout from './components/views/layout/Layout'
 import PageLoading from './components/views/layout/PageLoading'
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
-
+import NotFound from './components/views/404/NotFound';
+import ProtectedRoute from './components/protected/Protected';
 
 const Dashboard = lazy(()=>import('./components/views/Dashboard'))
 const Login = lazy(()=> import('./components/views/auth/Login'))
@@ -27,9 +28,18 @@ const SettlementApprovals = lazy(()=>import('./components/views/settlement/Appro
 const ElevyTransactions = lazy(()=>import('./components/views/elevy/Transactions'))
 const ElevyTransactionsDetails = lazy(()=>import('./components/views/elevy/TransactionDetails'))
 const WalletTrasactions=lazy(()=>import('./components/views/wallet/WalletTransactions'))
-
+const CreateAdmin=lazy(()=>import('./components/views/admin/CreateAdmin')) 
+const AllAdmins=lazy(()=>import('./components/views/admin/AllAdmins'))
+const EditAdmin=lazy(()=>import('./components/views/admin/EditAdmin'))
+const AllRoles=lazy(()=>import('./components/views/roles/AllRoles'))
+const AddRole =lazy(()=>import('./components/views/roles/AddRole'))
+const ChangePasswordForm=(lazy(()=>import('./components/views/changepassword/ChangePasswordForm')))
+const ConfigMerchants=(lazy(()=>import('./components/views/config/Merchants')))
+const MerchantApps= (lazy(()=>import('./components/views/config/MerchantApps')))
+const DirectDebit=(lazy(()=>import('./components/views/directdebit/DirectDebit')))
 // create a component
 const Navigation=()=>{
+
     return (
         <HashRouter>
                 <div className='App'>
@@ -37,9 +47,12 @@ const Navigation=()=>{
                     <Suspense fallback={<PageLoading/>}>
                         <AnimatePresence exitBeforeEnter>
                           <Routes>
+                            <Route  path='*' element={<NotFound/>} />
                             <Route  path='login' element={<Login/>} />
-                            <Route  path='' element={<Layout/>}>
+                            <Route path="change-password"  element={<ChangePasswordForm/>}/>
+                            <Route  path='' element={<ProtectedRoute><Layout/></ProtectedRoute>}>
                                 <Route path="" element={<Dashboard/>}/>
+
                                     {/**paid transactions */}
                                 <Route path='allpaid-transactions' element={<PaidTransactions/>} />
 
@@ -81,7 +94,25 @@ const Navigation=()=>{
                                 {/**Settlement */} 
                                 <Route path="e-levy"  element={<ElevyTransactions/>}/>
                                 <Route path="elevytransactions"  element={<ElevyTransactionsDetails/>}/>
+
+                                 {/**Admins */}
+                                <Route path="create-admin"  element={<CreateAdmin/>}/>
+                                <Route path="all-admins" element={<AllAdmins/>}/>
+                                <Route path="edit-admin" element={<EditAdmin/>}/>
+
+                                {/**Roles */}
+                                <Route path="roles">
+                                   <Route index={true} element={<AllRoles/>} />
+                                   <Route path="new"  element={<AddRole/>} />
+                                </Route>
                                 
+                                {/**Merchant Config*/}
+                                  <Route path="merchants-control" element={<ConfigMerchants/>}/>
+                                  <Route path="merchant-apps" element={<MerchantApps/>}/>
+
+                                {/**Merchant Config*/}
+                                  <Route path="direct-debit" element={<DirectDebit/>}/>
+                        
                             </Route>
                         </Routes>
                        </AnimatePresence>
