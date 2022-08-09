@@ -74,11 +74,11 @@ const UserTransactionsTable = ({transactions, addId, reverseIds,checked}:AppProp
                     : 
                     t.debit_status === 'failed' ? 
                     (
-                        <span
-                    className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
-                    <span aria-hidden
-                        className="absolute inset-0 bg-red-500 rounded-md"></span>
-                    <span className="relative">Failed</span>
+                    <span
+                        className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
+                        <span aria-hidden
+                            className="absolute inset-0 bg-red-500 rounded-md"></span>
+                        <span className="relative">Failed</span>
                 </span>
                     ):
                     (

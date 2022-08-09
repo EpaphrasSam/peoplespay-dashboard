@@ -7,6 +7,7 @@ import PageHeader from '../../header/PageHeader';
 import {authSelector,setAdmins,setSelectedAdmin} from '../../../state/auth.state'
 import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
+import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 
 function AllAdmins(){
     const navigate=useNavigate()
@@ -20,7 +21,7 @@ function AllAdmins(){
     
     useEffect(()=>{
         response();
-    },[searchQuery])
+    },[])
 
     const response = async()=> {
         try{ 
@@ -45,30 +46,50 @@ function AllAdmins(){
    }catch(err){}
   }
 
-const resetPassword=async(id:string)=>{
+const resetPassword=(id:string)=>{
    try{
-    const res=await authService.resetPassword(id)
-    if(!res.success){
-      return alert(res.message)
-    }
-     alert(res.message)
+    confirmAlert({
+        text:'This will reset the password for this admin',
+        confirmButtonText:'Yes, reset'
+    }).then(async(result)=>{
+       if(result.isConfirmed){
+        const res=await authService.resetPassword(id)
+        if(!res.success){
+            return alertResponse({
+                icon:'info',
+                response:res.message
+            })
+          }
+        return alert(res.message)
+       }
+    })     
    }catch(err:any){
-    alert(err?.message)
+    alertResponse({
+        icon:'info',
+        response:err.message
+    })
    }
 }
 
-const blockAdmin=async(id:string,isblocked:boolean)=>{
+const blockAdmin=(id:string,isblocked:boolean)=>{
     try{
-        const data={
-            "id":id,
-            "data": {
-                "blocked": isblocked?false:true
+        confirmAlert({
+            text:isblocked?'This will unblock this merchant':'This will block this merchant',
+            confirmButtonText:isblocked?'Yes, unblock this admin user':'Yes, block admin user'
+         }).then(async()=>{
+            const data={
+                "id":id,
+                "data": {
+                    "blocked": isblocked?false:true
+                }
             }
-        }
-        const res=await authService.update(data)
-        if(!res.success)return alert(res.message)
-        alert(res.message)
-        //window.location.reload();
+            const res=await authService.update(data)
+            await alertResponse({
+                icon:res?.success?'success':'error',
+                response:res.message
+             })
+            if(res.success)return window.location.reload();
+         })
     }catch(err:any){alert(err.message)}
 }
 
@@ -140,16 +161,16 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                Role
+                            </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
                                  Email
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
                                  Account Type
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
-                                Role
-                            </th>
+                            </th> 
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
                                 Status

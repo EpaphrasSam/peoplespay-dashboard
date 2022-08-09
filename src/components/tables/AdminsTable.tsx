@@ -25,17 +25,17 @@ const AdminsTable = ({data,resetPassword,blockAdmin,editAdmin}:AppProps):JSX.Ele
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white">
                 <p className="text-gray-900 whitespace-no-wrap">
+                    {a?._role?.name}
+                </p>
+            </td>
+            <td className="text-left px-5 py-5 border-b border-gray-200 bg-white">
+                <p className="text-gray-900 whitespace-no-wrap">
                     {a?.email}
                 </p>
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {a?.account_type}
-                </p>
-            </td>
-            <td className="text-left px-5 py-5 border-b border-gray-200 bg-white">
-                <p className="text-gray-900 whitespace-no-wrap">
-                    {a?._role?.name}
                 </p>
             </td>
             <td className="text-left px-5 py-5 border-b border-gray-200 bg-white">

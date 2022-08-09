@@ -49,9 +49,8 @@ export default function EditAdmin() {
             name: '',
             _role:'',
         })
-       return navigate('/all-admins')
+        if(res.success)return navigate('/all-admins')
       }catch(err:any){
-        setLoading(false)
         alertResponse(
             {
              icon:'info',

@@ -64,7 +64,7 @@ function Wallets(){
 }
 
     return(
-        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
+        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
         <PageHeader title="Wallets"/>
 
        {/**filters */}
@@ -77,7 +77,7 @@ function Wallets(){
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
-                <table className="min-w-full leading-normal">
+                <table className="min-w-full leading-normal font-segoe">
                     <thead>
                         <tr>
                             {/* <th

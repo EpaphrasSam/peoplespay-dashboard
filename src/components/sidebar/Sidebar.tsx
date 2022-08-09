@@ -89,7 +89,7 @@ const routes:Route[]=[
             {
                 path:'users',
                 icon:<FiUsers className="mr-3 text-xl"/>,
-                title:'Users'
+                title:'Subscribers'
             }
         ]
     },
