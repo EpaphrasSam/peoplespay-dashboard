@@ -12,6 +12,17 @@ const getMerchants=()=>fetch(
     }
 ).then(res=>res.json())
 
+const getApprovedMerchants=()=>fetch(
+    `${BASE_URL}/merchants/approved`,
+    {
+        method:'GET',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' : Utils.AuthToken()
+        },
+    }
+).then(res=>res.json())
+
 
 const getActivities = () => fetch(
     `${BASE_URL}/merchants/activities/get`,
@@ -233,7 +244,6 @@ const blockMerchant = (body:any) =>fetch(
            'Authorization' : Utils.AuthToken()
     },
     body : JSON.stringify(body)
-    
     }
 ).then(res=>res.json())
 
@@ -248,8 +258,56 @@ const getMerchantBank = (id:string)=>fetch(
     }
 ).then(res=>res.json())
 
+// const declineMerchants = (id:string)=>fetch(
+//     `${BASE_URL}/beneficiaries/get/customer/${id}`,
+//     {
+//         method:'GET',
+//         headers : {
+//             'Content-type' : 'Application/json',
+//            'Authorization' : Utils.AuthToken()
+//     },
+//     }
+// ).then(res=>res.json())
+
+const declineMerchant = (data:any)=>fetch(
+    `${BASE_URL}/merchants/decline`,
+    {
+        method:'PUT',
+        headers : {
+            'Content-type' : 'Application/json',
+           'Authorization' : Utils.AuthToken()
+    },
+    body:JSON.stringify(data)
+    }
+).then(res=>res.json())
+
+const getApps = (id:string)=>fetch(
+    `${BASE_URL}/hub/get/${id}`,
+    {
+        method:'GET',
+        headers : {
+            'Content-type' : 'Application/json',
+           'Authorization' : Utils.AuthToken()
+    },
+    }
+).then(res=>res.json())
+
+const toggleDisbursement = (id:string)=>fetch(
+    `${BASE_URL}/hub/toggle/pool/${id}`,
+    {
+        method:'PUT',
+        headers : {
+            'Content-type' : 'Application/json',
+           'Authorization' : Utils.AuthToken()
+    },
+    }
+).then(res=>res.json())
+
+
+
 const merchantsService =  {
     getMerchants,
+    getApprovedMerchants,
     getCategories,
     summary,
     // getMerchant,
@@ -261,6 +319,10 @@ const merchantsService =  {
     getDocuments,
     approveMerchant,
     blockMerchant,
-    getMerchantBank
+    getMerchantBank,
+    // declineMerchants,
+    getApps,
+    declineMerchant,
+    toggleDisbursement
 }
 export default merchantsService;

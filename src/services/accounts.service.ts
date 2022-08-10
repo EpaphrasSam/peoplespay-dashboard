@@ -70,10 +70,20 @@ const approve = (id:any) =>fetch(
         },
         body : JSON.stringify({id})
     }
-).then(res=>{
-    return res.json()}
-    )
+).then(res=>res.json())
+
+const debitWallet = (data:any) =>fetch(
+        `${BASE_URL}/transactions/debit`,
+        {
+            method:'POST',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            },
+            body : JSON.stringify(data)
+        }
+    ).then(res=>res.json())
 
 
-const AccountsService = {getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
+const AccountsService = {debitWallet,getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
 export default AccountsService;

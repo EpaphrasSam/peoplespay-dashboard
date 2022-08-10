@@ -3,17 +3,19 @@ import { motion } from 'framer-motion';
 import WalletTransactionsTable from '../../tables/WalletTransactionsTable'
 import {useSelector} from 'react-redux';
 import {reportSelector} from '../../../state/report.state' 
-import {ReportModel} from '../../../models/report.model'
+//import {ReportModel} from '../../../models/report.model'
 import ReportService from '../../../services/reports.service';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
 import Loader from '../users/Loader';
+import RowNumberSelector from '../../buttons/RowNumberSelector';
+import ValueFilterSelector from '../../buttons/ValueFilterSelector';
+import { OutlinedButton } from '../../buttons/BasicButton';
+import { BiFilterAlt } from 'react-icons/bi';
+import { HiDownload } from 'react-icons/hi';
+import PageHeader from '../../header/PageHeader';
 
-
-
-const swal = require('sweetalert2');
 
 function WalletTransactions(){
     const group1Motion = {
@@ -94,7 +96,7 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
 }
 
-const transactionCategoryHandler = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
+//const transactionCategoryHandler = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
 
 
 const results:any[] = filterResults.length === 0 ? walletTransactions : filterResults
@@ -112,10 +114,10 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
     try{
         setLoading(true)
         const res = await ReportService.dateFilter(startDate,endDate)
-        const resReport = await ReportService.summaryReport(startDate,endDate)
+        //const resReport = await ReportService.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
         
-        const walletTransactions = res.data.map((d:any)=> new ReportModel(d)) 
+        //const walletTransactions = res.data.map((d:any)=> new ReportModel(d)) 
         //dispatch(setUserTransactions(walletTransactions))
        setLoading(false)
 
@@ -130,15 +132,15 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
         <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
             {/**page heading */}
          <motion.div 
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={group1Motion}>
-           <div className='mb-10'>
-              <h2 className="text-2xl leading-tight font-segoe">{customerName} Transactions History</h2>
-           </div>
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={group1Motion}>
+           
+            <PageHeader title={`${customerName} Transactions History`}/>
+            
 
-            </motion.div>
+        </motion.div>
 
         {/**download button */}
         <div className="float-right space-x-2 mr-12">
@@ -146,78 +148,57 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
                 headers = {headers}
                 data = {results}
                 filename={'report.csv'}
-                className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
-                    {loading ? 'preparing...' : 'Download CSV'}
+                className='py-1.5 px-1 bg-green-500 border-2 border-green-500 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
+                    <HiDownload/>
+                    <span>{loading ? 'Preparing...' : 'Download Report'}</span>
             </CSVLink>
         </div>
         
        
         {/**date picker */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
           <div className="relative">
-            <DatePicker selected = {startDate}
-                        onChange = {(date)=>setStartDate(date)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-            />
+            <DatePicker 
+                    selected = {startDate}
+                    value={startDate}
+                    onChange = {(date)=>setStartDate(date)}
+                    className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500" 
+                    dateFormat="dd/MM/yyyy"
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}              
+                />
          </div>
         <span className="mx-4 text-gray-500">to</span>
         <div className="relative">
-        <DatePicker selected = {endDate}
+            <DatePicker 
+                    selected = {endDate}
                     value = {endDate}
-                        //locale = 'en-CA'
-                        onChange = {(date)=>setEndDate(date)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-         />
-       </div>
-
-       {/**filter btn */}
-       <button 
-            onClick={()=>clickDateFilter()}
-            className={`rounded-md ${loading?'bg-white':'bg-red-800'} text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow ease-linear transition-all duration-150`}>{loading? <Loader/> : 'Filter'}</button>
+                    onChange = {(date)=>{setEndDate(date);console.log('ch')}}
+                    className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500" 
+                    dateFormat="dd/MM/yyyy"
+                    selectsEnd
+                    endDate={endDate}
+                    minDate={startDate}
+                  
+               />
+        </div>
+            {/**filter btn */}
+                <OutlinedButton 
+                value={loading? <Loader/> : 'Filter'}
+                action={()=>clickDateFilter()}
+                color="gray"
+                paddingWide
+                icon={<BiFilterAlt/>}
+            />
      </div>
      {/**end date */}
 
 {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
-                <div className="relative">
-                    <select
-                        onChange = {pageRowsHandler}
-                        value={rowsPerPage}
-                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                        <option>40</option>
-                        <option>50</option>
-                        <option>80</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
-                <div className="relative">
-                    <select
-                        onChange = {transactionCategoryHandler}
-                        value = {transactionCategory}
-                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option value="none" selected >search column</option>
-                        <option value="phone">customer phone</option>
-                        <option value="name">customer name</option>
-                        <option value="transId">transactionId</option>
-                        <option value="refcode">reference code</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
+                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
+                <ValueFilterSelector setFilter={transactionCategory} value={transactionCategory} options={[]}/>
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder={`Search ${transactionCategory}`}/>
         </div>

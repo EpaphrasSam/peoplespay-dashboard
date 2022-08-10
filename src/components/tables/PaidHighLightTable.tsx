@@ -1,5 +1,5 @@
 import React from "react";
-import{formatDate} from '../../utils/Date'
+
 type AppPops = any;
 
 const  PaidHighLightTable = ({transactions}:{transactions:AppPops}):JSX.Element => (
@@ -7,9 +7,9 @@ const  PaidHighLightTable = ({transactions}:{transactions:AppPops}):JSX.Element 
     {
       
       transactions?.map((t:any) => (
-        <tr className="text-sm">
+        <tr>
           <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
-              {formatDate(t?.createdAt)}
+              {t?.createdAt}
           </th>
           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
               {t.time}

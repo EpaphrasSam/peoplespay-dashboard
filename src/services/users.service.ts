@@ -12,7 +12,20 @@ const getUsers = () => fetch(
     }
 ).then(res=>res.json())
 
+const blockUser=(data:any)=>fetch(
+    `${BASE_URL}/customers/update`,
+    {
+        method:'PUT',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' : Utils.AuthToken()
+        },
+        body:JSON.stringify(data)
+    }
+).then(res=>res.json())
+
 const usersService = {
-    getUsers
+    getUsers,
+    blockUser
 }
 export default usersService;

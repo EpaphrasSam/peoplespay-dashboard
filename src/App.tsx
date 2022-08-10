@@ -4,7 +4,7 @@ import state from './state/state';
 import './App.css';
 import Navigation from './navigation';
 
-
+import "react-datepicker/dist/react-datepicker.css"
 
 function App() {
   return (

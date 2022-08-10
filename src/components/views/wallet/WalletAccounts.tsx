@@ -1,43 +1,25 @@
-import React,{useEffect, useState, ChangeEvent} from 'react'
+import React,{useState, ChangeEvent} from 'react'
+import useFetchWallets from './UseFetchWallets';
 import WalletAccounts from '../../tables/WalletsTable';
-import {reportSelector, setWalletAccounts, setWalletTransactions,setCustomerName} from '../../../state/report.state'
+import {reportSelector, setWalletTransactions,setCustomerName} from '../../../state/report.state'
 import {useDispatch, useSelector} from 'react-redux';
 import ReportService from '../../../services/reports.service'
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
+import RowNumberSelector from '../../buttons/RowNumberSelector';
+import ValueFilterSelector from '../../buttons/ValueFilterSelector';
+import PageHeader from '../../header/PageHeader';
 
 function Wallets(){
-   
+    useFetchWallets();
     const dispatch = useDispatch()
-   
-    const {loading} = useSelector(reportSelector);
+    
+    const {loading,wallets} = useSelector(reportSelector);
 
     const [searchQuery, setSearchQuery] = useState('')
-    const [isLoading, setIsLoading] = useState(loading)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
-    const [category,setCategory] = useState('merchant')
-
-    useEffect(()=>{ 
-        const loadWallets = async()=>{
-             try{
-                const res =  await ReportService.getWallets();
-                
-                if(!res.success){
-                    throw alert(res.message);
-                }
-             const wallets = res.data.map((w:any)=>w);
-             dispatch(setWalletAccounts(wallets))
-             setIsLoading(loading);
-             }catch(err:any){
-                alert(err.message)
-             }
-        }
-        loadWallets();
-     },
-     [loading])
-
-     const {wallets} = useSelector(reportSelector)
+    const [category,setCategory] = useState('merchant') 
 
      const goTo=async(id:string,name:any)=>{
         try{
@@ -53,11 +35,11 @@ function Wallets(){
      const filterResults = wallets.filter((cus)=>{
         switch(category){
             case "merchant":
-              const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName?.toLowerCase().includes(searchQuery?.toLowerCase())
+              const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName?.toLowerCase().startsWith(searchQuery?.toLowerCase())
               if(hasSearchResults) return cus;
               break;
             case "customer":
-                const hasSearchResults2:boolean = cus?.customerId?.fullname?.toLowerCase().includes(searchQuery?.toLowerCase())
+                const hasSearchResults2:boolean = cus?.customerId?.fullname?.toLowerCase().startsWith(searchQuery?.toLowerCase())
                 if(hasSearchResults2) return cus;  
                 break;
             default:
@@ -82,70 +64,37 @@ function Wallets(){
 }
 
     return(
-        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
-        <div>
-            <h2 className="text-2xl leading-tight">Wallets</h2>
-        </div>
+        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
+        <PageHeader title="Wallets"/>
 
-{/**filters */}
+       {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
-                <div className="relative">
-                  <select
-                        onChange = {pageRowsHandler}
-                        value={rowsPerPage}
-                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                        <option>40</option>
-                    </select>  
-                        <div
-                            className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
-                        </div>
-                </div>
-                <div className="relative">
-                    <select
-                        onChange = {(e:ChangeEvent<HTMLSelectElement>)=>setCategory(e.target.value)}
-                        value = {category}
-                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                        <option value="merchant">merchants</option>
-                        <option value="customer">customers</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
+                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
+                <ValueFilterSelector setFilter={setCategory} value={category} options={['merchant','customer']}/>  
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
-                <table className="min-w-full leading-normal">
+                <table className="min-w-full leading-normal font-segoe">
                     <thead>
                         <tr>
-                            <th
+                            {/* <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Wallet ID
-                            </th>
-                            <th
+                            </th> */}
+                            {/* <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Customer ID
+                            </th> */}
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
+                                Name
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Type
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
-                                Name
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
@@ -179,7 +128,7 @@ function Wallets(){
                     </thead>
                     <tbody>
                        {
-                           isLoading
+                           loading
                             ? 
                            <Spinner/>
                            :
@@ -187,7 +136,7 @@ function Wallets(){
                        }       
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between          ">
+                <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between">
                     <span className="text-sm sm:text-sm text-gray-900">
                         Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{wallets.length}</span>{' '}Entries
                     </span>

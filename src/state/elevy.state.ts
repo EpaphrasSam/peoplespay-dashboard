@@ -20,10 +20,18 @@ const state=createSlice(
         initialState,
         reducers:{
             setRecords:(state,action)=>{
-                state.records = action.payload
+                return {
+                    ...state,
+                    records:action.payload,
+                    loading:false
+                }
               },
             setTransactions:(state,action)=>{
-                state.transactions = action.payload
+                return {
+                    ...state,
+                    transactions:action.payload,
+                    loading:false
+                }
             }
         }
     }

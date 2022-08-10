@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     fontFamily: {
       poppins: ['Poppins', 'sans-serif'],
-      segoe:['Segoe','sans-serif']
+      segoe:['Segoe','sans-serif'],
+      inter:['Inter','sans-serif']
     },
     extend: {
       colors: {
