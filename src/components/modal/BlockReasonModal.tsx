@@ -95,18 +95,3 @@ export default Modal;
 
 
 
-{/* <div className="flex justify-center">
-  <div className="fixed w-2/3 py-7 bg-white text-left border border-gray-50">
-     <div className="border-b-2 border-gray-200 py-3 pl-2">
-        My Modal
-     </div>
-     <main className="border-b-2 border-gray-200 py-7 pl-2">
-        This is modal content
-     </main>
-     <footer className="mt-2 pl-2">
-       <button className="bg-gray-400">
-        close
-       </button>
-     </footer>
-  </div>
- </div> */}

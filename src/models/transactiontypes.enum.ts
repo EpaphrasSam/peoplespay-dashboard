@@ -15,5 +15,6 @@ export enum EnumTransactionTypes {
     'VCTR'='VCTR',
     'WF'='Wallet Funding', // Wallet Funding
     'ST'='Settlement', // Settlement
-    'BI'='Busy Internet' // busy internet
+    'BI'='Busy Internet', // busy internet
+    'PY'='Payout'
 }

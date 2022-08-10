@@ -181,7 +181,7 @@ const MerchantDetails: React.FC = () => {
                 {!selected.active &&<OutlinedButton
                    action={()=>{
                     if(selected._id===undefined){return alert('No merchant selected')}
-                    else if(!selected?.active && !selected?.decline){return alert('Merchant has not submitted business details')}
+                    else if(!selected?.submitted && !selected?.decline){return alert('Merchant has not submitted business details')}
                     else if(selected?.decline)return alert('This merchant has been declined')
                     setShowModal(true)}
                   }

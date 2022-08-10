@@ -1,7 +1,6 @@
-import React,{ChangeEvent, useEffect,useState} from 'react'
-import { usersSelector,setUsers } from '../../../state/users.state';
-import { useDispatch, useSelector } from 'react-redux';
-import UsersService from '../../../services/users.service'
+import React,{ChangeEvent,useState} from 'react'
+import { usersSelector} from '../../../state/users.state';
+import { useSelector } from 'react-redux';
 
 import UsersTable from '../../tables/UsersTable'
 import Spinner from '../layout/Spinner';
@@ -9,50 +8,82 @@ import PageHeader from '../../header/PageHeader';
 import RowNumberSelector from '../../buttons/RowNumberSelector';
 import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 import SearchForm from '../../forms/SearchForm';
-
+import useFetchUsers from './useFetchUsers';
+import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
+import usersService from '../../../services/users.service';
+import DetailsModal from '../../modal/UserDetailsModal'
 
 export default function Users() {
-    const {users} = useSelector(usersSelector)
-    const dispatch = useDispatch()
-    const {loading} = useSelector(usersSelector);
-    const [isLoading, setIsLoading] = useState(false)
+    useFetchUsers()
+    const {users,loading} = useSelector(usersSelector)
+    const[user,setUser]=useState<any>(null)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [searchQuery, setSearchQuery] = useState('')
     const [category,setCategory] = useState('') 
-    useEffect(()=>{ 
-        try{
-            const loadUsers = async() => {
-                const response =  await UsersService.getUsers();
-                if(!response.success){
-                    alert(response.message)
-                }  
-                dispatch(setUsers(response.data))
-                setIsLoading(loading)
-            }
-            loadUsers()
-        }catch(err:any){
-          alert(err.message)
-        }
-     },
-     [loading,dispatch])
-
-     //Get Current rows
-    const indexOfLastRow:number = currentIndex * rowsPerPage;
-    const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-    const currentRows = users.slice(indexOfFirstRow,indexOfLastRow)
+    const [showModal,setShowModal]=useState(false);
+    
+    
     //buttonactions
-    const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
-    const paginateBack = () => setCurrentIndex(currentIndex - 1)
-   
     const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
         setRowsPerPage(parseInt(e.target.value))
     }
 
+   
+    const filterResults = users.filter((user:any)=>{
+        switch(category){
+            case "name":
+              const hasSearchResults:boolean = user?.fullname.toLowerCase().startsWith(searchQuery?.toLowerCase())
+              if(hasSearchResults) return user;
+              break;
+            case "phone":
+                const hasSearchResults2:boolean = user?.phone?.toLowerCase().startsWith(searchQuery?.toLowerCase())
+                if(hasSearchResults2) return user;  
+                break;
+            default:
+                return user;
+            }
+        }
+     )
+
+     const results:any[] = filterResults.length === 0 ? users : filterResults
+   
+      //Get Current rows
+    const indexOfLastRow:number = currentIndex * rowsPerPage;
+    const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
+    const currentRows = results.slice(indexOfFirstRow,indexOfLastRow)
+
+    const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
+    const paginateBack = () => setCurrentIndex(currentIndex - 1)
+   
+    const blockUser=(id:string,blocked:boolean)=>{
+        try{
+          confirmAlert({
+             text:blocked?'This will unblock this user':'This will block this user',
+             confirmButtonText:blocked?'Yes, unblock user':'Yes, block user'
+          }).then(async(result)=>{
+             if(result.isConfirmed){
+                 const res=await usersService.blockUser({
+                     id,
+                     data:{
+                         blocked:blocked?"false":"true"
+                     }
+                  })
+                  await alertResponse({
+                     icon:res?.success?'success':'error',
+                     response:res.message
+                  })
+                  if(res.success)return window.location.reload();
+             }
+          })
+        }catch(err){}
+      }
+
+   
     return (
         <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
-        <PageHeader title="All Subscribers"/>
-
+         <PageHeader title="All Subscribers"/>
+         <DetailsModal showModal={showModal} user={user} action={()=>{setShowModal(false)}}/>
        {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
@@ -98,17 +129,17 @@ export default function Users() {
                     </thead>
                     <tbody>
                        {
-                           isLoading
+                           loading
                             ? 
                            <Spinner/>
                            :
-                           <UsersTable users={currentRows}/>
+                           <UsersTable users={currentRows} blockUser={blockUser} setShowModal={setShowModal} setUser={setUser}/>
                        }       
                     </tbody>
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between">
                     <span className="text-sm sm:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{users.length}</span>{' '}Entries
+                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{results.length}</span>{' '}Entries
                     </span>
                     <div className="inline-flex mt-2 sm:mt-0">
                         {

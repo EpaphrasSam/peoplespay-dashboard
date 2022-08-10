@@ -16,7 +16,9 @@ import {HiDownload} from 'react-icons/hi'
 import{BiFilterAlt}from 'react-icons/bi'
 import RowNumberSelector from '../../buttons/RowNumberSelector';
 import PageHeader from '../../header/PageHeader';
+import Spinner from '../layout/Spinner';
 //import ValueFilterSelector from '../../buttons/ValueFilterSelector';
+import TransactionDetailsModal from '../../modal/TransactionDetailsModal'
 
 const swal = require('sweetalert2');
 
@@ -33,7 +35,7 @@ function UserTransactions(){
       };
 
 
-    const {transactions} = useSelector(reportSelector)
+    const {transactions,loading} = useSelector(reportSelector)
     const dispatch = useDispatch();
 
 const headers = [
@@ -58,12 +60,12 @@ const headers = [
     { label: "CREDIT STATUS", key: "status" },
     {label:"DEBIT STATUS", key: "debit_status" }
  ]
-
-
+    const [transaction,setTransaction]=useState<any>(null)
+    const [showModal,setShowModal]= useState(false);
     const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
-    const [loading, setLoading]=useState(false)
+    const [isloading, setLoading]=useState(false)
     const [amount, setAmount] = useState<string>('0');
     const [paidCharges, setPaidCharges] = useState<string>('0');
     const [failedAmount, setFailedAmount] = useState<string>('0');
@@ -73,7 +75,6 @@ const headers = [
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
-
 
     const reverseIDArray  = useRef(new Array());
     const [checked, setChecked]=useState(false)
@@ -90,7 +91,9 @@ const headers = [
                 if(!res.success){
                     throw Error(res.message)
                 }
+                console.log(res.data)
                 const transactions = res.data.map((d:any)=> new ReportModel(d)) 
+                console.log(transactions)
                 dispatch(setUserTransactions(transactions))
                 //Update states
                 setAmount(resReport?.data?.paid[0].totalAmount)
@@ -258,7 +261,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
           animate="animate"
           exit="exit"
           variants={group1Motion}>
-           
+              
               <PageHeader title="User Transactions"/>
 
             {/**deviders */}
@@ -290,7 +293,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                 filename={'report.csv'}
                 className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
                     <HiDownload/>
-                    <span>{loading ? 'Preparing...' : 'Download Report'}</span>
+                    <span>{isloading ? 'Preparing...' : 'Download Report'}</span>
             </CSVLink>
             <OutlinedButton
              value="Reverse Transaction"
@@ -339,7 +342,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
        {/**filter btn */}
        <OutlinedButton 
-        value={loading? <Loader/> : 'Filter'}
+        value={isloading? <Loader/> : 'Filter'}
         action={()=>clickDateFilter()}
         color="gray"
         paddingWide
@@ -365,8 +368,9 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     </select>
                 </div>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder={`Search ${transactionCategory}`}/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder={`Search ${transactionCategory}` }/>
         </div>
+        <TransactionDetailsModal transaction={transaction} action={()=>{setShowModal(false)}} showModal={showModal}/>
         <motion.div 
           initial="initial"
           animate="animate"
@@ -429,10 +433,10 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     </thead>
                     <tbody>
                        {
-                        //    isLoading ?
-                        //    <Spinner/>
-                        //    :
-                           <Transaction transactions={currentRows} addId={addIdToReverseIDs} reverseIds={reverseIDArray.current} checked={checked}/>
+                           loading ?
+                            <Spinner/>
+                           :
+                           <Transaction transactions={currentRows} addId={addIdToReverseIDs} reverseIds={reverseIDArray.current} checked={checked} setShowModal={setShowModal} setTransaction={setTransaction}/>
                        }
                     </tbody>
                 </table>

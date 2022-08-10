@@ -1,9 +1,8 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment} from 'react'
-//import {MdModeEditOutline} from 'react-icons/md'
 import {FiChevronDown} from 'react-icons/fi'
 import {FaRegEyeSlash} from 'react-icons/fa'
-import {GrPowerReset} from 'react-icons/gr'
+import { MdReadMore } from 'react-icons/md'
 
 type OptionProps={
   blockApp:Function;
@@ -59,7 +58,7 @@ export default function AppsTableOptions({blockApp,isBlocked,seeDetails}:OptionP
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       onClick={()=>seeDetails()}
                     >
-                    <GrPowerReset
+                    <MdReadMore
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
                       />

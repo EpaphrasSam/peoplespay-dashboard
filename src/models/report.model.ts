@@ -133,6 +133,9 @@ export class ReportModel {
             case 'BI':
                  this.transaction_type= EnumTransactionTypes.BI;
                  break;
+            case 'PY':
+                    this.transaction_type= EnumTransactionTypes.PY;
+                    break;
             default:
                 this.transaction_type=type
         }

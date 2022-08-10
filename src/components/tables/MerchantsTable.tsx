@@ -26,7 +26,7 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
             {m.lineOfBusiness || m.category}  
         </td> */}
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left">
-            {m.submitted 
+            {m?.submitted 
               ?
               (
                 <span

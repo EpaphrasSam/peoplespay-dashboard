@@ -1,22 +1,28 @@
 import React from 'react';
 import UsersTableOptions from '../dropdowns/UsersTableDropdown';
 import UsersTableDropdown from '../dropdowns/UsersTableDropdown';
-import {formatDate} from '../../utils/Date'
-type AppProps = {}[]
+import {formatDate} from '../../utils/Date';
 
-const UsersTable = ({users}:{users:AppProps}):JSX.Element => (
+type AppProps = {
+    users:{}[];
+    blockUser:Function,
+    setUser:any
+    setShowModal:any
+}
+
+const UsersTable = ({users,blockUser,setUser,setShowModal}:AppProps):JSX.Element => (
 <>
 {
     users.map((u:any)=>(
-        <tr>
-        <th className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+     <tr>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             <span
                 className=
                 "text-blueGray-600"
             >
                 {formatDate(u.createdAt)}
             </span>
-        </th>
+        </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             {u.fullname}
         </td>
@@ -54,9 +60,9 @@ const UsersTable = ({users}:{users:AppProps}):JSX.Element => (
         </td> 
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             <UsersTableDropdown 
-             blockUser={()=>{}}
-             seeDetails={()=>{}}
-             isBlocked
+             blockUser={()=>{blockUser(u?._id,u?.blocked)}}
+             seeDetails={()=>{setShowModal(true);setUser(u)}}
+             isBlocked={u?.blocked}
             />
         </td> 
     </tr>
