@@ -12,7 +12,7 @@ const SwitchButton=({value,action,status}:SwitchProps)=>(
     
       <input id="toogleA" type="checkbox" className="sr-only"/>
     
-      <div className="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+      <div className={`w-10 h-4 ${status?'bg-green-100':'bg-gray-400'} rounded-full shadow-inner`}></div>
     
       <div className={`${status?'bg-sgreen transform-x-full -right-1':'-left-1'} absolute w-6 h-6 bg-white rounded-full shadow -top-1 transition`}></div>
     </div>
