@@ -60,17 +60,7 @@ function MerchantsConfig(){
        }catch(err){}
      }
 
-     const filterResults = approvedMerchants.filter((cus)=>{
-        switch(category){
-            case "name":
-              const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName?.toLowerCase().includes(searchQuery?.toLowerCase())
-              if(hasSearchResults) return cus;
-              break;
-            default:
-                return cus;
-            }
-        }
-     )
+     const filterResults = approvedMerchants.filter((m)=>m?.merchant?.merchant_tradeName.toLowerCase().startsWith(searchQuery.toLowerCase()))
 
     const results:any[] = filterResults.length === 0 ? approvedMerchants : filterResults
      
@@ -95,7 +85,7 @@ function MerchantsConfig(){
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
-                <ValueFilterSelector setFilter={setCategory} value={category} options={['name']}/>
+                <ValueFilterSelector setFilter={setCategory} value={category} options={[]}/>
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
         </div>

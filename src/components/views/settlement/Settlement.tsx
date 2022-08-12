@@ -173,12 +173,6 @@ export default function Users() {
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between">
                         <h6 className="text-blueGray-700 text-xl font-bold">Merchant Settlement Form</h6>
-                        <button
-                            className="bg-red-800 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                            type="button"
-                        >
-                            new settlement
-                        </button>
                     </div>
                 </div>
                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">

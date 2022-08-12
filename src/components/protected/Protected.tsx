@@ -19,7 +19,7 @@ function ProtectedRoute({children}:ProtectedProps){
         return navigate('/login')
        }
      
-      if(user&&user?.isPasswordChanged===true){
+      if(user&&user?.isPasswordChanged===false){
           return navigate('/change-password')
        }
     },[])

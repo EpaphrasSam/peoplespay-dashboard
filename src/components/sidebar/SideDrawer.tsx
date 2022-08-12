@@ -56,7 +56,7 @@ const SlideDrawer:React.FC<AppProps> = ({drawerOpen,close,name,email,acc_type,si
                     </div>
                     <div>
                         <h3 className='-ml-40 text-gray-600 text-xl font-bold'>My Profile</h3>
-                        <p className='ml-5 text-gray-400 text-md'>Account settings and more<span className='ml-2 py-1 px-2 bg-red-100 text-red-500 rounded font-semibold'>update</span></p>     
+                        <p className='ml-5 text-gray-400 text-md'>Account settings and more<Link className='ml-2 py-1 px-2 bg-red-100 text-red-500 rounded font-semibold' to={'/change-password'}>Change password</Link></p>     
                     </div>
                 </div>
             </Link>

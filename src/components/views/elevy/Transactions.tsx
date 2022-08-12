@@ -122,7 +122,7 @@ const currentRows = records.slice(indexofFirstRow,indexofLastRow)
                 headers = {headers}
                 data = {records}
                 filename={'elevyrecords.csv'}
-                className='py-1.5 px-1 bg-green-100 border-2 border-green-500 text-green-900 rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 tracking-wide font-inter inline-flex items-center space-x-2'>
+                className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
                    <HiDownload/>
                     Download CSV
             </CSVLink>

@@ -32,14 +32,14 @@ const  PaidHighLightTable = ({transactions}:{transactions:AppPops}):JSX.Element 
                 (
                  <>
                  <i className="fas fa-circle text-yellow-300 mr-2"></i>
-                {t.payment_account_type}
+                Momo
                  </>
                 )
                 : t.payment_account_type === 'wallet' ? 
                 (
                     <>
                  <i className="fas fa-circle text-indigo-500 mr-2"></i>
-                {t.payment_account_type}
+                 Wallet
                  </> 
                 ) 
                 :

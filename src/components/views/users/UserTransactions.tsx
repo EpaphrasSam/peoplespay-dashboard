@@ -149,8 +149,8 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
   const clickDateFilter = async() => {
     try{
         setLoading(true)
-        const res = await ReportService.dateFilter(startDate,endDate)
-        const resReport = await ReportService.summaryReport(startDate,endDate)
+        const res = await ReportService?.dateFilter(startDate,endDate)
+        const resReport = await ReportService?.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
         
         const transactions = res.data.map((d:any)=> new ReportModel(d)) 
@@ -286,7 +286,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
             </motion.div>
 
         {/**download button */}
-        <div className="float-right space-x-2 mr-12">
+        <div className="float-right space-x-2 -mr-4">
             <CSVLink 
                 headers = {headers}
                 data = {results}

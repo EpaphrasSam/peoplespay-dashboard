@@ -53,7 +53,7 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
 
  
 const filterResults = roles?.filter((r:any)=>{
-  const hasSearchResults:boolean = r?.accountName?.toLowerCase().includes(searchQuery)
+  const hasSearchResults:boolean = r?.name?.toLowerCase().startsWith(searchQuery.toLowerCase())
   if((hasSearchResults))return r;
 })
 
@@ -80,7 +80,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             <div className="flex flex-row mb-1 sm:mb-0">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder=''/>
+            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search role name'/>
         </div>
         <div className="space-x-3"> 
             <PrimaryButton

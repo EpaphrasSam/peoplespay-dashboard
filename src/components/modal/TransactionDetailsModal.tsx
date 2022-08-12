@@ -50,9 +50,11 @@ type ModalProps={
                 <div className="grid grid-cols-4 gap-4">
                   <TransactionInfo title="Transaction Id" value={transaction?._id}/>
                   <TransactionInfo title="Reference Number" value={transaction?.reference}/>
+                  <TransactionInfo title="Transaction Description" value={transaction?.description}/>
                   <TransactionInfo title="Transaction Date" value={transaction?.createdAt}/>
                   <TransactionInfo title="Transaction Time" value={transaction?.time}/>
                   <TransactionInfo title="Transaction Type" value={transaction?.transaction_type}/>
+                  <TransactionInfo title="Payment Account Type" value={transaction?.payment_account_type}/>
                   <TransactionInfo title="Customer Name" value={transaction?.customerName}/>
                   <TransactionInfo title="Customer Phone" value={transaction?.customerPhone}/>
                   <TransactionInfo title="Payment Account Number" value={transaction?.paymentNumber}/>

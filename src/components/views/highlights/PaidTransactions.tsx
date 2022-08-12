@@ -13,7 +13,7 @@ const PaidHighLights = ({transactions}:{transactions:AppProps}) => {
           <div className="flex flex-wrap items-center">
             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3 className="font-semibold text-base text-left">
-                Successful Transactions <span className='text-indigo-800 px-2  leading-8'>showing latest highlights...</span>
+                Successful Transactions <span className='text-indigo-800 px-2 leading-8 text-sm'>showing latest highlights...</span>
               </h3>
             </div>
             <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">

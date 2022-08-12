@@ -141,13 +141,20 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
                         Wallet
                         </> 
                         ) 
-                        :
+                        : t.payment_account_type === 'provider' ? 
+                        (
+                            <>
+                            <i className="fas fa-circle text-pink mr-2"></i>
+                            Provider
+                            </>
+                        ):
                         (
                             <>
                             <i className="fas fa-circle text-green-500 mr-2"></i>
-                        Card
+                            Card
                             </>
                         )
+
                     }
                 
                 </p>

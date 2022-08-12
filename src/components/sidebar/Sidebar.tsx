@@ -161,13 +161,13 @@ const routes:Route[]=[
         hasChild : false,
         children:[]
     },
-    {
-        path:'agents',
-        title:'Agents',
-        icon:<FiUsers className="mr-3 text-xl"/>,
-        hasChild : false,
-        children:[]
-    },
+    // {
+    //     path:'agents',
+    //     title:'Agents',
+    //     icon:<FiUsers className="mr-3 text-xl"/>,
+    //     hasChild : false,
+    //     children:[]
+    // },
     {
         path:'referrals',
         title:'Referrals',
@@ -216,7 +216,7 @@ export default function Sidebar() {
 
     return (
         <>
-            <nav className="font-inter md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-lg bg-white flex flex-wrap  justify-between relative md:w-56 z-10 py-4 px-6 border-none">
+            <nav className="font-inter md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-lg bg-white flex flex-wrap  justify-between relative md:w-56 z-10 py-4 px-6 border-none scrollbar-thin scrollbar-thumb-pink scrollbar-track-red-300 overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
                 <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
                     {/* Toggler */}
                     <button
@@ -276,17 +276,15 @@ export default function Sidebar() {
                             Admin Layout Pages
                         </h6>
                         {/* Navigation */}
-
                         <ul className="text-left flex flex-col list-none">
                             {paths.map((p:any,i:number)=>
-                            (<li className="group py-7  text-gray-800 hover:text-pink">
+                            (<li className="group py-6  text-gray-800 hover:text-pink">
                                 <MenuItem key={i.toString()} data={p}/>
                             </li>
                             ))
                             }
                         </ul>
-                         {/* Divider */}
-                         <hr className="my-4 md:min-w-full" />
+                         
                     </div>
                 </div>
             </nav>
