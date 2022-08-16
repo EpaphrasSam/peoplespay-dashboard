@@ -11,7 +11,7 @@ import useFetchMerchants from './useFetchApprovedMerchants';
 import PageHeader from '../../header/PageHeader';
 import merchantsService from '../../../services/merchant.service';
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
-
+import MerchantDetailModal from '../../modal/MerchantDetailModal'
 
 function MerchantsConfig(){
     const navigate=useNavigate()
@@ -23,6 +23,8 @@ function MerchantsConfig(){
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [category,setCategory] = useState('merchant') 
+    const [showModal, setShowModal]=useState(false);
+    const [merchant,setMerchant]=useState<any[]>([])
 
      const getApps=async(id:string)=>{
         try{
@@ -32,7 +34,7 @@ function MerchantsConfig(){
                   dispatch(setMerchantName(m?.merchant.merchant_tradeName))
                 }
             }) 
-            return navigate("/merchant-apps")
+            return navigate("/configurations/merchants/apps")
             
         }catch(err){}
      }
@@ -89,7 +91,7 @@ function MerchantsConfig(){
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
         </div>
-
+        <MerchantDetailModal showModal={showModal} action={()=>setShowModal(false)} merchant={merchant}/>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="min-w-full leading-normal">
@@ -121,7 +123,7 @@ function MerchantsConfig(){
                             ? 
                            <Spinner/>
                            :
-                           <MerchantsConfigTable merchants={currentRows} getApps={getApps} blockMerchant={blockMerchant}/>
+                           <MerchantsConfigTable merchants={currentRows} getApps={getApps} blockMerchant={blockMerchant} setMerchant={setMerchant} setShowModal={setShowModal}/>
                        }       
                     </tbody>
                 </table>

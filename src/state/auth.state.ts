@@ -55,11 +55,21 @@ const state=createSlice(
                     roles:action.payload,
                     loading:false
                 }
-            }
+            },
+            signOut:(state)=>{
+                return{
+                    ...state,
+                    loading:false,
+                    user:null,
+                    isAuthenticated:false,
+                    admins:[],
+                    roles:[]
+                }
+            },
         }}         
 )
 
 
-export const {setAuth, setAdmins, setSelectedAdmin,setRoles}=state.actions;
+export const {setAuth, setAdmins, setSelectedAdmin,setRoles,signOut}=state.actions;
 export const authSelector = (state : RootState) => state.auth;
 export default state.reducer;

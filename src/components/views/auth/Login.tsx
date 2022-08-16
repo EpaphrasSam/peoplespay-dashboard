@@ -1,32 +1,20 @@
 import React, { useState } from "react";
+import {useNavigate,useLocation}from 'react-router-dom'
 import AuthService from "../../../services/auth.service";
 import Utils from "../../../utils/AuthToken";
 import { alertResponse } from "../../sweetalert/SweetAlert";
 
 
 function Login() {
-  //const dispatch = useDispatch();
-  
+  const navigate=useNavigate()
+  const location=useLocation()
+  const from = location.state?.from?.pathname||'/dashboard'
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  // useEffect(() => {
-    //getadmins
-  // }, []);
-
-  // const getAdmins = async () => {
-  //   try {
-  //     const response = await AuthService.getAdminAccess();
-  //     if (!response.success) {
-  //       alert("loading admin failed");
-  //     }
-  //     dispatch(setAdmins(response.data));
-  //   } catch (err) {}
-  // };
 
   const login = async () => {
     try {
@@ -46,7 +34,8 @@ function Login() {
       if(response.success){
         Utils.setAuthToken(response.token);
         sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
-        window.location.href = response.data.access[0];
+        //navigate(response.data._role?.access[0].path);
+        navigate(from,{replace:true})
       }
     } catch (err: any) {
       setLoading(false);

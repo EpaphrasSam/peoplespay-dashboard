@@ -1,5 +1,3 @@
-const swal = require('@sweetalert/with-react');
-
 interface AppProps{
     transactions : any[],
     addId : Function,

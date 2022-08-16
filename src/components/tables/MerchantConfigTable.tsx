@@ -7,10 +7,12 @@ type AppProps = {
  merchants:any[],
  getApps:Function,
  blockMerchant:Function
+ setShowModal:Function,
+ setMerchant:Function
 }
 
  
-const MerchantsConfigTable = ({merchants,getApps,blockMerchant}:AppProps): JSX.Element=>(
+const MerchantsConfigTable = ({merchants,getApps,blockMerchant,setMerchant,setShowModal}:AppProps): JSX.Element=>(
   <>
   {
     merchants.map((m:any)=>(
@@ -53,7 +55,7 @@ const MerchantsConfigTable = ({merchants,getApps,blockMerchant}:AppProps): JSX.E
         <td className="text-left px-2 py-2 border-b border-gray-200 bg-white">
            <MerchantConfigTableOptions
             isBlocked={m?.merchant?.blocked}
-            seeDetails={()=>{}}
+            seeDetails={()=>{setShowModal(true);setMerchant(m)}}
             blockMerchant={()=>{blockMerchant(m?.merchant._id,m?.merchant?.blocked)}}
             seeApps={()=>getApps(m?.merchant._id)}
             />

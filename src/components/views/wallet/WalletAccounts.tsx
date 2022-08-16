@@ -1,4 +1,5 @@
 import React,{useState, ChangeEvent} from 'react'
+import { useNavigate } from 'react-router-dom';
 import useFetchWallets from './UseFetchWallets';
 import WalletAccounts from '../../tables/WalletsTable';
 import {reportSelector, setWalletTransactions,setCustomerName} from '../../../state/report.state'
@@ -13,6 +14,7 @@ import PageHeader from '../../header/PageHeader';
 function Wallets(){
     useFetchWallets();
     const dispatch = useDispatch()
+    const navigate=useNavigate()
     
     const {loading,wallets} = useSelector(reportSelector);
 
@@ -27,7 +29,7 @@ function Wallets(){
             if(res.success){
                 dispatch(setWalletTransactions(res.data))
                 dispatch(setCustomerName(name))
-                window.location.href="/#/wallettransactions"
+                navigate('/wallets/transactions') 
             }
         }catch(err){}
      }

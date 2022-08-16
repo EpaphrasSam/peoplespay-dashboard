@@ -49,7 +49,7 @@ export default function EditAdmin() {
             name: '',
             _role:'',
         })
-        if(res.success)return navigate('/all-admins')
+        if(res.success)return navigate('/manage-admins/all')
       }catch(err:any){
         alertResponse(
             {

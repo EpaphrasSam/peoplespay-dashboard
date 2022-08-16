@@ -41,9 +41,8 @@ function AllAdmins(){
   const editAdmin = async(id:string) => {
    try{
     const admin=admins.filter(admin=>admin._id===id)
-    console.log(admin)
     dispatch(setSelectedAdmin(admin[0]))
-    navigate('/edit-admin')
+    navigate('/manage-admins/edit')
    }catch(err){}
   }
 

@@ -22,7 +22,7 @@ const AccessTable= ({accessClick,permissionClick}:AccessProps)=>{
                         <td className="border border-slate-300 text-left py-4">Dashboard</td>
                         <td className="border border-slate-300 text-left py-4">
                           <div className="form-check">
-                                <Checkbox value="/dashboard" name="Index Page" click={accessClick} />
+                                <Checkbox value="dashboard" name="Index Page" click={accessClick} />
                                 <label className="form-check-label inline-block text-gray-800">
                                     Index Page
                                 </label>
@@ -31,7 +31,7 @@ const AccessTable= ({accessClick,permissionClick}:AccessProps)=>{
                         <td className="border border-slate-300 text-left py-4">
                         <div className="form-check flex space-x-5">
                              <div>
-                                <Checkbox value="read" name="Index Page" click={permissionClick}/>
+                                <Checkbox value="read" name="Index Page" click={permissionClick} isChecked={false}/>
                                 <label className="form-check-label inline-block text-gray-800">
                                     Read
                                 </label>
@@ -225,13 +225,13 @@ const AccessTable= ({accessClick,permissionClick}:AccessProps)=>{
                         <td className="border border-slate-300 text-left py-4">Users</td>
                         <td className="border border-slate-300 text-left py-4">
                             <div className="form-check">
-                                <Checkbox value="users/all-users" name="Users" click={accessClick}/>
+                                <Checkbox value="users/all" name="Users" click={accessClick}/>
                                 <label className="form-check-label inline-block text-gray-800">
                                     Users 
                                 </label>
                             </div>
                             <div className="form-check">
-                                <Checkbox value="users/user-transactions" name="User Transactions" click={accessClick}/>
+                                <Checkbox value="users/transactions" name="User Transactions" click={accessClick}/>
                                 <label className="form-check-label inline-block text-gray-800">
                                     User Transactions 
                                 </label>
@@ -468,7 +468,7 @@ const AccessTable= ({accessClick,permissionClick}:AccessProps)=>{
                         <td className="border border-slate-300 text-left py-4">Wallets</td>
                         <td className="border border-slate-300 text-left py-4">
                             <div className="form-check">
-                                <Checkbox value="wallets/all" name="All Wallets" click={accessClick}/>
+                                <Checkbox value="wallets" name="All Wallets" click={accessClick}/>
                                 <label className="form-check-label inline-block text-gray-800">
                                     All Wallets
                                 </label>
@@ -534,7 +534,7 @@ const AccessTable= ({accessClick,permissionClick}:AccessProps)=>{
                         <td className="border border-slate-300 text-left py-4">Broadcast Message</td>
                         <td className="border border-slate-300 text-left py-4">
                             <div className="form-check">
-                                <Checkbox value="broadcast-message" name="Sms Broadcast" click={accessClick}/>
+                                <Checkbox value="sms-broadcast" name="Sms Broadcast" click={accessClick}/>
                                 <label className="form-check-label inline-block text-gray-800">
                                     Sms Broadcast
                                 </label>

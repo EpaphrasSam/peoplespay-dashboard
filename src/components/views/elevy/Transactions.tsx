@@ -1,4 +1,5 @@
 import {useState, ChangeEvent} from 'react'
+import {useNavigate} from 'react-router-dom'
 import{motion} from 'framer-motion'
 import useFetchElevy from './useFetchElevy';
 import ElevyTransactionsTable from '../../tables/ElevyTransactionsTable'
@@ -16,6 +17,7 @@ import PageHeader from '../../header/PageHeader';
 
 function ElevyTransactions(){
     useFetchElevy()
+    const navigate=useNavigate()
     const {records,loading} = useSelector(elevySelector)
     const dispatch = useDispatch()
     const[startDate,setStartDate]=useState('')
@@ -38,8 +40,7 @@ function ElevyTransactions(){
     
 const goTo = (data:any) => {
    dispatch(setTransactions(data));
-   window.location.href="/#/elevytransactions"
-
+   navigate('/e-levy/transactions')
 }
 
 

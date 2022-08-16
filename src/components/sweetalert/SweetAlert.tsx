@@ -12,7 +12,7 @@ type ConfirmAlertProps={
 
 export const alertResponse=({icon,response}:AlertResponseProps)=>(
     Swal.fire({
-        position: 'top-end',
+        position: 'center',
         icon: icon,
         text: response,
         showConfirmButton: false,

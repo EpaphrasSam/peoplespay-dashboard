@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import {useEffect} from 'react'
 import {setUsers } from '../../../state/users.state';
 import { useDispatch} from 'react-redux';
 import UsersService from '../../../services/users.service'

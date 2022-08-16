@@ -4,7 +4,7 @@ import WalletTransactionsTable from '../../tables/WalletTransactionsTable'
 import {useSelector} from 'react-redux';
 import {reportSelector} from '../../../state/report.state' 
 //import {ReportModel} from '../../../models/report.model'
-import ReportService from '../../../services/reports.service';
+//import ReportService from '../../../services/reports.service';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
@@ -113,7 +113,7 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
   const clickDateFilter = async() => {
     try{
         setLoading(true)
-        const res = await ReportService.dateFilter(startDate,endDate)
+        //const res = await ReportService.dateFilter(startDate,endDate)
         //const resReport = await ReportService.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
         

@@ -1,15 +1,20 @@
 import React from "react";
-import { authSelector } from "../../state/auth.state";
-import { useSelector } from "react-redux";
+import { authSelector ,signOut} from "../../state/auth.state";
+import { useSelector,useDispatch } from "react-redux";
 import SlideDrawer from "../sidebar/SideDrawer";
+import {useNavigate} from 'react-router-dom'
 
 export default function Navbar() {
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
     const [drawerOpen, setDrawerOpen] = React.useState(false)
     const close = ()=> setDrawerOpen(false); 
 
     const signout=()=>{
+        dispatch(signOut())
         window.localStorage.clear();
-        window.location.href = '/'
+        sessionStorage.clear()
+        return navigate('/login')
     }
     const {user} = useSelector(authSelector); 
     const str = user?.name

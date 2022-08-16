@@ -19,7 +19,17 @@ export type RoleStateParams={
     })
     
     const [accessArray,setAccessArray]=useState<Array<any>>([])
+    const [loading,setLoading]=useState(false);
     
+   // const isChecked:any=(e:any)=>{
+   //    accessArray.filter(obj=>{
+   //       if(obj.title===e.target.name){
+   //          const isExist:boolean= obj?.permissions?.includes(e.target.value)
+   //          console.log(isExist)
+   //          return isExist;
+   //       }
+   //    })
+   // }
 
     const handleChange=(e:ChangeEvent<any>)=>{
       setFormData({...formData,[e?.target.name]:e?.target.value})
@@ -31,11 +41,12 @@ export type RoleStateParams={
          let newArray = accessArray.filter(obj=>obj.title!==e.target.name)
          return setAccessArray(newArray)
         }else {
-         return setAccessArray([...accessArray,{
+          setAccessArray([...accessArray,{
             title:e.target.name,
             path:e.target.value,
-            permissions:[]
+            permissions:['read','write','delete']
          }])
+
        }
      }
 
@@ -51,12 +62,14 @@ export type RoleStateParams={
                   permissions:obj.permissions.filter((p:string)=>p!==e.target.value)
                }
               }else return {...obj,permissions:[...obj.permissions,e.target.value]}
-             }else return obj;
+             }else return e.taget.checked=false;
          }))
       }
+
       
     const addRole=async()=>{
       try{
+         setLoading(true)
          const {name,description}= formData;
          const [..._access]=accessArray;
          const payload={
@@ -65,15 +78,17 @@ export type RoleStateParams={
             access: _access,
          }
          const res = await authService.addRole(payload)
+         setLoading(false)
          await alertResponse(
             {
              icon:res.success?'success':'error',
              response:res.success?res.message:'Invalid form data. Please provide the required data'     
           }) 
           if(res.success){
-           return navigate('/roles')
+           return navigate('/manage-admins/roles')
           }
       }catch(err:any){
+         setLoading(false)
          alertResponse(
             {
              icon:'info',
@@ -81,6 +96,7 @@ export type RoleStateParams={
           }) 
       }
     }
+
 
     return(
         <div className='relative md:pt-10 pb-10 p-2'>
@@ -90,13 +106,15 @@ export type RoleStateParams={
                    <AddRoleForm {...formData} onChange={handleChange}/>
                 </div>
                 <div className="w-full md:w-2/3 mb-6">
-                   <RoleStateForm {...formData} access={accessArray} onSubmit={addRole}/>
+                   <RoleStateForm {...formData} access={accessArray} onSubmit={addRole} loading={loading}/>
                 </div>
             </div>
             <div className="w-full">
-                <AccessTable accessClick={accessClick} permissionClick={permissionClick}/>
+                <AccessTable accessClick={(e:any)=>accessClick(e)} permissionClick={(e:any)=>permissionClick(e)}/>
             </div>
        </div>
     )
 }
 export default AddRole;
+
+

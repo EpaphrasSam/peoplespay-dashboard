@@ -166,7 +166,7 @@ function Dashboard() {
             <>
             <Link to="/user-transactions">
               <HeaderCard
-                title="TOTAL TRANSACTIONS"
+                title="TRANSACTIONS"
                 value={data?.totalTransactions ?? 0}
                 color="red"
                 icon={
@@ -189,7 +189,7 @@ function Dashboard() {
             </Link>
 
             <HeaderCard
-              title="TOTAL PAID CHARGES"
+              title="PAID CHARGES"
               color="red"
               value={`GH¢ ${Number.parseFloat(data?.paidCharges ?? 0).toFixed(
                 2
