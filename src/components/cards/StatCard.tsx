@@ -124,19 +124,19 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
             <div className="relative p-5 pb-5 overflow-hidden shadow-md bg-white border border-gray-100">
               <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left">Transaction Summary</div>
               <div className="relative z-10 flex items-center pt-1 space-y-1">
-                <div className="text-xl font-bold text-gray-900 ">{succ_count}</div>
+                <div className="text-xl font-bold text-gray-800 ">{succ_count}</div>
                 <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-green-600 bg-green-100 rounded">
                   <span>successful</span>
                 </span> 
               </div>
               <div className="flex space-y-1">    
-                <div className="text-xl font-bold text-gray-900 ">{fail_count}</div> 
+                <div className="text-xl font-bold text-gray-800 ">{fail_count}</div> 
                 <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-red-600 bg-red-100 rounded">
                   <span>failed</span>
                 </span> 
               </div>
               <div className="flex space-y-1">    
-                <div className="text-xl font-bold text-gray-900 ">{pending_count}</div> 
+                <div className="text-xl font-bold text-gray-800 ">{pending_count}</div> 
                 <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-yellow-500 bg-yellow-50 rounded">
                   <span>pending</span>
                 </span> 
@@ -150,7 +150,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
             <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
               <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left mb-3">Successful Amount</div>
               <div className="relative z-10 flex items-center pt-1">
-                <div className="text-4xl font-bold">
+                <div className="text-2xl font-bold text-gray-800">
                   {succ_amount}
                 </div>
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-green-600 bg-green-100 rounded">
@@ -171,7 +171,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
             <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
               <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left mb-3">Failed Amount</div>
               <div className="relative z-10 flex items-center pt-1">
-                <div className="text-4xl font-bold">{fail_amount}</div>
+                <div className="text-2xl font-bold text-gray-800">{fail_amount}</div>
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-red-600 bg-red-100 rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                     className="h-5 w-5" viewBox="0 0 20 20" 

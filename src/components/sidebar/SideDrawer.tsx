@@ -1,18 +1,19 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 import {FaUser} from 'react-icons/fa'
-
+import {useNavigate} from 'react-router-dom';
 interface AppProps{
     drawerOpen : boolean,
     close : Function,
     name:string;
     email:string;
     acc_type:string;
+    user:any
     signout:Function
 }
 
-const SlideDrawer:React.FC<AppProps> = ({drawerOpen,close,name,email,acc_type,signout})=> {
-    
+const SlideDrawer:React.FC<AppProps> = ({drawerOpen,close,name,email,acc_type,signout,user})=> {
+    const navigate=useNavigate();
     return (
         <>
         {
@@ -38,10 +39,10 @@ const SlideDrawer:React.FC<AppProps> = ({drawerOpen,close,name,email,acc_type,si
                   <h3 className='text-gray-600 text-xl font-bold'>{name}</h3>
                   <div className='-ml-7 mt-3 text-gray-200 font-semibold text-2xl'>{acc_type}</div>
                   <div className='mt-3 inline-flex items-center space-x-1'>
-                      <i className='fa fa-envelope text-blue-400'/><span className='text-gray-300 text-lg'>{email}</span>
+                     {email&& <i className='fa fa-envelope text-blue-400'/>}<span className='text-gray-300 text-lg'>{email}</span>
                   </div>
-                  <div className='-ml-12 mt-3'>
-                      <button className='px-10 py-3 bg-blue-50 text-blue-400 font-bold rounded-md' onClick={()=>signout()}>Sign out</button>
+                  <div className='ml-4 mt-3'>
+                      <button className={`px-10 py-3 ${user!==null?'bg-blue-50 text-blue-400':'bg-pink text-white'} font-bold rounded-md`} onClick={()=>user!==null?signout():navigate('/login')}>{user!==null?'Sign out':'Login'}</button>
                   </div>
               </div>
             

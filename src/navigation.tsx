@@ -51,7 +51,7 @@ const Navigation=()=>{
                             <Route  path='login' element={<Login/>} />
                             <Route path="change-password"  element={<ChangePasswordForm/>}/>
                             <Route  path='/' element={<ProtectedRoute><Layout/></ProtectedRoute>}>
-                               
+                                
                                 <Route path="dashboard" element={<Dashboard/>}/>
 
                                  {/**Manage Admins */}

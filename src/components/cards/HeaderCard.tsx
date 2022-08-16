@@ -7,7 +7,7 @@ import React from "react";
       <div className="flex w-auto h-24 py-2 px-4 bg-white rounded-lg justify-between">
         <div className="my-auto">
            <p className="font-semibold text-gray-600 mb-2">{title}</p>
-           <p className="text-4xl font-bold">{value}</p>
+           <p className="text-2xl font-bold text-gray-800">{value}</p>
         </div>
         <div className="my-auto">
             {icon}                  
