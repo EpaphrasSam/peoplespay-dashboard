@@ -16,12 +16,12 @@ interface StatProps{
 }
 export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_count,pending_count, m,v,a,c,w}:StatProps) {
   const data1 = {
-    labels: ["1", "2", "3", "4", "5", "6", "7"],
+    labels: ["1", "2", "3", "4", "5", "20", "10"],
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(253, 244, 255, 1)",
-        borderColor: "rgba(232, 121, 249, 1)",
+        backgroundColor: "rgb(199,27,67)",
+        borderColor: "rgb(199,27,67)",
         tension: 0.3,
         borderWidth: 2,
         data: [1, 3, 2, 5, 4, 5, 7],
@@ -34,7 +34,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(236, 254, 255, 1)",
+        backgroundColor: "rgba(34, 211, 238, 1)",
         borderColor: "rgba(34, 211, 238, 1)",
         tension: 0.3,
         borderWidth: 2,
@@ -48,8 +48,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(255, 251, 235, 1)",
-        borderColor: "rgba(251, 191, 36, 1)",
+        backgroundColor: "#49abdc",
+        borderColor: "#49abdc",
         tension: 0.3,
         borderWidth: 2,
         data: [2, 5, 4, 6, 3, 5, 7],
@@ -62,7 +62,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(236, 253, 245, 1)",
+        backgroundColor: "rgba(52, 211, 153, 1)",
         borderColor: "rgba(52, 211, 153, 1)",
         tension: 0.3,
         borderWidth: 2,
@@ -121,8 +121,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
 
   return (
        <>
-            <div className="relative p-5 pb-5 overflow-hidden shadow-md bg-white border border-gray-100">
-              <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left">Transaction Summary</div>
+            <div className="relative p-5  pb-5 overflow-hidden shadow-md bg-white border border-white rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left">Transaction Summary</div>
               <div className="relative z-10 flex items-center pt-1 space-y-1">
                 <div className="text-xl font-bold text-gray-800 ">{succ_count}</div>
                 <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-green-600 bg-green-100 rounded">
@@ -142,13 +142,13 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
                 </span> 
               </div>
               <div className="absolute bottom-0 inset-x-0 z-0">
-                <Line height={80} data={data1} options={chartOptions} />
+                <Line height={100} data={data1} options={chartOptions} />
               </div>
             </div>
             
             
-            <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
-              <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left mb-3">Successful Amount</div>
+            <div className="relative p-5 pb-5 overflow-hidden bg-white shadow-sm border border-gray-100 rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left mb-3 ">Successful Amount</div>
               <div className="relative z-10 flex items-center pt-1">
                 <div className="text-2xl font-bold text-gray-800">
                   {succ_amount}
@@ -165,11 +165,11 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
               </div>
 
               <div className="absolute bottom-0 inset-x-0 z-0">
-                <Line height={80} data={data2} options={chartOptions} />
+                <Line height={100} data={data2} options={chartOptions} />
               </div>
             </div>
-            <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
-              <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left mb-3">Failed Amount</div>
+            <div className="relative p-5 pb-5 overflow-hidden bg-white shadow-sm border border-gray-100 rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left mb-3">Failed Amount</div>
               <div className="relative z-10 flex items-center pt-1">
                 <div className="text-2xl font-bold text-gray-800">{fail_amount}</div>
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-red-600 bg-red-100 rounded">
@@ -181,12 +181,12 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
                 </span>
               </div>
               <div className="absolute bottom-0 inset-x-0 z-0">
-                <Line height={80} data={data3} options={chartOptions} />
+                <Line height={100} data={data3} options={chartOptions} />
               </div>
             </div>
 
-            <div className="relative p-5 pb-16 overflow-hidden bg-white shadow-sm border border-gray-100">
-              <div className="font-semibold text-lg text-gray-600 font-segoe uppercase text-left mb-3">Source Channels</div>
+            <div className="relative p-5  overflow-hidden bg-white shadow-sm border border-gray-100 rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left mb-3">Source Channels</div>
               <div className="relative z-10 flex items-center pt-1">
                 
                 <div className='flex flex-wrap mb-1 flex-row flex-shrink text-xs pt-1 gap-2'>
@@ -215,7 +215,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
               </div>
 
               <div className="absolute bottom-0 inset-x-0  z-0">
-                <Line height={80} data={data4} options={chartOptions} />
+                <Line height={100} data={data4} options={chartOptions} />
               </div>
             </div>     
     </>

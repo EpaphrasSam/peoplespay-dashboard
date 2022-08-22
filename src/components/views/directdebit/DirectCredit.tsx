@@ -8,7 +8,7 @@ import AccountsService from '../../../services/accounts.service'
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 
 
-export default function DirectDebit():any {
+export default function DirectCredit():any {
     useFetchWallets()
     const {wallets,loading}=useSelector(reportSelector)
     const [isLoading, setIsLoading]=useState(false);
@@ -64,14 +64,14 @@ export default function DirectDebit():any {
                 amount,
             }
             await confirmAlert({
-                text:'This wallet will be debited',
+                text:'This wallet will be credited',
                 confirmButtonText:'Yes, proceed'
             }).then(async(result)=>{
                 if(result.isConfirmed){
-                    const res=await AccountsService.debitWallet(data)
+                    const res=await AccountsService.creditWallet(data)
                     alertResponse({
                         icon:res.success?'success':'error',
-                        response:res?.success?'Debit Successful':'Sorry,try again'
+                        response:res?.success?'Credit Successful':res.response
                     })
                     setFormData({
                         name:"",
@@ -89,7 +89,7 @@ export default function DirectDebit():any {
     return (
      <div className="relative md:pt-10 pb-10  w-10/12 mb-12 mx-auto">
           
-            <PageHeader title="Direct Wallet Debit" />
+            <PageHeader title="Direct Wallet Credit" />
           
             <div className='flex flex-wrap'>
                 <div className="w-full mb-2 px-4">  
@@ -98,7 +98,7 @@ export default function DirectDebit():any {
                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0">
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between">
-                        <h6 className="text-blueGray-700 text-xl font-bold">Debit Wallet Form</h6>
+                        <h6 className="text-blueGray-700 text-xl font-bold">Credit Wallet Form</h6>
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row space-x-4 mb-4 px-4 lg:px-10 py-10 pt-0 mt-4">
@@ -190,7 +190,7 @@ export default function DirectDebit():any {
                             </div>
                             <div className="my-3">
                                 <label className='text-gray-400'>Wallet Balance after deduction</label>
-                                <div>{Number.parseFloat(formData.balance) -Number.parseFloat(formData.amount)}</div>
+                                <div>{Number.parseFloat(formData.balance) + Number.parseFloat(formData.amount)}</div>
                             </div>
                             <div className="my-3">
                                 <label className='text-gray-400'>Description</label>
@@ -198,7 +198,7 @@ export default function DirectDebit():any {
                             </div>
                             <div className="my-3">
                                 <button  onClick={()=>pay()} className='w-full mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
-                                    Debit wallet
+                                    Credit wallet
                                 </button>
                             </div>
 

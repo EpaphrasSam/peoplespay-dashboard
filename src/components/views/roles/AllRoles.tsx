@@ -4,17 +4,18 @@ import RolesTable from '../../tables/RolesTable'
 import authService from '../../../services/auth.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
-import { useSelector } from 'react-redux';
-import { authSelector} from '../../../state/auth.state';
-import { OutlinedButton, PrimaryButton } from '../../buttons/BasicButton';
+import { useSelector,useDispatch } from 'react-redux';
+import { authSelector,setSelectedRole} from '../../../state/auth.state';
+import { PrimaryButton } from '../../buttons/BasicButton';
 import {AiOutlinePlus} from 'react-icons/ai'
-import{AiOutlineStop}from 'react-icons/ai'
 import useFetchRoles from './useFetchRoles';
 import RowNumberSelector from '../../buttons/RowNumberSelector';
 import PageHeader from '../../header/PageHeader';
+import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 
 function AllAdmins(){
     useFetchRoles()
+    const dispatch=useDispatch();
     const {roles,loading}=useSelector(authSelector)
     let navigate= useNavigate()
     
@@ -22,30 +23,34 @@ function AllAdmins(){
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     
-const editRole=async(id:string)=>{
-   try{
-    const res=await authService.resetPassword(id)
-    if(!res.success){
-      return alert(res.message)
-    }
-     alert(res.message)
-   }catch(err:any){
-    alert(err?.message)
-        }
-  }
+ const goToEdit=(role:any)=>{
+    dispatch(setSelectedRole(role))
+    return navigate('/manage-admins/roles/edit')
+ }
 
-const DeactivateRole=async(id:string,isActive:boolean)=>{
+const deactivateRole=async(id:string,isActive:boolean)=>{
     try{
-        const res=await authService.updateRole({
-            id : id,
-            data:{
-                active:!isActive
+        confirmAlert({
+            text:isActive?'This will disable this role':'This will enable this role',
+            confirmButtonText:isActive?'Yes, disable':'Yes enable'
+        }).then(async(result)=>{
+            if(result.isConfirmed){
+                const res=await authService.updateRole({
+                    id : id,
+                    data:{
+                        active:!isActive
+                    }
+                })
+              await alertResponse({
+                    icon:res?.success?'success':'error',
+                    response:res.message
+                })
+               if(res.success)return window.location.reload();
             }
         })
-        if(!res.success)return alert(res.message)
-        alert(res.message)
     }catch(err:any){alert(err.message)}
 }
+
 
 const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
@@ -82,18 +87,12 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search role name'/>
         </div>
-        <div className="space-x-3"> 
+        <div> 
             <PrimaryButton
              value="Add Role"
              color="blue"
              icon={<AiOutlinePlus/>}
              action={()=>{navigate('new')}}
-            />
-            <OutlinedButton
-             value="Deactivate"
-             color="gray"
-             icon={<AiOutlineStop/>}
-             action={DeactivateRole}
             />
         </div>
      </div>
@@ -101,11 +100,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="overflow-x-scroll min-w-full leading-normal">
                     <thead>
-                        <tr>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md  tracking-wider">
-                                 
-                            </th>  
+                        <tr> 
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md  tracking-wider">
                                  Date Created
@@ -122,6 +117,10 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
                                 Status
                             </th>
+                            <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md tracking-wider">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody className='text-md'>
@@ -129,7 +128,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                            loading ?
                            <Spinner/>
                            :
-                           <RolesTable data={currentRows}  onEditClick={editRole}/>
+                           <RolesTable data={currentRows}  onEditClick={goToEdit} deactivateRole={deactivateRole}/>
                        }
                     </tbody>
                 </table>

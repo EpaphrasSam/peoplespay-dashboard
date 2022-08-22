@@ -16,7 +16,7 @@ export const alertResponse=({icon,response}:AlertResponseProps)=>(
         icon: icon,
         text: response,
         showConfirmButton: false,
-        timer: 3000
+        timer: 2000
       })
 )
 

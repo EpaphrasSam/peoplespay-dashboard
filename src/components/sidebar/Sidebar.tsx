@@ -123,7 +123,7 @@ export default function Sidebar() {
                         {/* Navigation */}
                         <ul className="text-left flex flex-col list-none">
                             {paths.map((p:any,i:number)=>
-                            (<li className="group py-6  text-gray-800 hover:text-pink">
+                            (<li className="group py-4  text-gray-600 font-thin hover:text-pink tracking-tighter">
                                 <MenuItem key={i.toString()} data={p}/>
                             </li>
                             ))

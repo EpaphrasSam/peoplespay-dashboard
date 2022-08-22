@@ -16,5 +16,6 @@ export enum EnumTransactionTypes {
     'WF'='Wallet Funding', // Wallet Funding
     'ST'='Settlement', // Settlement
     'BI'='Busy Internet', // busy internet
-    'PY'='Payout'
+    'PY'='Payout', //Payout
+    'DC'='Direct Credit' //Direct Credit
 }

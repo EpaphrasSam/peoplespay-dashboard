@@ -84,6 +84,18 @@ const debitWallet = (data:any) =>fetch(
         }
     ).then(res=>res.json())
 
+const creditWallet = (data:any) =>fetch(
+        `${BASE_URL}/transactions/credit`,
+        {
+            method:'POST',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            },
+            body : JSON.stringify(data)
+        }
+    ).then(res=>res.json())
 
-const AccountsService = {debitWallet,getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
+
+const AccountsService = {creditWallet,debitWallet,getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
 export default AccountsService;

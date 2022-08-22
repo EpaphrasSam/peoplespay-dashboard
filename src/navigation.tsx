@@ -33,10 +33,13 @@ const AllAdmins=lazy(()=>import('./components/views/admin/AllAdmins'))
 const EditAdmin=lazy(()=>import('./components/views/admin/EditAdmin'))
 const AllRoles=lazy(()=>import('./components/views/roles/AllRoles'))
 const AddRole =lazy(()=>import('./components/views/roles/AddRole'))
+const EditRole=lazy(()=>import('./components/views/roles/EditRole'))
 const ChangePasswordForm=(lazy(()=>import('./components/views/changepassword/ChangePasswordForm')))
 const ConfigMerchants=(lazy(()=>import('./components/views/config/Merchants')))
 const MerchantApps= (lazy(()=>import('./components/views/config/MerchantApps')))
 const DirectDebit=(lazy(()=>import('./components/views/directdebit/DirectDebit')))
+const DirectCredit=(lazy(()=>import('./components/views/directdebit/DirectCredit')))
+const PendingReversals=(lazy(()=>import('./components/views/reversals/Approvals')))
 // create a component
 const Navigation=()=>{
 
@@ -61,10 +64,11 @@ const Navigation=()=>{
                                     <Route path="edit" element={<EditAdmin/>}/>
 
                                     {/**Roles */}
-                                    <Route path="roles">
+                                     <Route path="roles">
                                         <Route index={true} element={<AllRoles/>} />
                                         <Route path="new"  element={<AddRole/>} />
-                                    </Route>
+                                        <Route path="edit"  element={<EditRole/>} />
+                                     </Route>
                                 </Route>
 
                                  {/**Merchant Config*/}
@@ -110,6 +114,7 @@ const Navigation=()=>{
 
                                 {/**Direct Debit*/}
                                 <Route path="direct-debit" element={<DirectDebit/>}/>
+                                <Route path="direct-credit" element={<DirectCredit/>}/>
 
                                     {/**paid transactions */}
                                 <Route path='allpaid-transactions' element={<PaidTransactions/>} />
@@ -123,6 +128,8 @@ const Navigation=()=>{
                                 {/**Referals route */}
                                 <Route path="referrals"  element={<Referals/>} />
                                 
+                                 {/**Reversals route */}
+                                <Route path="reversals/pending"  element={<PendingReversals/>} />
                                 
                                 {/**Agents account route */}
                                 <Route path="agents"  element={<Agents/>}/> 

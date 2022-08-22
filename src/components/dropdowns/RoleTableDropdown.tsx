@@ -1,14 +1,16 @@
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment} from 'react'
 import {MdModeEditOutline} from 'react-icons/md'
 import {FiChevronDown} from 'react-icons/fi'
-import {FaRegEyeSlash} from 'react-icons/fa'
-import {GrPowerReset} from 'react-icons/gr'
+import { FaRegEyeSlash } from 'react-icons/fa'
+
 type OptionProps={
   editRole:Function;
+  deactivateRole:Function,
+  isActive:boolean;
 }
 
-export function AdminOptions({editRole}:OptionProps) {
+export function RolesTableOptions({editRole,deactivateRole,isActive}:OptionProps) {
   return (
     <div className="text-right">
       <Menu as="div" className="text-left">
@@ -38,28 +40,13 @@ export function AdminOptions({editRole}:OptionProps) {
                     className={`${
                       active ? 'bg-violet-500 text-blue-500' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
+                   onClick={()=>editRole()}
+                 >
                       <MdModeEditOutline
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
                       />
-                    Edit
-                  </button>
-                )}
-              </Menu.Item>
-              {/* <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? 'bg-violet-500 text-blue-500' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      onClick={()=>resetPassword()}
-                    >
-                    <GrPowerReset
-                        className="mr-2 h-5 w-5"
-                        aria-hidden="true"
-                      />
-                      Reset Password 
+                     Edit
                   </button>
                 )}
               </Menu.Item>
@@ -69,16 +56,16 @@ export function AdminOptions({editRole}:OptionProps) {
                     className={`${
                       active ? 'bg-violet-500 text-blue-500' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    onClick={()=>{blockAdmin()}}
-                  >
+                      onClick={()=>deactivateRole()}
+                    >
                     <FaRegEyeSlash
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
                       />
-                      {isBlocked?'Unblock' : 'Block'}
+                      {isActive?'Deactivate':'Activate'}
                   </button>
                 )}
-              </Menu.Item> */}
+              </Menu.Item>
             </div>      
           </Menu.Items>
         </Transition>
@@ -87,3 +74,4 @@ export function AdminOptions({editRole}:OptionProps) {
   )
 }
 
+export default RolesTableOptions;

@@ -1,10 +1,10 @@
-import React,{useState,ChangeEvent} from "react";
+import React,{useState,ChangeEvent, useEffect} from "react";
 import authService from "../../../services/auth.service";
 import PageHeader from "../../header/PageHeader";
 import {alertResponse} from '../../sweetalert/SweetAlert'
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../state/auth.state";
-import useFetchRoles from "../roles/useFetchRoles";
+import useFetchActiveRoles from "./useFetchActiveRoles";
 import { useNavigate } from "react-router-dom";
 
 interface adminFormType{
@@ -16,7 +16,7 @@ interface adminFormType{
 export default function EditAdmin() {
     const navigate=useNavigate();
     const {selectedAdmin}=useSelector(authSelector)
-    useFetchRoles()
+    useFetchActiveRoles()
     const {roles}=useSelector(authSelector)
     const [isLoading,setLoading]=useState(false);
     const [formData,setFormData]=useState<adminFormType>({
@@ -39,7 +39,7 @@ export default function EditAdmin() {
             }
         })
           setLoading(false)
-          alertResponse(
+         await alertResponse(
             {
                  icon:res.success?'success':'error',
                  response:res.success?res.message:'Invalid form data. Please provide the required data'     
@@ -58,6 +58,12 @@ export default function EditAdmin() {
           })
       }
     } 
+
+    useEffect(()=>{
+        if(selectedAdmin===null){
+            return navigate('/manage-admins/all')
+        }
+    },[selectedAdmin])
 
     return (
         <div className='relative md:pt-10 pb-10 p-2 '>

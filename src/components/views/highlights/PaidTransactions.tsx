@@ -30,8 +30,8 @@ const PaidHighLights = ({transactions}:{transactions:AppProps}) => {
         </div>
         <div className="block w-full overflow-x-auto">
           {/* Projects table */}
-          <table className="items-center w-full bg-transparent border-collapse text-sm">
-            <thead>
+          <table className="items-center w-full bg-transparent border-collapse">
+            <thead className="thead-light text-xs">
               <tr>
               <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                   Transaction date
@@ -50,7 +50,7 @@ const PaidHighLights = ({transactions}:{transactions:AppProps}) => {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-sm">
               <PaidHighLightTable transactions={transactions}/>
             </tbody>
           </table>

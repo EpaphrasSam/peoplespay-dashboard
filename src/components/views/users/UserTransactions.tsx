@@ -91,9 +91,9 @@ const headers = [
                 if(!res.success){
                     throw Error(res.message)
                 }
-                console.log(res.data)
+                
                 const transactions = res.data.map((d:any)=> new ReportModel(d)) 
-                console.log(transactions)
+                
                 dispatch(setUserTransactions(transactions))
                 //Update states
                 setAmount(resReport?.data?.paid[0].totalAmount)
@@ -239,6 +239,7 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     )
    }
  }
+ 
 
  const addIdToReverseIDs = (id:any)=> {
      if(reverseIDArray.current.includes(id)){

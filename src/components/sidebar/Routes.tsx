@@ -1,4 +1,4 @@
-import {BsHouse,BsClockHistory,BsWallet2,BsKey} from 'react-icons/bs'
+import {BsHouse,BsClockHistory,BsWallet2,BsKey, BsBoxArrowInLeft} from 'react-icons/bs'
 import {FiUsers,FiUserPlus,FiUserCheck} from 'react-icons/fi'
 import {VscSettings,VscArrowSwap,VscFileSymlinkDirectory} from 'react-icons/vsc'
 //import {GrUserAdmin} from 'react-icons/gr'
@@ -187,14 +187,14 @@ const roles:Route[]=[
     {
         path:'dashboard',
         title:'Dashboard',
-        icon:<BsHouse className="mr-3 text-xl"/>,
+        icon:<BsHouse className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
     },
     {
         path:'manage-admins',
         title:'Manage Admins',
-        icon:<FiUserCheck className="mr-3 text-xl"/>,
+        icon:<FiUserCheck className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
             {
@@ -217,7 +217,7 @@ const roles:Route[]=[
     {
         path:'configurations',
         title:'Configurations',
-        icon:<VscSettings className="mr-3 text-xl"/>,
+        icon:<VscSettings className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
             {
@@ -240,7 +240,7 @@ const roles:Route[]=[
     {
         path:'users',
         title:'Users',
-        icon:<FiUsers className="mr-3 text-xl"/>,
+        icon:<FiUsers className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
             {
@@ -258,14 +258,14 @@ const roles:Route[]=[
     {
         path:'e-levy',
         title:'E-Levy',
-        icon:<FaRegMoneyBillAlt className="mr-3 text-xl"/>,
+        icon:<FaRegMoneyBillAlt className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
     },
     {
         path:'merchant-settlement',
         title:'Settlement',
-        icon:<SiWebmoney className="mr-3 text-xl"/>,
+        icon:<SiWebmoney className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
             {
@@ -287,16 +287,34 @@ const roles:Route[]=[
         ]
     },
     {
-        path:'direct-debit',
-        title:'Direct Debit',
-        icon:<VscFileSymlinkDirectory className="mr-3 text-xl"/>,
+        path:'wallet-pay',
+        title:'Wallet Payout',
+        icon:<VscFileSymlinkDirectory className="mr-3 text-xl text-pink"/>,
+        hasChild : true,
+        children:[
+            {
+              path:'direct-debit',
+              title:'Direct Debit',
+              icon:<VscFileSymlinkDirectory className="mr-3 text-xl"/>,
+            },
+            {
+              path:'direct-credit',
+              title:'Direct Credit',
+              icon:<VscFileSymlinkDirectory className="mr-3 text-xl"/>,
+            },
+        ]
+    },
+    {
+        path:'reversals/pending',
+        title:'Reversals',
+        icon:<BsBoxArrowInLeft className="mr-3 text-xl hover:text-pink text-pink"/>,
         hasChild : false,
         children:[]
     },
     {
         path:'merchants',
         title:'Merchants',
-        icon:<FiUsers className="mr-3 text-xl"/>,
+        icon:<FiUsers className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
             {
@@ -319,7 +337,7 @@ const roles:Route[]=[
     {
         path:'wallets',
         title:'Wallets',
-        icon:<BsWallet2 className="mr-3 text-xl"/>,
+        icon:<BsWallet2 className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
     },
@@ -333,14 +351,14 @@ const roles:Route[]=[
     {
         path:'referrals',
         title:'Referrals',
-        icon:<RiShareForwardLine className="mr-3 text-xl"/>,
+        icon:<RiShareForwardLine className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
     },
     {
         path:'sms-broadcast',
         title:'Sms Broadcast',
-        icon:<GiSpeaker className="mr-3 text-xl"/>,
+        icon:<GiSpeaker className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
     },

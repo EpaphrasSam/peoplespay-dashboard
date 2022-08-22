@@ -59,7 +59,7 @@ const WalletsTable = ({wallets,goTo}:AppProps): JSX.Element=>(
                 <span className="relative">{`₵${Number.parseFloat(t?.balance).toFixed(2)}`}</span>
             </span>
         </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
@@ -68,7 +68,7 @@ const WalletsTable = ({wallets,goTo}:AppProps): JSX.Element=>(
                     {`₵${Number(t?.totalBalance-t?.balance > 0? t?.totalBalance-t?.balance:0).toFixed(2)}`}
                 </span>
             </span>
-        </td>
+        </td> */}
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             <p className="text-gray-900 whitespace-no-wrap">
                 {formatDate(t?.updatedAt)}
