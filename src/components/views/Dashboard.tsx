@@ -5,16 +5,18 @@ import MerchantService from "../../services/merchant.service";
 import ReportService from "../../services/reports.service";
 import { ReportModel } from "../../models/report.model";
 import { Link } from "react-router-dom";
+import DatePicker from 'react-datepicker'
 
 import HeaderCard from "../cards/HeaderCard";
 import StatCard from "../cards/StatCard";
-
 
 import CardBarChart from "../cards/CardBarChart";
 import CardLineChart from "../cards/CardLineChart";
 import PaidHighLights from "../views/highlights/PaidTransactions";
 import FailedHighLights from "../views/highlights/FailedTransactions";
 
+import SkeletonHeaderCard from '../skeletons/Skeleton';
+import { formatCurrency, formatNumber } from "../../utils/Date";
 
 type StateData = {} | any;
 
@@ -29,15 +31,17 @@ function Dashboard() {
     animate: { opacity: 1, x: 10, transition: { duration: 2 } },
     exit: { opacity: 0, x: 0, transition: { duration: 2 } }
   };
-
-  const startDate = new Date().toISOString();
-  const endDate = new Date().toISOString();
+   
+  const [startDate, setStartDate] = useState<any>(new Date())
+  const [endDate, setEndDate] = useState<any>(new Date())
+  const [loading, setLoading] = useState(false);
+  
   const [data, setData] = useState<StateData>({
     totalTransactions: 0,
     successfulCount: 0,
     failedCount: 0,
     pendingCount:0,
-    totalAmountPaid: 0,
+    totalElevy: 0,
     paidCharges: 0,
     totalAmountFailed: 0,
     totalAmountSuccess: 0,
@@ -53,10 +57,11 @@ function Dashboard() {
 
   useEffect(() => {
     response();
-  }, []);
+  }, [startDate,endDate]);
 
   async function response() {
     try {
+      setLoading(true)
       const [merchantResponse, res, resReport, resTransactions] =
         await Promise.all([
           MerchantService.summary(),
@@ -105,10 +110,10 @@ function Dashboard() {
         successfulCount: paidTransactions.length,
         failedCount: failedTransactions.length,
         pendingCount : transactions.length - (paidTransactions.length + failedTransactions.length),
-        totalAmountPaid: resReport?.data?.paid[0]?.totalAmount,
+        totalElevy: resReport?.data?.elevy[0]?.elevyAmount,
         paidCharges: resReport?.data?.paid[0]?.charges,
         totalAmountFailed: resReport?.data?.failed[0]?.totalAmount,
-        totalAmountSuccess: 0,
+        totalAmountSuccess: resReport?.data?.paid[0]?.totalAmount,
         merchantsNumb:
         merchantResponse.data && merchantResponse?.data[0]?.count,
         paidSliced: _paidSliced,
@@ -119,27 +124,56 @@ function Dashboard() {
         wallet: walletcount,
         airteltigo: airtelcount,
       });
-    } catch (err: any) {}
+
+      setLoading(false)
+    } catch (err: any) {setLoading(false)}
   }
 
   return (
-      <div className="relative md:pt-16 pb-12 pt-12">
+      <div className="relative md:pt-16 pb-12 pt-12 font-inter">
         <div className="md:pl-1 md:px-2 mx-auto w-full">
-        <motion.div 
+            <div className="z-10 bg-white flex items-center float-right">
+               <span className="pr-2 text-pink">Showing</span>
+                <DatePicker 
+                      selected = {startDate}
+                      value={startDate}
+                      onChange = {(date)=>setStartDate(date)}
+                      className="bg-white border border-blue-500 text-blue-500 sm:text-sm focus:ring-blue-500 focus:border-blue-500" 
+                      dateFormat="dd/MM/yyyy"
+                      selectsStart
+                      startDate={startDate}
+                      endDate={endDate}              
+                    />
+               <span className="mx-4 text-blue-500">to</span>
+               <DatePicker 
+                    selected = {endDate}
+                    value = {endDate}
+                    onChange = {(date)=>{setEndDate(date);console.log('ch')}}
+                    className="bg-white border border-blue-500 text-blue-500 sm:text-sm focus:ring-blue-500 focus:border-blue-500" 
+                    dateFormat="dd/MM/yyyy"
+                    selectsEnd
+                    endDate={endDate}
+                    minDate={startDate}
+                  
+               />
+           </div>
+          <motion.div 
           initial="initial"
           animate="animate"
           exit="exit"
           variants={group1Motion}>
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            {!loading ?
+            <>
             <Link to="/user-transactions">
               <HeaderCard
-                title="TOTAL TRANSACTIONS"
-                value={data?.totalTransactions ?? 0}
+                title="TRANSACTIONS"
+                value={formatNumber(data?.totalTransactions) ?? 0}
                 color="red"
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-6 w-6 text-red-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -156,15 +190,13 @@ function Dashboard() {
             </Link>
 
             <HeaderCard
-              title="TOTAL PAID CHARGES"
-              color="blue"
-              value={`GH¢ ${Number.parseFloat(data?.paidCharges ?? 0).toFixed(
-                2
-              )}`}
+              title="PAID CHARGES"
+              color="red"
+              value={formatCurrency(data?.paidCharges ?? 0)}
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-6 w-6 text-red-500"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -181,15 +213,13 @@ function Dashboard() {
 
             <Link to="/allpaid-transactions">
               <HeaderCard
-                title="TOTAL AMOUNT PAID"
-                color="yellow"
-                value={`GH¢ ${Number.parseFloat(
-                  data?.totalAmountPaid ?? 0
-                ).toFixed(2)}`}
+                title="TOTAL ELEVY"
+                color="red"
+                value={formatCurrency(data?.totalElevy ?? 0)}
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-6 w-6 text-red-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -207,12 +237,12 @@ function Dashboard() {
             <Link to="/allpaid-transactions">
               <HeaderCard
                 title="TOTAL MERCHANTS"
-                color="green"
-                value={data?.merchantsNumb}
+                color="red"
+                value={formatNumber(data?.merchantsNumb)}
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-6 w-6 text-red-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -227,6 +257,16 @@ function Dashboard() {
                 }
               />
             </Link>
+            </>
+            :
+            [1, 2, 3, 4].map(loading => (
+              <div className="col-3" key={loading}>
+                  <SkeletonHeaderCard height={120}/>
+              </div>
+          ))
+             
+            }
+            
           </div>
          </motion.div>
       
@@ -236,22 +276,25 @@ function Dashboard() {
           exit="exit"
           variants={group2Motion}>
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 w-full mb-2 mt-3">
+            {!loading?
             <StatCard
-              succ_amount={`GH¢ ${Number.parseFloat(
-                data?.totalAmountPaid ?? 0
-              ).toFixed(2)}`}
-              fail_amount={`GH¢ ${Number.parseFloat(
-                data?.totalAmountFailed ?? 0
-              ).toFixed(2)}`}
-              succ_count={data?.successfulCount ?? 0}
-              fail_count={data?.failedCount ?? 0}
-              pending_count={data?.pendingCount ?? 0}
+              succ_amount={formatCurrency(data?.totalAmountSuccess ?? 0)}
+              fail_amount={formatCurrency(data?.totalAmountFailed ?? 0)}
+              succ_count={formatNumber(data?.successfulCount ?? 0)}
+              fail_count={formatNumber(data?.failedCount ?? 0)}
+              pending_count={formatNumber(data?.pendingCount ?? 0)}
               m={data.mtn}
               v={data.voda}
               a={data.airteltigo}
               w={data.wallet}
               c={data.card}
-            />
+            />:
+               [1, 2, 3, 4].map(loading => (
+                  <div className="col-3" key={loading}>
+                      <SkeletonHeaderCard height={200}/>
+                  </div>
+              ))
+            }
           </div>
         </motion.div>
   
@@ -277,7 +320,7 @@ function Dashboard() {
           animate="animate"
           exit="exit"
           variants={group2Motion}>
-          <div className="flex flex-wrap mt-4">
+          <div className="flex flex-wrap mt-4 font-segoe">
             <div className="w-full xl:w-8/12 mb-12 xl:mb-0 md:pr-1">
               <PaidHighLights transactions={data.paidSliced} />
             </div>

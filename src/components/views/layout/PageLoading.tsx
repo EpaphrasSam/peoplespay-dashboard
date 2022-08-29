@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import smile from './smile.gif';
+import loader from './loader.gif';
 
 const PageLoading = () => (
   <Fragment>
     <img
-      src={smile}
-    className='h-10 w-10'
+      src={loader}
+    className='h-20 w-20'
       alt="Loading"
       style={{
         position: "absolute",

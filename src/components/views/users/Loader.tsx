@@ -5,7 +5,7 @@ const Loader = () => (
   <Fragment>
     <img
       src={filter}
-    className='w-8'
+    className='w-6'
       alt="Loading..."
      />
   </Fragment>

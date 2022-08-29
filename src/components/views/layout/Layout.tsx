@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {Outlet} from "react-router-dom";
-import { useDispatch} from "react-redux";
-import {setAuth } from "../../../state/auth.state";
+
+
 import ErrorBoundary from "../../error-boundary/ErrorBoundary";
+
 
 // components
 import Navbar from "../../navbar/Navbar";
@@ -10,34 +11,34 @@ import Sidebar from "../../sidebar/Sidebar";
 import Footer from "../../footer/Footer";
 
 
+export default function Admin():any {
 
-export default function Admin() {
-
-    const dispatch=useDispatch();
     
+   
+
     
-    useEffect(()=>{
-        loadProfile();
-    },[]);
-
-
-    const loadProfile=()=>{
-        const session=sessionStorage.getItem('PP-USER');
-        if(typeof session==='string'){
-            dispatch(
-                setAuth(
-                    JSON.parse(session)
-                )
-            )
-        }
-        
-    }
+    // const loadProfile=()=>{
+    //     const session=sessionStorage.getItem('PP-USER');
+    //     if(typeof session==='string'){
+    //         dispatch(
+    //             setAuth(
+    //                 JSON.parse(session)
+    //             )
+    //         )
+    //     }
+    //     if(user===null){
+    //         <Navigate to="/login" replace/>
+    //     }else if(user?.isPasswordChanged===false){
+    //         return navigate('/change-password')
+    //     }
+    // }
+    
   
     return (
         <>
          <ErrorBoundary>
             <Sidebar />
-            <div className="relative md:ml-56 bg-white mb-2">
+            <div className="relative md:ml-56 mb-2 font-inter">
                     <Navbar />
 
                 {/* Header */}

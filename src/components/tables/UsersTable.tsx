@@ -1,55 +1,66 @@
 import React from 'react';
-import moment from 'moment'
+import UsersTableOptions from '../dropdowns/UsersTableDropdown';
+import UsersTableDropdown from '../dropdowns/UsersTableDropdown';
+import {formatDate} from '../../utils/Date';
 
-type AppProps = {}[]
+type AppProps = {
+    users:{}[];
+    blockUser:Function,
+    setUser:any
+    setShowModal:any
+}
 
-const UsersTable = ({users}:{users:AppProps}):JSX.Element => (
+const UsersTable = ({users,blockUser,setUser,setShowModal}:AppProps):JSX.Element => (
 <>
 {
     users.map((u:any)=>(
-        <tr>
-        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+     <tr>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             <span
                 className=
-                "font-bold text-blueGray-600"
+                "text-blueGray-600"
             >
-                {moment(u.createdAt).format('YYYY/MMM/DD')}
+                {u.createdAt}
             </span>
-        </th>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+        </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             {u.fullname}
         </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             {u.email}
         </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-            {u.profile}
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            {u.phone}
         </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-            {u.account_active 
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            {u?.blocked 
               ?
               (
-              <span
-                className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                <span aria-hidden
-                    className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                <span className="relative">active</span>
-              </span>
+                <span
+                    className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
+                    <span aria-hidden
+                        className="absolute inset-0 bg-red-500 rounded-md"></span>
+                    <span className="relative">Blocked</span>
+                </span>     
             ) 
               : 
               (
                 <span
-                className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                <span aria-hidden
-                    className="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                <span className="relative">not active</span>
-            </span>
+                    className="relative inline-block px-3 py-1 font-semibold text-sgreen leading-4 tracking-widest">
+                    <span aria-hidden
+                    className="absolute inset-0 bg-gray-50 rounded-md"></span>
+                    <span className="relative">Active</span>
+                </span>
               )
               }
         
         </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-            <i className="fas fa-check text-green-500 mr-2"></i> {u.phone_verified}
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <UsersTableDropdown 
+             blockUser={()=>{blockUser(u?._id,u?.blocked)}}
+             seeDetails={()=>{setShowModal(true);setUser(u)}}
+             isBlocked={u?.blocked}
+            />
         </td> 
     </tr>
     ))

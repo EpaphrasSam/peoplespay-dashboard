@@ -11,6 +11,22 @@ const getElevyTransactions=()=>fetch(
             'Authorization' : Utils.AuthToken()
         },
     }
+).then(res=>res.json());
+
+const filterElevyPeriod=(data:any)=>fetch(
+    `${BASE_URL}/elevy/monthly/get`,
+    {
+        method:'POST',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' : Utils.AuthToken()
+        },
+        body:JSON.stringify(data)
+    }
 ).then(res=>res.json())
 
-export default getElevyTransactions;
+const elevyService={
+    getElevyTransactions,
+    filterElevyPeriod
+}
+export default elevyService;

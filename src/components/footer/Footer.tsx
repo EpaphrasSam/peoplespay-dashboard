@@ -21,30 +21,6 @@ export default function FooterAdmin() {
                         <div className="w-full md:w-8/12 px-4 text-xm text-gray-400">
                             <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                                 <li>
-                                    <a
-                                        href="https://www.creative-tim.com?ref=nr-footer-admin"
-                                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                                    >
-                                        FAQs
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.creative-tim.com/presentation?ref=nr-footer-admin"
-                                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                                    >
-                                        Privacy Policy
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="http://blog.creative-tim.com?ref=nr-footer-admin"
-                                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                                    >
-                                        Terms and Conditions
-                                    </a>
-                                </li>
-                                <li>
                                     <img className='w-12' src='/assets/footer.png' alt='bsystems'/>
                                 </li>
                             </ul>

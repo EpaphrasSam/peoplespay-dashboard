@@ -7,7 +7,12 @@ import AccountsService from '../../../services/accounts.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
-import "react-datepicker/dist/react-datepicker.css";
+import RowNumberSelector from '../../buttons/RowNumberSelector';
+//import ValueFilterSelector from '../../buttons/ValueFilterSelector';
+import { OutlinedButton } from '../../buttons/BasicButton';
+import { BiFilterAlt } from 'react-icons/bi';
+import PageHeader from '../../header/PageHeader';
+import SettlementDetailModal from '../../../components/modal/SettlementDetailModal'
 
 
 function AllSettlements(){
@@ -27,6 +32,11 @@ function AllSettlements(){
     const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
+    const[startDate,setStartDate]=useState('')
+    const [endDate,setEndDate]=useState('')
+
+    const[showModal, setShowModal]=useState(false)
+    const [settlement,setSettlement]=useState(null)
     
     useEffect(()=>{
         response();
@@ -36,11 +46,11 @@ function AllSettlements(){
         try{ 
             setIsLoading(true)
             const res = await AccountsService.getSettlements() 
-            //console.log(res);
             if(!res.success){
                 alert(res.message)
             }
-            dispatch(setSettlementHistory(res.data))
+            let results = res.data.filter((s:any)=>s.settlementStatus !== 'pending')
+            dispatch(setSettlementHistory(results))
             setIsLoading(false)
 
             //Update states
@@ -84,18 +94,16 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
  ]
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4 font-segoe">
+            <SettlementDetailModal showModal={showModal} action={()=>setShowModal(false)} settlement={settlement} />
             {/**page heading */}
          <motion.div 
             initial="initial"
             animate="animate"
             exit="exit"
             variants={group1Motion}>
-           <div className='mb-10'>
-              <h2 className="text-2xl font-semibold leading-tight text-red-800">Settlements History</h2>
-           </div>
-
-            
+           
+           <PageHeader title="Settlements History"/>
 
         {/**download button */}
         <div className="float-right space-x-2 mr-12">
@@ -103,55 +111,45 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                 headers = {headers}
                 data = {settlementHistory}
                 filename={'settlements.csv'}
-                className='py-3 px-2 bg-green-500 text-white font-semibold rounded uppercase shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
+                className='py-3 px-2 bg-green-500 text-white font-semibold rounded shadow hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-500 font-sans'>
                     Download CSV
             </CSVLink>
         </div>
         
        
         {/**date picker */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
           <div className="relative">
-            <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-            />
+          <input type="date" 
+                className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                placeholder='Start date'
+                onChange={(date:any)=>setStartDate(date.target.value)}
+                value={startDate}/>
          </div>
         <span className="mx-4 text-gray-500">to</span>
         <div className="relative">
-            <div className="relative">
-                <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
-                />
-            </div>
+        <input type="date" 
+                className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                placeholder='Start date'
+                onChange={(date:any)=>setEndDate(date.target.value)}
+                value={endDate}/>
        </div>
 
        {/**filter btn */}
-       <button 
-            className='rounded-md bg-red-800 text-gray-200 py-3 px-7 ml-2 font-sans font-semibold tracking-widest leading-tight outline-none hover:shadow hover:bg-red-900 focus:bg-red-900 ease-linear transition-all duration-150'>Filter</button>
+        <OutlinedButton 
+                value={'Filter'}
+                action={()=>{}}
+                color="gray"
+                icon={<BiFilterAlt/>}
+            />
      </div>
      {/**end date */}
 
 {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
-                <div className="relative">
-                    <select
-                        onChange = {pageRowsHandler}
-                        value={rowsPerPage}
-                        className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                        <option>40</option>
-                        <option>50</option>
-                        <option>80</option>
-                    </select>
-                    <div
-                        className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
-                </div>
+             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
+             {/* <ValueFilterSelector setFilter={setCategory} value={category} options={['name']}/> */}
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder='Search merchant name ...'/>
         </div>
@@ -163,53 +161,53 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
           exit="exit"
           variants={group2Motion}>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
+            <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="overflow-x-scroll min-w-full leading-normal">
-                    <thead>
+                    <thead className="text-sm">
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Date
                             </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            {/* <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Merchant Id
-                            </th>
+                            </th> */}
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Description
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Start Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 End Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Number
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
+                                Acc_Number
                             </th>
                              <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Name
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  tracking-wider">
+                                Acc_Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Issuer
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
+                                Acc_Issuer
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Account Type
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
+                                Acc_Type
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                status
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
+                                Status
                             </th>
                         </tr>
                     </thead>
@@ -218,7 +216,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                            isLoading ?
                            <Spinner/>
                            :
-                           <SettlementsTable data={currentRows}/>
+                           <SettlementsTable data={currentRows} setShowModal={setShowModal} setSettlement={setSettlement} />
                        }
                     </tbody>
                 </table>

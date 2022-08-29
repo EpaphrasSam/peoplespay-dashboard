@@ -64,6 +64,16 @@ const dateFilter = (startDate:string, endDate :string) =>fetch(
     }
 ).then(res => res.json())
 
+const getWalletTransactions=(id:string)=>fetch(
+    `${BASE_URL}/transactions/get/customer/${id}`,
+    {
+        method:'GET',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' : Utils.AuthToken()
+        }
+    }
+).then(res=>res.json())
 
 const ReportService = {
 summaryReport,
@@ -71,6 +81,7 @@ getTransactions,
 getWallets,
 getReferals,
 getAgents,
-dateFilter
+dateFilter,
+getWalletTransactions
 }
 export default ReportService;

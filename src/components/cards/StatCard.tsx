@@ -16,12 +16,12 @@ interface StatProps{
 }
 export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_count,pending_count, m,v,a,c,w}:StatProps) {
   const data1 = {
-    labels: ["1", "2", "3", "4", "5", "6", "7"],
+    labels: ["1", "2", "3", "4", "5", "20", "10"],
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(253, 244, 255, 1)",
-        borderColor: "rgba(232, 121, 249, 1)",
+        backgroundColor: "rgb(199,27,67)",
+        borderColor: "rgb(199,27,67)",
         tension: 0.3,
         borderWidth: 2,
         data: [1, 3, 2, 5, 4, 5, 7],
@@ -34,7 +34,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(236, 254, 255, 1)",
+        backgroundColor: "rgba(34, 211, 238, 1)",
         borderColor: "rgba(34, 211, 238, 1)",
         tension: 0.3,
         borderWidth: 2,
@@ -48,8 +48,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(255, 251, 235, 1)",
-        borderColor: "rgba(251, 191, 36, 1)",
+        backgroundColor: "#49abdc",
+        borderColor: "#49abdc",
         tension: 0.3,
         borderWidth: 2,
         data: [2, 5, 4, 6, 3, 5, 7],
@@ -62,7 +62,7 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgba(236, 253, 245, 1)",
+        backgroundColor: "rgba(52, 211, 153, 1)",
         borderColor: "rgba(52, 211, 153, 1)",
         tension: 0.3,
         borderWidth: 2,
@@ -121,36 +121,36 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
 
   return (
        <>
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Transactions</div>
-              <div className="relative z-10 flex items-center pt-1">
-                <div className="text-xl font-bold text-gray-900 ">{succ_count}</div>
+            <div className="relative p-5  pb-5 overflow-hidden shadow-md bg-white border border-white rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left">Transaction Summary</div>
+              <div className="relative z-10 flex items-center pt-1 space-y-1">
+                <div className="text-xl font-bold text-gray-800 ">{succ_count}</div>
                 <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-green-600 bg-green-100 rounded">
                   <span>successful</span>
                 </span> 
               </div>
-              <div className="flex">    
-                <div className="text-xl font-bold text-gray-900 ">{fail_count}</div> 
+              <div className="flex space-y-1">    
+                <div className="text-xl font-bold text-gray-800 ">{fail_count}</div> 
                 <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-red-600 bg-red-100 rounded">
                   <span>failed</span>
                 </span> 
               </div>
-              <div className="flex">    
-                <div className="text-xl font-bold text-gray-900 ">{pending_count}</div> 
-                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-yellow-600 bg-yellow-100 rounded">
+              <div className="flex space-y-1">    
+                <div className="text-xl font-bold text-gray-800 ">{pending_count}</div> 
+                <span className="flex items-center px-2 py-0.1 mx-2 text-sm text-yellow-500 bg-yellow-50 rounded">
                   <span>pending</span>
                 </span> 
               </div>
               <div className="absolute bottom-0 inset-x-0 z-0">
-                <Line height={80} data={data1} options={chartOptions} />
+                <Line height={100} data={data1} options={chartOptions} />
               </div>
             </div>
             
             
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Successful Amount</div>
+            <div className="relative p-5 pb-5 overflow-hidden bg-white shadow-sm border border-gray-100 rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left mb-3 ">Successful Amount</div>
               <div className="relative z-10 flex items-center pt-1">
-                <div className="text-2xl font-bold text-gray-900 ">
+                <div className="text-2xl font-bold text-gray-800">
                   {succ_amount}
                 </div>
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-green-600 bg-green-100 rounded">
@@ -165,13 +165,13 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
               </div>
 
               <div className="absolute bottom-0 inset-x-0 z-0">
-                <Line height={80} data={data2} options={chartOptions} />
+                <Line height={100} data={data2} options={chartOptions} />
               </div>
             </div>
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Failed Amount</div>
+            <div className="relative p-5 pb-5 overflow-hidden bg-white shadow-sm border border-gray-100 rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left mb-3">Failed Amount</div>
               <div className="relative z-10 flex items-center pt-1">
-                <div className="text-2xl font-bold text-gray-900 ">{fail_amount}</div>
+                <div className="text-2xl font-bold text-gray-800">{fail_amount}</div>
                 <span className="flex items-center px-2 py-0.5 mx-2 text-sm text-red-600 bg-red-100 rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                     className="h-5 w-5" viewBox="0 0 20 20" 
@@ -181,44 +181,43 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
                 </span>
               </div>
               <div className="absolute bottom-0 inset-x-0 z-0">
-                <Line height={80} data={data3} options={chartOptions} />
+                <Line height={100} data={data3} options={chartOptions} />
               </div>
             </div>
 
-            <div className="relative p-5 pb-16 overflow-hidden bg-gray-50 rounded-md shadow-sm">
-              <div className="text-base text-gray-400 ">Source Channels</div>
+            <div className="relative p-5  overflow-hidden bg-white shadow-sm border border-gray-100 rounded-md">
+              <div className="font-semibold text-sm text-gray-600 font-segoe uppercase text-left mb-3">Source Channels</div>
               <div className="relative z-10 flex items-center pt-1">
-                <span className="flex items-center px-2 py-0.5 mx-2 text-sm rounded">
-                <div className='grid grid-cols-5 divide-x- divide-green-500 text-xs pt-1 gap-2'>
-                <div>
-                    <span className='bg-yellow-400 rounded px-2  font-bold'>M</span>
-                    <h6 className="text-xs font-semibold leading-tight py-1 pt-2">{m}</h6>
-                </div>
-                <div>
-                <span className='bg-red-500 rounded px-2  font-bold'>V</span>
-                    <h6 className="text-xs font-semibold leading-tight  py-1 pt-2">{v}</h6>
-                </div>
-                <div>
-                <span className='bg-blue-500 rounded px-2  font-bold'>A</span>
-                    <h6 className="text-xs font-semibold leading-tight  py-1 pt-2">{a}</h6>
-                </div>
-                <div>
-                <span className='bg-green-500 rounded px-2  font-bold'>C</span>
-                    <h6 className="text-xs font-semibold leading-tight  py-1 pt-2">{c}</h6>
-                </div>
-                <div>
-                <span className='bg-pink-700 rounded px-2  font-bold'>W</span>
-                    <h6 className="text-xs font-semibold leading-tight  py-1 pt-2">{w}</h6>
-                </div>
-            </div>
-                </span>
+                
+                <div className='flex flex-wrap mb-1 flex-row flex-shrink text-xs pt-1 gap-2'>
+                  <div>
+                        <span className='bg-gray-100 rounded px-2 py-1 font-bold text-yellow-400'>Mtn</span>
+                        <h6 className="text-xs font-semibold leading-tight py-1 pt-2 text-yellow-600">{m}</h6>
+                  </div>
+                  <div>
+                     <span className='bg-gray-100 rounded px-2  py-1 font-bold text-red-500'>Vodafone</span>
+                      <h6 className="text-xs font-semibold leading-tight py-1 pt-2 text-red-700">{v}</h6>
+                  </div>
+                  <div>
+                    <span className='bg-blue-50 rounded px-2  py-1 font-bold text-blue-500'>AitelTigo</span>
+                      <h6 className="text-xs font-semibold leading-tight py-1 pt-2 text-blue-700">{a}</h6>
+                  </div>
+                  <div>
+                      <span className='bg-gray-100 text-green-500 rounded px-2 py-1 font-bold'>Cards</span>
+                      <h6 className="text-xs font-semibold leading-tight py-1 pt-2 text-green-700">{c}</h6>
+                  </div>
+                  <div>
+                  <span className='bg-gray-100 text-pink rounded px-2 py-1 font-bold'>Wallets</span>
+                      <h6 className="text-xs font-semibold leading-tight py-1 pt-2 text-pink">{w}</h6>
+                  </div>
+               </div>
+                
               </div>
 
               <div className="absolute bottom-0 inset-x-0  z-0">
-                <Line height={80} data={data4} options={chartOptions} />
+                <Line height={100} data={data4} options={chartOptions} />
               </div>
-            </div>
-            
+            </div>     
     </>
   );
 }
