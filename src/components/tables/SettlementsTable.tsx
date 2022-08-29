@@ -4,7 +4,7 @@ import { formatCurrency, formatDate } from "../../utils/Date";
 
 interface AppProps{
     data : any[],
-    setShowModal:Function;
+    setShowModal:any;
     setSettlement:Function
 }
 
