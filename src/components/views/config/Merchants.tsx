@@ -12,6 +12,8 @@ import PageHeader from '../../header/PageHeader';
 import merchantsService from '../../../services/merchant.service';
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 import MerchantDetailModal from '../../modal/MerchantDetailModal'
+import {CSVLink} from "react-csv"
+import { HiDownload } from 'react-icons/hi';
 
 function MerchantsConfig(){
     const navigate=useNavigate()
@@ -34,11 +36,14 @@ function MerchantsConfig(){
                   dispatch(setMerchantName(m?.merchant.merchant_tradeName))
                 }
             }) 
-            return navigate("/configurations/merchants/apps")
+            return navigate("/merchants/apps")
             
         }catch(err){}
      }
-     
+      
+     const data=approvedMerchants.map(d=>d.merchant)
+     console.log(data);
+
      const blockMerchant=(id:string,blocked:boolean)=>{
        try{
          confirmAlert({
@@ -64,7 +69,7 @@ function MerchantsConfig(){
 
      const filterResults = approvedMerchants.filter((m)=>m?.merchant?.merchant_tradeName.toLowerCase().startsWith(searchQuery.toLowerCase()))
 
-    const results:any[] = filterResults.length === 0 ? approvedMerchants : filterResults
+     const results:any[] = filterResults.length === 0 ? approvedMerchants : filterResults
      
      //Get Current rows
     const indexOfLastRow:number = currentIndex * rowsPerPage;
@@ -77,19 +82,42 @@ function MerchantsConfig(){
 
     const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
-}
+    }
+
+    const headers = [
+        { label: "MERCHANT ID", key: "_id" },
+        { label: "ADDRESS", key: "address" },
+        { label: "EMAIL", key: "email" },
+        { label: "LINE OF BUSINESS", key: "lineOfBusiness" },
+        { label: "LOCATION", key: "location" },
+        { label: "MERCHANT TRADE NAME", key: "merchant_tradeName"},
+        { label: "REGISTRATION NUMBER", key: "registrationNumber"},
+        { label: "PHONE", key: "phone" },
+    ]
 
     return(
         <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
             <PageHeader title="Merchants Configurations"/> 
         
-        {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
-            <div className="flex flex-row mb-1 sm:mb-0">
-                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
-                <ValueFilterSelector setFilter={setCategory} value={category} options={[]}/>
+        <div className="flex flex-row justify-between items-center">
+            {/**filters */}
+            <div className="my-2 flex sm:flex-row flex-col">
+                <div className="flex flex-row mb-1 sm:mb-0">
+                    <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
+                    <ValueFilterSelector setFilter={setCategory} value={category} options={[]}/>
+                </div>
+                <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
+            <div>
+                <CSVLink 
+                    headers = {headers}
+                    data = {data}
+                    filename={'approved-merchants.csv'}
+                    className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
+                        <HiDownload/>
+                        <span>{ 'Download Report'}</span>
+                </CSVLink>
+            </div>
         </div>
         <MerchantDetailModal showModal={showModal} action={()=>setShowModal(false)} merchant={merchant}/>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">

@@ -1,4 +1,5 @@
 import moment from "moment";
+import { formatCurrency, formatDate, formatTime } from "../../utils/Date";
 //const swal = require('sweetalert')
 interface AppProps{
     data : any[],
@@ -20,7 +21,7 @@ const ElevyTransactionsDetailsTable = ({data}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {moment(t.createdAt).format('YYYY-MM-DD')}
+                    {formatDate(t.createdAt)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -28,7 +29,7 @@ const ElevyTransactionsDetailsTable = ({data}:AppProps):JSX.Element => (
                     className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                     <span aria-hidden
                         className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                    <span className="relative">{moment(t.createdAt).format('HH:mm A')}</span>
+                    <span className="relative">{formatTime(t.createdAt)}</span>
                 </span>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -43,17 +44,17 @@ const ElevyTransactionsDetailsTable = ({data}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    GHS{Number.parseFloat(t.amount).toFixed(2)}
+                    {formatCurrency(t.amount)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    GHS{t.charges}
+                    {formatCurrency(t.charges)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    GHS{t.elevyCharges}
+                    {formatCurrency(t.elevyCharges)}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">

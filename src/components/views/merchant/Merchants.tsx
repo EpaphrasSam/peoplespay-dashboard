@@ -14,6 +14,8 @@ import useFetchMerchants from './useFetchMerchants';
 import { OutlinedButton } from '../../buttons/BasicButton';
 import Loader from '../users/Loader';
 import { BiFilterAlt } from 'react-icons/bi';
+import { CSVLink } from 'react-csv';
+import { HiDownload } from 'react-icons/hi';
 
 
 function Merchants(){
@@ -76,6 +78,18 @@ const handleSelectedId:Function = async (id:string) => {
     }
 }
 
+ const unapprovedMerchants=merchants.filter((m=>m.submitted&&!m.active))
+
+ const headers = [
+    { label: "MERCHANT ID", key: "_id" },
+    { label: "TRADENAME", key: "merchant_tradeName"},
+    { label: "EMAIL", key: "email" },
+    { label: "REGISTRATION NUMBER", key: "registrationNumber" },
+    { label: "LINE OF BUSINESS", key: "lineOfBusiness" },
+    { label: "LOCATION", key: "location"},
+    { label: "PHONE", key: "phone" },
+  ]
+
     return (
         <div className="relative md:pt-10 pb-10  w-full mb-12">
          <PageHeader title='Merchants Onboarding'/>
@@ -107,8 +121,8 @@ const handleSelectedId:Function = async (id:string) => {
             <div className='flex flex-wrap -mt-24'>
                 <div className="w-full sm:w-6/12 mb-12 md:mb-0">  
                 <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 ">
-           <div className="my-2 flex sm:flex-row flex-col mt-0 pt-0">
-            <div className="flex flex-row mb-1 sm:mb-0">
+           <div className="my-2 flex sm:flex-row flex-col mt-0 pt-0 space-x-2 items-center">
+            <div className="flex flex-row mb-1 sm:mb-0 items-center">
                 <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
                 <div className="relative">
                     <select
@@ -120,8 +134,18 @@ const handleSelectedId:Function = async (id:string) => {
                             <option value="category">comp category</option>
                     </select>
                 </div>
+                <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search by ${merchantCategory}`}/>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search by ${merchantCategory}`}/>
+            <div>
+                <CSVLink 
+                    headers = {headers}
+                    data = {unapprovedMerchants}
+                    filename={'onboarding-merchants.csv'}
+                    className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
+                        <HiDownload/>
+                        <span>{ 'Download Report'}</span>
+                </CSVLink>
+            </div>
         </div>
             <div
                 className=

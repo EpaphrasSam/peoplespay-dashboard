@@ -19,6 +19,7 @@ import PageHeader from '../../header/PageHeader';
 import Spinner from '../layout/Spinner';
 //import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 import TransactionDetailsModal from '../../modal/TransactionDetailsModal'
+import { formatCurrency, formatNumber } from '../../../utils/Date';
 
 const swal = require('sweetalert2');
 
@@ -120,7 +121,7 @@ const filterResults = transactions.filter((tr)=>{
          if(hasSearchResults3) return tr;  
          break;
     case "refcode":
-         const hasSearchResults4:boolean = tr?.reference?.toLowerCase().startsWith(searchQuery)
+         const hasSearchResults4:boolean = tr?.reference?.toLowerCase().includes(searchQuery)
          if(hasSearchResults4) return tr;  
          break;
     default:
@@ -263,25 +264,25 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
           exit="exit"
           variants={group1Motion}>
               
-              <PageHeader title="User Transactions"/>
+              <PageHeader title="Transactions"/>
 
             {/**deviders */}
             <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
                 <div>
                     <span className='bg-green-100 rounded-md px-2'>Transactions</span>
-                    <h2 className="text-3xl font-semibold leading-tight py-4">{totalTransactionCount}</h2>
+                    <h2 className="text-3xl leading-tight py-4">{formatNumber(totalTransactionCount)}</h2>
                 </div>
                 <div>
                     <span className='bg-yellow-100 rounded-md px-2'>Amount</span>
-                    <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl leading-tight py-4">{formatCurrency(amount)??0.00}</h2>
                 </div>
                 <div>
                     <span className='bg-red-100 rounded-md px-2'>Failed</span>
-                    <h2 className="text-3xl font-semibold leading-tight py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl leading-tight py-4">{formatCurrency(failedAmount)??0.00}</h2>
                 </div>
                 <div>
                     <span className='bg-blue-100 rounded-md px-2'>Charges</span>
-                    <h2 className="text-3xl font-semibold leading-tight pyd-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
+                    <h2 className="text-3xl leading-tight pyd-4">{formatCurrency(paidCharges)??0.00}</h2>
                 </div>
             </div>
             </motion.div>
@@ -296,19 +297,6 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
                     <HiDownload/>
                     <span>{isloading ? 'Preparing...' : 'Download Report'}</span>
             </CSVLink>
-            <OutlinedButton
-             value="Reverse Transaction"
-             color="blue"
-             borderVisible
-             icon={<TiArrowForwardOutline/>}
-             action={initiateReversal}
-            />
-            {/* <button 
-                    className="outline outline-2  outline-offset-2  py-2 px-1 bg-blue-500 text-white font-semibold rounded uppercase shadow hover:shadow hover:bg-blue-500 focus:outline-none ease-linear transition-all duration-150"
-                    onClick={()=>}
-                    >
-                Reverse Transactions
-            </button> */}
         </div>
         
        

@@ -1,19 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-//import { User } from "../models/user.model";
 import  { RootState } from "./state"
 
 interface StateModel{
     loading : boolean,
     issuers : {}[]
-    settlementHistory : any
-    pendingSettlements : any
+    settlementHistory : any,
+    pendingSettlements : any,
+    pendingPayouts:any
 }
 
 const initialState:StateModel = {
     loading : true,
     issuers : [],
     settlementHistory : [],
-    pendingSettlements : []
+    pendingSettlements : [],
+    pendingPayouts:[]
 }
 
 const state=createSlice(
@@ -33,10 +34,13 @@ const state=createSlice(
               },
             setPendingSettlements: (state,action)=>{
                 state.pendingSettlements = action.payload
+            },
+            setPendingPayouts: (state,action)=>{
+                state.pendingPayouts = action.payload
             }
         }
     }
 )
-export const {setIssuers, setSettlementHistory, setPendingSettlements} = state.actions
+export const {setPendingPayouts,setIssuers, setSettlementHistory, setPendingSettlements} = state.actions
 export const accountsSelector = (state: RootState) => state.accounts;
 export default state.reducer;   

@@ -1,9 +1,9 @@
 export enum EnumTransactionTypes {
     'RF'='Reversal | Refund', // REVERSAL | REFUND
-    'DB'='Debit', // DEBIT
+    'DB'='Direct Debit', // DEBIT
     'CA'='Card Authorization', // Card Authorization
     'SM'='Send Money', // send money
-    'RM'='Receive Money | Collections', // receive money | COLLECTIONS
+    'RM'='Merchant Collections', // Merchant Collection 
     'PB'='Bill Payment', // BILL PAYMENT
     'AT'='Airtime Topup', // airtime topup
     'PP'='Proxy Pay', // proxy pay

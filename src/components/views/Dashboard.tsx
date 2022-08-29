@@ -16,6 +16,7 @@ import PaidHighLights from "../views/highlights/PaidTransactions";
 import FailedHighLights from "../views/highlights/FailedTransactions";
 
 import SkeletonHeaderCard from '../skeletons/Skeleton';
+import { formatCurrency, formatNumber } from "../../utils/Date";
 
 type StateData = {} | any;
 
@@ -167,7 +168,7 @@ function Dashboard() {
             <Link to="/user-transactions">
               <HeaderCard
                 title="TRANSACTIONS"
-                value={data?.totalTransactions ?? 0}
+                value={formatNumber(data?.totalTransactions) ?? 0}
                 color="red"
                 icon={
                   <svg
@@ -191,9 +192,7 @@ function Dashboard() {
             <HeaderCard
               title="PAID CHARGES"
               color="red"
-              value={`GH¢ ${Number.parseFloat(data?.paidCharges ?? 0).toFixed(
-                2
-              )}`}
+              value={formatCurrency(data?.paidCharges ?? 0)}
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -216,9 +215,7 @@ function Dashboard() {
               <HeaderCard
                 title="TOTAL ELEVY"
                 color="red"
-                value={`GH¢ ${Number.parseFloat(
-                  data?.totalElevy ?? 0
-                ).toFixed(2)}`}
+                value={formatCurrency(data?.totalElevy ?? 0)}
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -241,7 +238,7 @@ function Dashboard() {
               <HeaderCard
                 title="TOTAL MERCHANTS"
                 color="red"
-                value={data?.merchantsNumb}
+                value={formatNumber(data?.merchantsNumb)}
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -281,15 +278,11 @@ function Dashboard() {
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 w-full mb-2 mt-3">
             {!loading?
             <StatCard
-              succ_amount={`GH¢ ${Number.parseFloat(
-                data?.totalAmountSuccess ?? 0
-              ).toFixed(2)}`}
-              fail_amount={`GH¢ ${Number.parseFloat(
-                data?.totalAmountFailed ?? 0
-              ).toFixed(2)}`}
-              succ_count={data?.successfulCount ?? 0}
-              fail_count={data?.failedCount ?? 0}
-              pending_count={data?.pendingCount ?? 0}
+              succ_amount={formatCurrency(data?.totalAmountSuccess ?? 0)}
+              fail_amount={formatCurrency(data?.totalAmountFailed ?? 0)}
+              succ_count={formatNumber(data?.successfulCount ?? 0)}
+              fail_count={formatNumber(data?.failedCount ?? 0)}
+              pending_count={formatNumber(data?.pendingCount ?? 0)}
               m={data.mtn}
               v={data.voda}
               a={data.airteltigo}

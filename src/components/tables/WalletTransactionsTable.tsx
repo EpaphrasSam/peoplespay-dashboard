@@ -85,7 +85,7 @@ const WalletTransactionsTable = ({transactions,setShowModal,setTransaction}:AppP
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 {
-                    t.status === 'paid' ? 
+                    t.status === 'PAID' ? 
                     (
                     <span
                         className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
@@ -94,7 +94,7 @@ const WalletTransactionsTable = ({transactions,setShowModal,setTransaction}:AppP
                         <span className="relative">Paid</span>
                     </span>
                     )
-                    :  t.status === 'failed' ?
+                    :  t.status === 'FAILED' ?
                     (
                         <span
                     className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">

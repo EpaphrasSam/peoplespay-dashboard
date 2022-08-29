@@ -5,7 +5,6 @@ import  PaidHighLightTable from '../../tables/PaidHighLightTable'
 type AppProps = any;
 
 const PaidHighLights = ({transactions}:{transactions:AppProps}) => {
-  //console.log(transactions);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
@@ -17,7 +16,7 @@ const PaidHighLights = ({transactions}:{transactions:AppProps}) => {
               </h3>
             </div>
             <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-              <Link to='allpaid-transactions'>
+              <Link to='/allpaid-transactions'>
               <button
                 className="tracking-wide bg-indigo-50 text-indigo-500 active:bg-indigo-600 hover:underline text-sm font-bold px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"

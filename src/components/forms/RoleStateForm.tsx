@@ -1,4 +1,4 @@
-import { PrimaryButton } from "../buttons/BasicButton";
+import { OutlinedButton, PrimaryButton } from "../buttons/BasicButton";
 
 
 interface Props{
@@ -6,18 +6,26 @@ interface Props{
     description:string
     access:any[]
     onSubmit:Function,
+    onClear:Function,
     loading:boolean
 }
 
-const RoleStateForm= ({name,description,access,onSubmit,loading}:Props)=>(
+const RoleStateForm= ({name,description,access,onSubmit,onClear,loading}:Props)=>(
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 rounded bg-white border">
             <div className="mx-4 mt-6 mb-4">
-                <div className="float-right">
-                    <PrimaryButton
-                        action={onSubmit}
-                        color="blue"
-                        value={loading?'Adding role...':'Submit'}
-                    />
+                <div className="float-right space-x-2">
+                        <PrimaryButton
+                            action={onSubmit}
+                            color="blue"
+                            value={loading?'Adding role...':'Submit'}
+                        />
+                       <OutlinedButton 
+                            value='Clear All Permissions' 
+                            action={onClear} 
+                            color="blue"
+                            borderVisible
+                            paddingWide
+                        />
                 </div>
                 <h6 className="text-center text-xl font-bold">Role Profile</h6>
             </div>

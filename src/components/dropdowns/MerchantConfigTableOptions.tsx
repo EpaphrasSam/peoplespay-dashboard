@@ -1,6 +1,6 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import {MdModeEditOutline, MdReadMore} from 'react-icons/md'
+import {MdReadMore} from 'react-icons/md'
 import {FiChevronDown} from 'react-icons/fi'
 import {FaRegEyeSlash} from 'react-icons/fa'
 //import {GrPowerReset} from 'react-icons/gr'

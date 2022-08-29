@@ -91,6 +91,28 @@ const reverseTransaction = (data:any) => fetch(
     }
 ).then(res=>res.json())
 
+const sendEmailOTP = () => fetch(
+    `${BASE_URL}/otp/email`,
+    {
+        method:'POST',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' :  Utils.AuthToken()
+        },
+    }
+).then(res=>res.json())
+
+const initiateReversal = (data:any) => fetch(
+    `${BASE_URL}transactions/reversal/initiate`,
+    {
+        method:'POST',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization' :  Utils.AuthToken()
+        },
+        body : JSON.stringify(data)
+    }
+).then(res=>res.json())
 
 const transactionServices = {
     nec,
@@ -100,7 +122,9 @@ const transactionServices = {
     merchantSummary,
     summary,
     otpReversal,
-    reverseTransaction
+    reverseTransaction,
+    initiateReversal,
+    sendEmailOTP
 }
 
 export default transactionServices;

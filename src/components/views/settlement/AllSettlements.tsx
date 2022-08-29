@@ -12,7 +12,7 @@ import RowNumberSelector from '../../buttons/RowNumberSelector';
 import { OutlinedButton } from '../../buttons/BasicButton';
 import { BiFilterAlt } from 'react-icons/bi';
 import PageHeader from '../../header/PageHeader';
-
+import SettlementDetailModal from '../../../components/modal/SettlementDetailModal'
 
 
 function AllSettlements(){
@@ -34,6 +34,9 @@ function AllSettlements(){
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const[startDate,setStartDate]=useState('')
     const [endDate,setEndDate]=useState('')
+
+    const[showModal, setShowModal]=useState(false)
+    const [settlement,setSettlement]=useState(null)
     
     useEffect(()=>{
         response();
@@ -43,11 +46,11 @@ function AllSettlements(){
         try{ 
             setIsLoading(true)
             const res = await AccountsService.getSettlements() 
-            //console.log(res);
             if(!res.success){
                 alert(res.message)
             }
-            dispatch(setSettlementHistory(res.data))
+            let results = res.data.filter((s:any)=>s.settlementStatus !== 'pending')
+            dispatch(setSettlementHistory(results))
             setIsLoading(false)
 
             //Update states
@@ -92,6 +95,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
 
     return(
         <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4 font-segoe">
+            <SettlementDetailModal showModal={showModal} action={()=>setShowModal(false)} settlement={settlement} />
             {/**page heading */}
          <motion.div 
             initial="initial"
@@ -159,50 +163,50 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
                 <table className="overflow-x-scroll min-w-full leading-normal">
-                    <thead>
+                    <thead className="text-sm">
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Date
                             </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                            {/* <th
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Merchant Id
-                            </th>
+                            </th> */}
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Description
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Start Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 End Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Acc_Number
                             </th>
                              <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  tracking-wider">
                                 Acc_Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Acc_Issuer
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Acc_Type
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left tracking-wider">
                                 Status
                             </th>
                         </tr>
@@ -212,7 +216,7 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                            isLoading ?
                            <Spinner/>
                            :
-                           <SettlementsTable data={currentRows}/>
+                           <SettlementsTable data={currentRows} setShowModal={setShowModal} setSettlement={setSettlement} />
                        }
                     </tbody>
                 </table>

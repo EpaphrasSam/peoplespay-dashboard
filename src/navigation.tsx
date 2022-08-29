@@ -1,5 +1,5 @@
 import React, {  Suspense,lazy } from 'react';
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import { HashRouter, Route, Routes} from 'react-router-dom';
 import {AnimatePresence}  from 'framer-motion';
 import Layout from './components/views/layout/Layout'
 import PageLoading from './components/views/layout/PageLoading'
@@ -13,7 +13,7 @@ const UserTransactions = lazy(()=>import('./components/views/users/UserTransacti
 const Users =  lazy(()=>import('./components/views/users/Users'))
 const MerchantForm = lazy(()=>import('./components/forms/MerchantForm'))
 const Wallets = lazy(()=>import('./components/views/wallet/WalletAccounts'))
-const AllMerchants = lazy(()=>import('./components/views/merchant/Merchants'))
+const OnboardingMerchants = lazy(()=>import('./components/views/merchant/Merchants'))
 const PaidTransactions = lazy(()=>import('./components/views/paid/PaidTransactions'))
 const MerchantCategories = lazy(()=>import('./components/views/merchant/MerchantCategory'))
 const MerchantTransactions = lazy(()=>import('./components/views/merchant/MerchantTransactions'))
@@ -35,16 +35,19 @@ const AllRoles=lazy(()=>import('./components/views/roles/AllRoles'))
 const AddRole =lazy(()=>import('./components/views/roles/AddRole'))
 const EditRole=lazy(()=>import('./components/views/roles/EditRole'))
 const ChangePasswordForm=(lazy(()=>import('./components/views/changepassword/ChangePasswordForm')))
-const ConfigMerchants=(lazy(()=>import('./components/views/config/Merchants')))
+const ApprovedMerchants=(lazy(()=>import('./components/views/config/Merchants')))
 const MerchantApps= (lazy(()=>import('./components/views/config/MerchantApps')))
 const DirectDebit=(lazy(()=>import('./components/views/directdebit/DirectDebit')))
 const DirectCredit=(lazy(()=>import('./components/views/directdebit/DirectCredit')))
 const PendingReversals=(lazy(()=>import('./components/views/reversals/Approvals')))
+const InitiateDirectPayout=(lazy(()=>import('./components/views/directpayout/InitiatePayoutPage')))
+const PayoutApprovals=(lazy(()=>import('./components/views/directpayout/PayoutApprovals')))
+
 // create a component
 const Navigation=()=>{
 
     return (
-        <BrowserRouter>
+        <HashRouter>
                 <div className='App'>
                 <ErrorBoundary>
                     <Suspense fallback={<PageLoading/>}>
@@ -72,16 +75,16 @@ const Navigation=()=>{
                                 </Route>
 
                                  {/**Merchant Config*/}
-                                 <Route path="configurations">
-                                    <Route path="merchants">
-                                      <Route index={true} element={<ConfigMerchants/>}/>
-                                      <Route path="apps" element={<MerchantApps/>}/>
-                                    </Route>   
+                                 <Route path="configurations">        
+                                </Route>
+
+                                {/**Transactions route */}
+                                <Route path="transactions">
+                                    <Route index={true}  element={<UserTransactions/>} />
                                 </Route>
 
                                  {/**users routes */}
                                  <Route path="users">
-                                    <Route path="transactions"  element={<UserTransactions/>} />
                                     <Route path="all"  element={<Users/>} />
                                 </Route>
 
@@ -100,10 +103,12 @@ const Navigation=()=>{
 
                                 {/**Merchants routes*/}
                                 <Route path="merchants">
+                                    <Route path="all/approved" element={<ApprovedMerchants/>}/>
+                                    <Route path="apps" element={<MerchantApps/>}/>
                                     <Route path="categories"  element={<MerchantCategories/>} />
                                     <Route path="transactions"  element={<MerchantTransactions/>} />
                                     <Route path="create-merchant"  element={<MerchantForm/>}/> 
-                                    <Route path="all"   element={<AllMerchants/>}/>
+                                    <Route path="all/onboarding"   element={<OnboardingMerchants/>}/>
                                 </Route>
 
                                 {/**Wallet account route */}
@@ -112,9 +117,17 @@ const Navigation=()=>{
                                     <Route path="transactions"  element={<WalletTrasactions/>} />
                                 </Route>
 
+                                {/**Direct Payout route */}
+                                <Route path="payout">
+                                    <Route path="initiate"  element={<InitiateDirectPayout/>} />
+                                    <Route path="approvals" element={<PayoutApprovals/>} />
+                                </Route>
+
                                 {/**Direct Debit*/}
                                 <Route path="direct-debit" element={<DirectDebit/>}/>
                                 <Route path="direct-credit" element={<DirectCredit/>}/>
+
+
 
                                     {/**paid transactions */}
                                 <Route path='allpaid-transactions' element={<PaidTransactions/>} />
@@ -143,7 +156,7 @@ const Navigation=()=>{
                     </Suspense>
                 </ErrorBoundary>
                 </div>
-            </BrowserRouter>
+            </HashRouter>
     )
 };
 

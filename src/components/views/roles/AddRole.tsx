@@ -130,7 +130,11 @@ export type RoleStateParams={
           }) 
       }
     }
-
+   
+    const clearAllAccess=()=>{
+      checkedList.current=[]
+      setAccessArray([])
+  };
 
     return(
         <div className='relative md:pt-10 pb-10 p-2'>
@@ -140,7 +144,7 @@ export type RoleStateParams={
                    <AddRoleForm {...formData} onChange={handleChange}/>
                 </div>
                 <div className="w-full md:w-2/3 mb-6">
-                   <RoleStateForm {...formData} access={accessArray} onSubmit={addRole} loading={loading}/>
+                   <RoleStateForm {...formData} access={accessArray} onSubmit={addRole} onClear={clearAllAccess} loading={loading}/>
                 </div>
             </div>
             <div className="w-full">

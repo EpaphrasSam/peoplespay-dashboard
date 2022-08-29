@@ -102,7 +102,7 @@ export type RoleStateParams={
                   }
                 })
                break;
-          case 'Merchant Apps':
+          case 'Approved Merchants':
                 _access.permissions.map((p:string)=>{
                   switch(p){
                     case 'read':
@@ -116,6 +116,20 @@ export type RoleStateParams={
                   }
                 })
                break;
+          case 'Merchants Onboarding':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('15r')
+                            break;
+                       case 'write':
+                            checkedList.current.push('15w')
+                            break;
+                       case 'delete':
+                            checkedList.current.push('15d')
+                      }
+                    })
+                   break;
           case 'Customer Profile':
                 _access.permissions.map((p:string)=>{
                   switch(p){
@@ -144,7 +158,7 @@ export type RoleStateParams={
                   }
                 })
                break;
-         case 'User Transactions':
+         case 'Transactions':
                   _access.permissions.map((p:string)=>{
                     switch(p){
                       case 'read':
@@ -256,20 +270,6 @@ export type RoleStateParams={
                     }
                   })
                  break;
-            case 'Merchants':
-                  _access.permissions.map((p:string)=>{
-                    switch(p){
-                      case 'read':
-                          checkedList.current.push('15r')
-                          break;
-                     case 'write':
-                          checkedList.current.push('15w')
-                          break;
-                     case 'delete':
-                          checkedList.current.push('15d')
-                    }
-                  })
-                 break;
             case 'All Wallets':
                   _access.permissions.map((p:string)=>{
                     switch(p){
@@ -312,8 +312,71 @@ export type RoleStateParams={
                     }
                   })
                  break;
-                 
-         
+          case 'Payout Initiate':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('21r')
+                            break;
+                       case 'write':
+                            checkedList.current.push('21w')
+                            break;
+                       case 'delete':
+                            checkedList.current.push('21d')
+                      }
+                    })
+                   break;     
+          case 'Payout Approvals':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('22r')
+                            break;
+                       case 'write':
+                            checkedList.current.push('22w')
+                            break;
+                       case 'delete':
+                            checkedList.current.push('22d')
+                      }
+                    })
+                   break;
+          case 'Customers Report':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('25r')
+                            break;
+                      }
+                    })
+                   break;    
+          case 'Sales Report':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('26r')
+                            break;
+                      }
+                    })
+                   break;  
+          case 'Transactions Report':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('27r')
+                            break;
+                      }
+                    })
+                   break; 
+          case 'Fraud Report':
+                    _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('28r')
+                            break;
+                      }
+                    })
+                   break; 
+             
        }
     }
 
@@ -442,6 +505,10 @@ export type RoleStateParams={
       }
     }
 
+   const clearAllAccess=()=>{
+     checkedList.current=[]
+     setAccessArray([])
+ };
 
     return(
         <div className='relative md:pt-10 pb-10 p-2'>
@@ -451,7 +518,7 @@ export type RoleStateParams={
                    <AddRoleForm {...formData} onChange={handleChange}/>
                 </div>
                 <div className="w-full md:w-2/3 mb-6">
-                   <RoleStateForm {...formData} access={accessArray} onSubmit={updateRole} loading={loading}/>
+                   <RoleStateForm {...formData} access={accessArray} onSubmit={updateRole} onClear={clearAllAccess} loading={loading}/>
                 </div>
             </div>
             <div className="w-full">

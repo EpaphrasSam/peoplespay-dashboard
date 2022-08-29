@@ -9,6 +9,8 @@ import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
+import PageHeader from '../../header/PageHeader';
+import { formatCurrency } from '../../../utils/Date';
 //import moment from 'moment';
 
 function PaidTransactions(){
@@ -101,7 +103,7 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
     setRowsPerPage(parseInt(e.target.value))
   }
 
-const results:any[] = filterResults.length === 0 ? paidTransactions : filterResults
+ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResults
 
  //Get Current rows
  const indexOfLastRow:number = currentIndex * rowsPerPage;
@@ -129,10 +131,10 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
             
 
        //Update states
-       setAmount(resReport?.data?.paid[0].totalAmount)
-       setPaidCharges(resReport?.data?.paid[0].charges)
-       setFailedAmount(resReport?.data?.failed[0].totalAmount)
-       setTotalTransactionCount(paidTransactions.length)
+       setAmount(resReport?.data?.paid[0].totalAmount??0)
+       setPaidCharges(resReport?.data?.paid[0].charges??0)
+       setFailedAmount(resReport?.data?.failed[0].totalAmount??0)
+       setTotalTransactionCount(paidTransactions.length??0)
 
 
     }catch(err:any){
@@ -144,29 +146,27 @@ const results:any[] = filterResults.length === 0 ? paidTransactions : filterResu
   
 
     return(
-        <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4 font-segoe">
+        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
             {/**page heading */}
-           <div className='mb-10'>
-              <h2 className="text-2xl leading-tight">Successful Transactions</h2>
-           </div>
+            <PageHeader title="Successful Transactions"/>
 
             {/**deviders */}
             <div className='grid grid-cols-4 divide-x divide-green-500 mb-10'>
                 <div>
-                    <span className='bg-green-300 rounded px-2'>transactions</span>
+                    <span className='bg-green-100 rounded px-2'>transactions</span>
                     <h2 className="text-3xl leading-tight py-4">{totalTransactionCount}</h2>
                 </div>
                 <div>
-                    <span className='bg-yellow-500 rounded px-2'>amount</span>
-                    <h2 className="text-3xl leading-tight py-4">{`GH¢ ${Number.parseFloat(amount).toFixed(2)}`}</h2>
+                    <span className='bg-yellow-100 rounded px-2'>amount</span>
+                    <h2 className="text-3xl leading-tight py-4">{formatCurrency(amount)}</h2>
                 </div>
                 <div>
-                    <span className='bg-blue-300 rounded px-2'>charges</span>
-                    <h2 className="text-3xl leading-tight py-4">{`GH¢ ${Number.parseFloat(paidCharges).toFixed(2)}`}</h2>
+                    <span className='bg-blue-100 rounded px-2'>charges</span>
+                    <h2 className="text-3xl leading-tight py-4">{formatCurrency(paidCharges)}</h2>
                 </div>
                 <div>
-                    <span className='bg-red-400 rounded px-2'>failed</span>
-                    <h2 className="text-3xl leading-tight py-4">{`GH¢ ${Number.parseFloat(failedAmount).toFixed(2)}`}</h2>
+                    <span className='bg-red-100 rounded px-2'>failed</span>
+                    <h2 className="text-3xl leading-tight py-4">{formatCurrency(failedAmount)}</h2>
                 </div>
             </div>
 

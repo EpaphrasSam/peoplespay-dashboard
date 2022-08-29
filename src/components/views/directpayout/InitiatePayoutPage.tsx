@@ -4,34 +4,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import MerchantsService from '../../../services/merchant.service'
 import AccountsService from '../../../services/accounts.service';
 import { setIssuers } from '../../../state/account.state';
+import Swal from 'sweetalert2';
 import PageHeader from '../../header/PageHeader';
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
-import { authSelector } from '../../../state/auth.state';
 
 
 export default function Users() {
 
     const dispatch = useDispatch()
-    const [isNecLoading,setIsNecLoading]=useState(false);
-    const [isLoading, setIsLoading]=useState(false);
+    const [isNecLoading, setIsNecLoading]=useState(false);
+    const [loading,setLoading]=useState(false);
+     const {issuers}=useSelector((state:any)=>state.accounts);
 
-    const {merchants}=useSelector((state:any)=>state.merchants);
-    const {issuers}=useSelector((state:any)=>state.accounts);
-    const {user}=useSelector(authSelector)
    
 
     const[formData, setFormData]:any=useState({
-        merchantId : '',
         accountType : '',
-        startDate : '',
-        endDate : '',
         accountIssuer : '',
-        accountIssuerName : '',
         accountNumber : '',
         accountName : '',
         description : '',
-        amount:'',
-        admin:user?._id
+        amount:''
     })
 
 
@@ -42,17 +35,19 @@ export default function Users() {
 
     const onIssuer=(event:ChangeEvent<any>):void=>{
         try {
+           
             const id:string=event.target.value;
             const _details:any=issuers.find((iss:any)=>iss.id===id);
             setFormData(
                 {
                     ...formData,
                     accountIssuer:_details['id'],
-                    accountIssuerName:_details['name']
                 }
             )
+            
         } catch (err:any) {
            alert(err.message) 
+           setIsNecLoading(false)
         }
     }
 
@@ -60,15 +55,15 @@ export default function Users() {
         try {
             setIsNecLoading(true)
             const {accountNumber,accountIssuer}=formData;
-            const res = await AccountsService.nec(
+        const res = await AccountsService.nec(
             {
             "account_number": accountNumber,
             "account_issuer": accountIssuer,
             "account_type":"bank"
-         }
+        }
         )
         if(!res.success){
-            setIsNecLoading(false)
+          setIsNecLoading(false)
           return alert(res.message)
         }
         setIsNecLoading(false)
@@ -76,9 +71,10 @@ export default function Users() {
             ...formData,
             accountName : res?.data
         })
-        } catch (error) {
-          setIsNecLoading(false)
+        } catch (error) { 
+        setIsNecLoading(false)   
         }
+        
     }
 
     const handleChange = (event:ChangeEvent<any>)=>{
@@ -87,18 +83,13 @@ export default function Users() {
 
      const loadMerchantsandIssuers=async()=>{
          try {
-             const [merchants,issuers]=await Promise.all(
-                 [
-                     MerchantsService.getMerchants(),
-                    AccountsService.getIssuers()
-                 ]
-             )
-             if(!merchants.success && !issuers.success){
+             const issuers = await AccountsService.getIssuers()
+                
+             if(!issuers.success){
                  throw Error(
                      'Oops there is a problem loading some of the services'
                  )
              }
-             dispatch(setMerchants(merchants.data || []));
              dispatch(setIssuers(issuers.data || []));
          } catch (err:any) {
              alert(err.message)
@@ -106,9 +97,9 @@ export default function Users() {
     }
 
 
-    const pay=async():Promise<void>=>{
+    const submit=async():Promise<void>=>{
         try {
-            setIsLoading(true)
+            setLoading(true)
             Object.keys(formData).forEach((key:any)=>{
                 if(!formData[key] || formData[key]===''){
                     throw new Error(
@@ -117,37 +108,31 @@ export default function Users() {
                 }
             })
             confirmAlert({
-                text:'This will settle the selected merchant',
+                text:"This will will initiaite a direct payout",
                 confirmButtonText:'Yes, proceed'
             }).then(async(result)=>{
                 if(result.isConfirmed){
-                    const response=await AccountsService.settle(formData);
-                    await alertResponse({
-                        icon:response.success?'success':'error',
-                        response:response.message
-                    })
-                    setIsLoading(false)
-                    return  setFormData({
-                        merchantId : '',
-                        accountType : '',
-                        startDate : '',
-                        endDate : '',
-                        accountIssuer : '',
-                        accountIssuerName : '',
-                        accountNumber : '',
-                        accountName : '',
-                        description : '',
-                        amount:''
-                    })
+                  const res=await AccountsService.initiatePayout(formData);
+                  await alertResponse({
+                    icon:res.success?'success':'error',
+                    response:res.message
+                  })
+                  setLoading(false)
+                  return  setFormData({
+                    accountType : '',
+                    accountIssuer : '',
+                    accountNumber : '',
+                    accountName : '',
+                    description : '',
+                    amount:''
+                })
+                }else{ 
+                    setLoading(false)
+                    throw new Error('You cancelled the process')
                 }
-                    alertResponse({
-                        icon:'error',
-                        response:'You cancelled the transaction'
-                    })
-                
-            })
+            })  
         } catch (err:any) {
-            setIsLoading(false);
+            setLoading(false);
             alertResponse({
                 icon:'info',
                 response:err.message
@@ -159,7 +144,7 @@ export default function Users() {
     return (
      <div className="relative md:pt-10 pb-10  w-full mb-12">
           
-           <PageHeader title="Merchant Settlement" />
+           <PageHeader title="Initiate Payout" />
           
             <div className='flex flex-wrap'>
                 <div className="w-full mb-2 px-4">  
@@ -168,7 +153,7 @@ export default function Users() {
                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0">
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between">
-                        <h6 className="text-blueGray-700 text-xl font-bold">Merchant Settlement Form</h6>
+                        <h6 className="text-blueGray-700 text-xl font-bold">DIRECT PAYOUT FORM</h6>
                     </div>
                 </div>
                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
@@ -178,26 +163,6 @@ export default function Users() {
                         </h6>
                         <div>
                             <div className="flex w-full space-x-10">
-                                <div className="relative w-6/12 mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
-                                        htmlFor="grid-password"
-                                    >
-                                        select merchant
-                                    </label>
-                                    <select
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300  bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        name="merchantId"
-                                        value={formData.merchantId}
-                                        onChange = {handleChange}
-                                        placeholder="select merchant"
-                                    >
-                                    {
-                                        merchants.map((mer:any,i:number)=><option key={i} value={mer?._id}>{mer.merchant_tradeName}</option>)
-                                    }
-                                    </select>
-                                </div>
-
                                 <div className="relative w-6/12 mb-3">
                                     <label
                                         className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
@@ -215,9 +180,6 @@ export default function Users() {
                                        <option value="bank">bank</option>
                                    </select>
                                 </div>
-                            </div>
-                            
-                            <div className="flex w-full space-x-10">
                                 <div className="relative w-6/12 mb-3">
                                     <label
                                         className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
@@ -235,22 +197,9 @@ export default function Users() {
                                      }
                                     </select>
                                 </div>
-
-                                <div className="relative w-6/12 mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
-                                    >
-                                        Account Issuer Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        name="accountIssuerName"
-                                        value={formData.accountIssuerName}
-                                        disabled={true}
-                                    />
-                                </div> 
                             </div>
+                            
+                            
 
                             <div className="flex w-full space-x-10">
                                 <div className="relative w-6/12 mb-3">
@@ -301,39 +250,6 @@ export default function Users() {
                                     />
                                 </div> 
                             </div>
-                            <div className="flex w-full space-x-10">
-                                <div className="relative w-6/12 mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
-                                    >
-                                        start date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        name = "startDate"
-                                        value ={formData.startDate}
-                                        onChange = {handleChange}
-                                    />
-                                </div>
-
-                                <div className="relative w-6/12 mb-3">
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
-                                    >
-                                        end date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        name="endDate"
-                                        value ={formData.endDate}
-                                        onChange = {handleChange}
-                                    />
-                                </div>    
-                            </div>
-
-
                             <div className="relative w-full mb-3">
                                     <label
                                         className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
@@ -372,11 +288,11 @@ export default function Users() {
                         </div>  
                     </div>            
                 </div>
-                <button disabled={isLoading} onClick={pay} className='w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
-                     Submit for Approval
+                <button onClick={submit} className='w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
+                     {loading?'Submitting...':'Submit for Approval'}
                 </button>
              </div>
-     </div>               
+    </div>               
                     </div>
                 </div>
             </div>

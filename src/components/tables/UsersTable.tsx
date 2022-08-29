@@ -20,7 +20,7 @@ const UsersTable = ({users,blockUser,setUser,setShowModal}:AppProps):JSX.Element
                 className=
                 "text-blueGray-600"
             >
-                {formatDate(u.createdAt)}
+                {u.createdAt}
             </span>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -55,9 +55,6 @@ const UsersTable = ({users,blockUser,setUser,setShowModal}:AppProps):JSX.Element
               }
         
         </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
-            <i className="fas fa-check text-green-500 mr-2"></i>{u?.phone_verified?'Verified':'Not Verified'}
-        </td> 
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
             <UsersTableDropdown 
              blockUser={()=>{blockUser(u?._id,u?.blocked)}}

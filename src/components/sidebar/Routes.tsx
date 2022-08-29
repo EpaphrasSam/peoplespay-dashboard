@@ -5,10 +5,11 @@ import {VscSettings,VscArrowSwap,VscFileSymlinkDirectory} from 'react-icons/vsc'
 import {GiPayMoney,GiReceiveMoney,GiSpeaker} from 'react-icons/gi'
 import {FaRegMoneyBillAlt}from 'react-icons/fa'
 import {BiCategory} from 'react-icons/bi'
-import {RiShareForwardLine,RiApps2Line}from 'react-icons/ri'
-import {SiWebmoney}from 'react-icons/si'
+import {RiShareForwardLine,RiApps2Line, RiPaypalFill}from 'react-icons/ri'
+import {SiPayoneer, SiWebmoney}from 'react-icons/si'
 import{TbHammer}from 'react-icons/tb'
 import { MdOutlineSkateboarding } from "react-icons/md";
+import { AiOutlineBarChart, AiOutlineDashboard } from 'react-icons/ai'
 
 
 
@@ -187,7 +188,7 @@ const roles:Route[]=[
     {
         path:'dashboard',
         title:'Dashboard',
-        icon:<BsHouse className="mr-3 text-xl text-pink"/>,
+        icon:<AiOutlineDashboard className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
     },
@@ -229,38 +230,75 @@ const roles:Route[]=[
                 path:'configurations/charges',
                 icon:<TbHammer className="mr-3 text-xl"/>,
                 title:'Charges'
-            },
+            }
+        ]
+    },
+    {
+        path:'transactions',
+        title:'Transactions',
+        icon:<GiPayMoney className="mr-3 text-xl text-pink"/>,
+        hasChild : true,
+        children:[
             {
-                path:'configurations/merchants',
-                icon:<RiApps2Line className="mr-3 text-xl"/>,
-                title:'Merchants Apps'
+                path:'transactions',
+                icon:<GiPayMoney className="mr-3 text-xl"/>,
+                title:'Transactions'
             }
         ]
     },
     {
         path:'users',
-        title:'Users',
+        title:'Customers',
         icon:<FiUsers className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
             {
-                path:'users/transactions',
-                icon:<GiPayMoney className="mr-3 text-xl"/>,
-                title:'User Transactions'
-            },
-            {
                 path:'users/all',
                 icon:<FiUsers className="mr-3 text-xl"/>,
-                title:'Subscribers'
+                title:'Customers'
             }
+        ]
+    },
+    {
+        path:'merchants',
+        title:'Merchants',
+        icon:<FiUsers className="mr-3 text-xl text-pink"/>,
+        hasChild : true,
+        children:[
+            {
+                path:'merchants/all/onboarding',
+                icon:<MdOutlineSkateboarding className="mr-3 text-2xl"/>,
+                title:'Merchants Onboarding'
+            },
+            {
+                path:'merchants/all/approved',
+                icon:<RiApps2Line className="mr-3 text-xl"/>,
+                title:'Approved Merchants'
+            },
+            {
+                path:'merchants/transactions',
+                icon:<GiPayMoney className="mr-3 text-xl"/>,
+                title:'Transactions'
+            },
+            {
+                path:'merchants/categories',
+                icon:<BiCategory className="mr-3 text-xl"/>,
+                title:'Categories'
+            },
         ]
     },
     {
         path:'e-levy',
         title:'E-Levy',
         icon:<FaRegMoneyBillAlt className="mr-3 text-xl text-pink"/>,
-        hasChild : false,
-        children:[]
+        hasChild : true,
+        children:[
+            {
+                path:'e-levy',
+                icon:<FaRegMoneyBillAlt className="mr-3 text-xl"/>,
+                title:'E-Levy'
+            }
+        ]
     },
     {
         path:'merchant-settlement',
@@ -287,11 +325,16 @@ const roles:Route[]=[
         ]
     },
     {
-        path:'wallet-pay',
-        title:'Wallet Payout',
-        icon:<VscFileSymlinkDirectory className="mr-3 text-xl text-pink"/>,
+        path:'wallets',
+        title:'Wallets',
+        icon:<BsWallet2 className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
+            {
+                path:'wallets',
+                title:'All Wallets',
+                icon:<BsWallet2 className="mr-3 text-xl"/>,
+            },  
             {
               path:'direct-debit',
               title:'Direct Debit',
@@ -305,42 +348,42 @@ const roles:Route[]=[
         ]
     },
     {
-        path:'reversals/pending',
-        title:'Reversals',
-        icon:<BsBoxArrowInLeft className="mr-3 text-xl hover:text-pink text-pink"/>,
-        hasChild : false,
-        children:[]
-    },
-    {
-        path:'merchants',
-        title:'Merchants',
-        icon:<FiUsers className="mr-3 text-xl text-pink"/>,
+        path:'direct-payout',
+        title:'Direct Payout',
+        icon:<RiPaypalFill className="mr-3 text-xl text-pink"/>,
         hasChild : true,
         children:[
-            {
-                path:'merchants/all',
-                icon:<MdOutlineSkateboarding className="mr-3 text-2xl"/>,
-                title:'Merchants Onboarding'
+             {
+              path:'payout/initiate',
+              title:'Direct Payout',
+              icon:<SiPayoneer className="mr-3 text-xl"/>,
             },
             {
-                path:'merchants/transactions',
-                icon:<GiPayMoney className="mr-3 text-xl"/>,
-                title:'Transactions'
+              path:'payout/approvals',
+              title:'Approvals',
+              icon:<VscArrowSwap className="mr-3 text-xl"/>,
             },
             {
-                path:'merchants/categories',
-                icon:<BiCategory className="mr-3 text-xl"/>,
-                title:'Categories'
+                path:'payout/all',
+                title:'History',
+                icon:<BsClockHistory className="mr-3 text-xl"/>,
             },
         ]
     },
     {
-        path:'wallets',
-        title:'Wallets',
-        icon:<BsWallet2 className="mr-3 text-xl text-pink"/>,
-        hasChild : false,
-        children:[]
+        path:'reversals',
+        title:'Reversals',
+        icon:<BsBoxArrowInLeft className="mr-3 text-xl hover:text-pink text-pink"/>,
+        hasChild : true,
+        children:[
+            {
+                path:'reversals/pending',
+                title:'Reversals',
+                icon:<BsBoxArrowInLeft className="mr-3 text-xl"/>,
+            },
+        ]
     },
+
     // {
     //     path:'agents',
     //     title:'Agents',
@@ -361,6 +404,34 @@ const roles:Route[]=[
         icon:<GiSpeaker className="mr-3 text-xl text-pink"/>,
         hasChild : false,
         children:[]
+    },
+    {
+        path:'reports',
+        title:'Reports',
+        icon:<AiOutlineBarChart className="mr-3 text-xl text-pink"/>,
+        hasChild : true,
+        children:[
+            {
+                path:'reports/customers',
+                title:'Customers Report',
+                icon:<AiOutlineBarChart className="mr-3 text-xl"/>,
+            },
+            {
+                path:'reports/sales',
+                title:'Sales Report',
+                icon:<AiOutlineBarChart className="mr-3 text-xl"/>,
+            },
+            {
+                path:'reports/transactions',
+                title:'Transactions Report',
+                icon:<AiOutlineBarChart className="mr-3 text-xl"/>,
+            },
+            {
+                path:'reports/fraud',
+                title:'Fraud Report',
+                icon:<AiOutlineBarChart className="mr-3 text-xl"/>,
+            },
+        ]
     },
 ];
 
