@@ -4,7 +4,7 @@ import WalletTransactionsTable from '../../tables/WalletTransactionsTable'
 import {useSelector} from 'react-redux';
 import {reportSelector} from '../../../state/report.state' 
 //import {ReportModel} from '../../../models/report.model'
-import ReportService from '../../../services/reports.service';
+//import ReportService from '../../../services/reports.service';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
@@ -15,7 +15,8 @@ import { OutlinedButton } from '../../buttons/BasicButton';
 import { BiFilterAlt } from 'react-icons/bi';
 import { HiDownload } from 'react-icons/hi';
 import PageHeader from '../../header/PageHeader';
-
+import TransactionDetailsModal from '../../modal/TransactionDetailsModal'
+import Spinner from '../layout/Spinner';
 
 function WalletTransactions(){
     const group1Motion = {
@@ -29,7 +30,7 @@ function WalletTransactions(){
         exit: { opacity: 0, x: 0, transition: { duration: 2 } }
       };
 
-    const {walletTransactions,customerName} = useSelector(reportSelector)
+    const {walletTransactions,customerName,loading} = useSelector(reportSelector)
 
 
 const headers = [
@@ -55,11 +56,12 @@ const headers = [
     {label:"DEBIT STATUS", key: "debit_status" }
  ]
 
-
+    const [transaction,setTransaction]=useState<any>(null)
+    const [showModal,setShowModal]= useState(false);
     const [startDate, setStartDate] = useState<any>(new Date())
     const [endDate, setEndDate] = useState<any>(new Date())
 
-    const [loading, setLoading]=useState(false)
+    const [isLoading, setLoading]=useState(false)
 
     //const [totalTransactionCount, setTotalTransactionCount] = useState<string>('0')
     const [searchQuery, setSearchQuery] = useState('')
@@ -113,7 +115,7 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
   const clickDateFilter = async() => {
     try{
         setLoading(true)
-        const res = await ReportService.dateFilter(startDate,endDate)
+        //const res = await ReportService.dateFilter(startDate,endDate)
         //const resReport = await ReportService.summaryReport(startDate,endDate)
         //const transactionResponse = await TransactionService.summary() 
         
@@ -150,7 +152,7 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
                 filename={'report.csv'}
                 className='py-1.5 px-1 bg-green-500 border-2 border-green-500 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
                     <HiDownload/>
-                    <span>{loading ? 'Preparing...' : 'Download Report'}</span>
+                    <span>{isLoading ? 'Preparing...' : 'Download Report'}</span>
             </CSVLink>
         </div>
         
@@ -185,7 +187,7 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
         </div>
             {/**filter btn */}
                 <OutlinedButton 
-                value={loading? <Loader/> : 'Filter'}
+                value={isLoading? <Loader/> : 'Filter'}
                 action={()=>clickDateFilter()}
                 color="gray"
                 paddingWide
@@ -202,6 +204,7 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
             </div>
             <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value)} placeholder={`Search ${transactionCategory}`}/>
         </div>
+        <TransactionDetailsModal transaction={transaction} action={()=>{setShowModal(false)}} showModal={showModal}/>
         <motion.div 
           initial="initial"
           animate="animate"
@@ -260,10 +263,10 @@ const results:any[] = filterResults.length === 0 ? walletTransactions : filterRe
                     </thead>
                     <tbody>
                        {
-                        //    isLoading ?
-                        //    <Spinner/>
-                        //    :
-                           <WalletTransactionsTable transactions={currentRows} />
+                           loading ?
+                           <Spinner/>
+                           :
+                           <WalletTransactionsTable transactions={currentRows} setShowModal={setShowModal} setTransaction={setTransaction} />
                        }
                     </tbody>
                 </table>

@@ -1,4 +1,4 @@
-import  moment from "moment";
+import { formatCurrency, formatDate, formatTime } from "../utils/Date";
 import { ghippsMsgs } from "../utils/ghipps_code";
 import { EnumTransactionTypes } from "./transactiontypes.enum";
 
@@ -45,28 +45,28 @@ export class ReportModel {
         this.ecard_transaction=report.ecard_transaction;
         
         this._id=report._id;
-        this.createdAt=moment(report.createdAt).format('DD/MM/YYYY');
-        this.time=moment(report.createdAt).format('HH:mm A');
+        this.createdAt=formatDate(report.createdAt);
+        this.time=formatTime(report.createdAt);
         this.customerName=report.customerId?.fullname || report.customerId?.merchant_tradeName;
         this.customerPhone=report.customerId?.phone;
         this.transaction_type=report.transaction_type;
         this.getTransactionType(report.transaction_type);
-        this.actualAmount=`GHS${report.actualAmount}`;
-        this.charges=`GHS${Number.parseFloat(report.charges).toFixed(2)}`;
-        this.amount=`GHS${Number.parseFloat(report.amount).toFixed(2)}`;
+        this.actualAmount=formatCurrency(report.actualAmount);
+        this.charges= formatCurrency(report.charges);
+        this.amount= formatCurrency(report.amount);
         this.paymentNumber=report.payment_account_number;
         this.paymentName=report.payment_account_name;
         this.recipientName=report.recipient_account_name;
         this.recipientNumber=report.recipient_account_number;
         this.recipientIssuer = report.recipient_account_issuer_name;
         this.reference=report.reference;
-        this.paymentIssuer = report.payment_account_issuer ? report.payment_account_issuer : "WALLET" 
+        this.paymentIssuer = report.payment_account_issuer ? report.payment_account_issuer || report.payment_account_issuer_name : "WALLET" 
         this.status = report.status;
         this.getStatus(report.status);
         this.description = report.description;
         this.payment_account_type=report.payment_account_type;
         this.reversal_status = report.reversal_status;
-        this.elevyCharges = report.elevyCharges;
+        this.elevyCharges = formatCurrency(report.elevyCharges);
     };
 
     getStatus(status:string){
@@ -136,6 +136,9 @@ export class ReportModel {
             case 'PY':
                     this.transaction_type= EnumTransactionTypes.PY;
                     break;
+            case 'DC':
+                  this.transaction_type=EnumTransactionTypes.DC;
+                  break;
             default:
                 this.transaction_type=type
         }

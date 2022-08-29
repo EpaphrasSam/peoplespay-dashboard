@@ -21,10 +21,11 @@ module.exports = {
       // },
     },
   },
-  variants: {
-    extend: {},
-  },
   plugins: [
-    require('@themesberg/flowbite/plugin')
+    require('@themesberg/flowbite/plugin'),
+    require('tailwind-scrollbar'),
   ],
+  variants: {
+    scrollbar: ['rounded']
+  },
 };

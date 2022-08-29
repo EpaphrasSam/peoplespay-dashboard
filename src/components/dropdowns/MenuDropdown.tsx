@@ -34,7 +34,7 @@ export default function MenuItem({data}:any) {
       <Menu.Items className="bg-pink px-1 text-left absolute right-0 mt-2 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none w-full rounded-md">
        <div>
        {data.children && data.children.map((item:any,i:number)=>
-       (<><Menu.Item key={i.toString()}><Link to={item.path} className="flex items-center py-4 text-md  text-white">
+       (<><Menu.Item key={i.toString()}><Link to={item.path} className="flex items-center py-2 text-sm text-white">
           {item.icon}
          {item.title}
        </Link>

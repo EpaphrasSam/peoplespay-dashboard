@@ -13,7 +13,7 @@ const UserTransactions = lazy(()=>import('./components/views/users/UserTransacti
 const Users =  lazy(()=>import('./components/views/users/Users'))
 const MerchantForm = lazy(()=>import('./components/forms/MerchantForm'))
 const Wallets = lazy(()=>import('./components/views/wallet/WalletAccounts'))
-const AllMerchants = lazy(()=>import('./components/views/merchant/Merchants'))
+const OnboardingMerchants = lazy(()=>import('./components/views/merchant/Merchants'))
 const PaidTransactions = lazy(()=>import('./components/views/paid/PaidTransactions'))
 const MerchantCategories = lazy(()=>import('./components/views/merchant/MerchantCategory'))
 const MerchantTransactions = lazy(()=>import('./components/views/merchant/MerchantTransactions'))
@@ -33,10 +33,16 @@ const AllAdmins=lazy(()=>import('./components/views/admin/AllAdmins'))
 const EditAdmin=lazy(()=>import('./components/views/admin/EditAdmin'))
 const AllRoles=lazy(()=>import('./components/views/roles/AllRoles'))
 const AddRole =lazy(()=>import('./components/views/roles/AddRole'))
+const EditRole=lazy(()=>import('./components/views/roles/EditRole'))
 const ChangePasswordForm=(lazy(()=>import('./components/views/changepassword/ChangePasswordForm')))
-const ConfigMerchants=(lazy(()=>import('./components/views/config/Merchants')))
+const ApprovedMerchants=(lazy(()=>import('./components/views/config/Merchants')))
 const MerchantApps= (lazy(()=>import('./components/views/config/MerchantApps')))
 const DirectDebit=(lazy(()=>import('./components/views/directdebit/DirectDebit')))
+const DirectCredit=(lazy(()=>import('./components/views/directdebit/DirectCredit')))
+const PendingReversals=(lazy(()=>import('./components/views/reversals/Approvals')))
+const InitiateDirectPayout=(lazy(()=>import('./components/views/directpayout/InitiatePayoutPage')))
+const PayoutApprovals=(lazy(()=>import('./components/views/directpayout/PayoutApprovals')))
+
 // create a component
 const Navigation=()=>{
 
@@ -50,8 +56,78 @@ const Navigation=()=>{
                             <Route  path='*' element={<NotFound/>} />
                             <Route  path='login' element={<Login/>} />
                             <Route path="change-password"  element={<ChangePasswordForm/>}/>
-                            <Route  path='' element={<ProtectedRoute><Layout/></ProtectedRoute>}>
-                                <Route path="" element={<Dashboard/>}/>
+                            <Route  path='/' element={<ProtectedRoute><Layout/></ProtectedRoute>}>
+                                
+                                <Route path="dashboard" element={<Dashboard/>}/>
+
+                                 {/**Manage Admins */}
+                                 <Route path="manage-admins">
+                                    <Route path="new"  element={<CreateAdmin/>}/>
+                                    <Route path="all" element={<AllAdmins/>}/>
+                                    <Route path="edit" element={<EditAdmin/>}/>
+
+                                    {/**Roles */}
+                                     <Route path="roles">
+                                        <Route index={true} element={<AllRoles/>} />
+                                        <Route path="new"  element={<AddRole/>} />
+                                        <Route path="edit"  element={<EditRole/>} />
+                                     </Route>
+                                </Route>
+
+                                 {/**Merchant Config*/}
+                                 <Route path="configurations">        
+                                </Route>
+
+                                {/**Transactions route */}
+                                <Route path="transactions">
+                                    <Route index={true}  element={<UserTransactions/>} />
+                                </Route>
+
+                                 {/**users routes */}
+                                 <Route path="users">
+                                    <Route path="all"  element={<Users/>} />
+                                </Route>
+
+                                {/**Elevy routes*/} 
+                                <Route path="e-levy">
+                                    <Route index={true} element={<ElevyTransactions/>}/>
+                                    <Route path="transactions"  element={<ElevyTransactionsDetails/>}/>
+                                </Route>
+
+                                    {/**Settlement */}
+                                <Route path="merchant-settlement">  
+                                    <Route path="new"  element={<Settlement/>}/>
+                                    <Route path="all"  element={<AllSettlements/>}/>
+                                    <Route path="approvals"  element={<SettlementApprovals/>}/>
+                                </Route>
+
+                                {/**Merchants routes*/}
+                                <Route path="merchants">
+                                    <Route path="all/approved" element={<ApprovedMerchants/>}/>
+                                    <Route path="apps" element={<MerchantApps/>}/>
+                                    <Route path="categories"  element={<MerchantCategories/>} />
+                                    <Route path="transactions"  element={<MerchantTransactions/>} />
+                                    <Route path="create-merchant"  element={<MerchantForm/>}/> 
+                                    <Route path="all/onboarding"   element={<OnboardingMerchants/>}/>
+                                </Route>
+
+                                {/**Wallet account route */}
+                                <Route path="wallets">
+                                    <Route index={true}  element={<Wallets/>} />
+                                    <Route path="transactions"  element={<WalletTrasactions/>} />
+                                </Route>
+
+                                {/**Direct Payout route */}
+                                <Route path="payout">
+                                    <Route path="initiate"  element={<InitiateDirectPayout/>} />
+                                    <Route path="approvals" element={<PayoutApprovals/>} />
+                                </Route>
+
+                                {/**Direct Debit*/}
+                                <Route path="direct-debit" element={<DirectDebit/>}/>
+                                <Route path="direct-credit" element={<DirectCredit/>}/>
+
+
 
                                     {/**paid transactions */}
                                 <Route path='allpaid-transactions' element={<PaidTransactions/>} />
@@ -61,57 +137,18 @@ const Navigation=()=>{
 
                                 {/**failed transactions */}
                                 <Route path='allpaid-charges' element={<Charges/>} />
-
-                                    {/**merchants routes*/}
-                                <Route path="merchant-categories"  element={<MerchantCategories/>} />
-                                <Route path="merchant-transactions"  element={<MerchantTransactions/>} />
-                                <Route path="create-merchant"  element={<MerchantForm/>}/> 
-                                <Route path="merchants"   element={<AllMerchants/>}/>
-                                
-
-                                {/**users routes */}
-                                <Route path="user-transactions"  element={<UserTransactions/>} />
-                                <Route path="users"  element={<Users/>} />
-
+                               
                                 {/**Referals route */}
                                 <Route path="referrals"  element={<Referals/>} />
                                 
-                                {/**Wallet account route */}
-                                <Route path="wallets"  element={<Wallets/>} />
-                                <Route path="wallettransactions"  element={<WalletTrasactions/>} />
-
+                                 {/**Reversals route */}
+                                <Route path="reversals/pending"  element={<PendingReversals/>} />
+                                
                                 {/**Agents account route */}
                                 <Route path="agents"  element={<Agents/>}/> 
 
                                 {/**BroadCast Message */}
-                                <Route path="broadcast-message"  element={<BroadCastMessage/>}/>
-
-                                {/**Settlement */}
-                                <Route path="merchant-settlement/new"  element={<Settlement/>}/> 
-                                <Route path="merchant-settlement/all"  element={<AllSettlements/>}/>
-                                <Route path="merchant-settlement/approvals"  element={<SettlementApprovals/>}/>
-
-                                {/**Settlement */} 
-                                <Route path="e-levy"  element={<ElevyTransactions/>}/>
-                                <Route path="elevytransactions"  element={<ElevyTransactionsDetails/>}/>
-
-                                 {/**Admins */}
-                                <Route path="create-admin"  element={<CreateAdmin/>}/>
-                                <Route path="all-admins" element={<AllAdmins/>}/>
-                                <Route path="edit-admin" element={<EditAdmin/>}/>
-
-                                {/**Roles */}
-                                <Route path="roles">
-                                   <Route index={true} element={<AllRoles/>} />
-                                   <Route path="new"  element={<AddRole/>} />
-                                </Route>
-                                
-                                {/**Merchant Config*/}
-                                  <Route path="merchants-control" element={<ConfigMerchants/>}/>
-                                  <Route path="merchant-apps" element={<MerchantApps/>}/>
-
-                                {/**Merchant Config*/}
-                                  <Route path="direct-debit" element={<DirectDebit/>}/>
+                                <Route path="sms-broadcast"  element={<BroadCastMessage/>}/>                              
                         
                             </Route>
                         </Routes>

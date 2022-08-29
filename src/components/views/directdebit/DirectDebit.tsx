@@ -3,62 +3,88 @@ import { useSelector } from 'react-redux';
 import PageHeader from '../../header/PageHeader';
 import useFetchWallets from '../wallet/UseFetchWallets';
 import { reportSelector } from '../../../state/report.state';
+import Select from 'react-select'
+import AccountsService from '../../../services/accounts.service'
+import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 
-export default function DirectDebit() {
+
+export default function DirectDebit():any {
     useFetchWallets()
-    const {wallets}=useSelector(reportSelector)
+    const {wallets,loading}=useSelector(reportSelector)
     const [isLoading, setIsLoading]=useState(false);
-    const [selectType,setSelectType]=useState('')
+    
 
    const[formData, setFormData]:any=useState({
+        name:'',
         customerId : '',
         amount : '',
-        description:''
+        description:'',
+        balance:''
     })
+    
 
     const handleChange = (event:ChangeEvent<any>)=>{
         setFormData({...formData,[event.target.name]: event.target.value})
       }
-
-    useEffect(()=>{ 
-        //loadMerchantsandIssuers()
-     },[])
     
+    const handleSelect=(e:any)=>{
+        setFormData((prev: any)=>({...prev,
+            customerId:e?.value,
+            name:e?.customerName,
+            balance:e?.balance
+        }))   
+    }
 
-    // const loadMerchantsandIssuers=async()=>{
-    //      try {
-    //          const [merchants,issuers]=await Promise.all(
-    //              [
-    //                  MerchantsService.getMerchants(),
-    //                  AccountsService.getIssuers()
-    //              ]
-    //          )
-    //          if(!merchants.success && !issuers.success){
-    //              throw Error(
-    //                  'Oops there is a problem loading some of the services'
-    //              )
-    //          }
-    //          dispatch(setMerchants(merchants.data || []));
-    //          dispatch(setIssuers(issuers.data || []));
-    //      } catch (err:any) {
-    //          alert(err.message)
-    //      }
-    // }
-
-
-    const pay=async():Promise<void>=>{
-        try {
+    
+    const options=wallets&&wallets.map(wallet=>{
+        return {
+            label:wallet?.customerId?.fullname|| wallet?.merchantId?.merchant_tradeName,
+            value:wallet?.customerId?._id || wallet?.merchantId?._id,
+            customerName:wallet?.customerId?.fullname || wallet?.merchantId?.merchant_tradeName,
+            balance:wallet?.balance
+        }
+    })
+    
+    const pay=async()=>{
+        try{
+            setIsLoading(true)
             Object.keys(formData).forEach((key:any)=>{
-                if(!formData[key] || formData[key]===''){
-                    throw Error(
-                        'Please provide all details on the form'
-                    )
+                if(!formData[key]|| formData[key]===""){
+                   setIsLoading(false)
+                   return alertResponse({
+                        icon:"error",
+                        response:'Please fill all required data'
+                    })
+                }
+            })
+            const {customerId,description,amount}=formData;
+            const data={
+                customerId,
+                description,
+                amount,
+            }
+            await confirmAlert({
+                text:'This wallet will be debited',
+                confirmButtonText:'Yes, proceed'
+            }).then(async(result)=>{
+                if(result.isConfirmed){
+                    const res=await AccountsService.debitWallet(data)
+                    alertResponse({
+                        icon:res.success?'success':'error',
+                        response:res?.success?'Debit Successful':'Sorry,try again'
+                    })
+                    setFormData({
+                        name:"",
+                        customerId:"",
+                        balance:""
+                    })
+                    setIsLoading(false)
                 }
             })
         }catch(err){}
-    }         
+    }
          
-        
+    
     
     return (
      <div className="relative md:pt-10 pb-10  w-10/12 mb-12 mx-auto">
@@ -73,45 +99,29 @@ export default function DirectDebit() {
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between">
                         <h6 className="text-blueGray-700 text-xl font-bold">Debit Wallet Form</h6>
-                        <button
-                            className="bg-red-800 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                            type="button"
-                        >
-                            DB
-                        </button>
                     </div>
                 </div>
-                <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                    <div>
-                        <h6 className="text-gray-500 text-sm mt-2 mb-6 font-bold uppercase">
+                <div className="flex flex-col md:flex-row space-x-4 mb-4 px-4 lg:px-10 py-10 pt-0 mt-4">
+                    <div className="w-1/2 ">
+                        <h6 className="text-left text-gray-500 text-sm mt-2 mb-6 font-bold uppercase">
                             Form Details
                         </h6>
                         <div>
-                                <div className="relative mb-3 w-1/3">
-
-                                    {/**radio btns*/}
-                                    {
-                                     
-                                    }
-
-                                    <label
-                                        className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
-                                    >
-                                        SELECT {selectType}
-                                    </label>
-                                    <select
-                                        className="border-0 px-3 py-3 placeholder-blueGray-300  bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        name="customerId"
-                                        value={formData.customerId}
-                                        onChange = {handleChange}
-                                        placeholder="select merchant"
-                                    >
-                                        {
-                                            wallets.map((cus:any,i:number)=><option key={i} value={cus?._id}>{cus?.merchantId?.merchant_tradeName||cus?.customerId?.fullname}</option>)
-                                        }
-                                    </select>
-                                </div>
-                            <div className="relative mb-3 w-1/3">
+                            <div className='relative mb-3 '>
+                            <Select
+                                className="basic-single border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                classNamePrefix="select"
+                                 isLoading={loading}
+                                 //isClearable={true}
+                                 isSearchable={true}
+                                 name="customerId"
+                                 value={{label:formData.name}}
+                                 onChange={handleSelect}
+                                 options={options}
+                                />
+                            </div>
+                                
+                            <div className="relative mb-3 ">
                                     <label
                                         className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left"
                                     >
@@ -119,7 +129,7 @@ export default function DirectDebit() {
                                     </label>
                                     <input    
                                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                        name="accountType"
+                                        name="amount"
                                         value={formData.amount}
                                         onChange = {handleChange}
                                      />
@@ -160,13 +170,42 @@ export default function DirectDebit() {
                                     </textarea>
                             </div> 
                         </div>  
-                    </div>            
-                </div>
-                <button disabled={isLoading} onClick={pay} className='w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
-                     Submit for Approval
-                </button>
-             </div>
-    </div>               
+                        
+                      </div> 
+                        
+                        {/**Side */}
+                      <div className="w-1/2 border-2 border-gray-200 bg-white rounded-lg text-left px-4 mt-5">
+                           <h5 className='text-center text-blue-600'>Receipt</h5>
+                            <div className="my-3">
+                                <label className="text-gray-400">ID</label>
+                                <div>{formData.customerId}</div>
+                            </div>
+                            <div className='my-3'>
+                                <label className='text-gray-400'>Name</label>
+                                <div>{formData.name}</div>
+                            </div>
+                            <div className='my-3'>
+                                <label className='text-gray-400'>Wallet Balance</label>
+                                <div>{formData.balance}</div>
+                            </div>
+                            <div className="my-3">
+                                <label className='text-gray-400'>Wallet Balance after deduction</label>
+                                <div>{Number.parseFloat(formData.balance) -Number.parseFloat(formData.amount)}</div>
+                            </div>
+                            <div className="my-3">
+                                <label className='text-gray-400'>Description</label>
+                                <div>{formData.description}</div>
+                            </div>
+                            <div className="my-3">
+                                <button  onClick={()=>pay()} className='w-full mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800'>
+                                    Debit wallet
+                                </button>
+                            </div>
+
+                        </div>           
+                     </div>     
+                   </div>
+               </div>               
                     </div>
                 </div>
             </div>

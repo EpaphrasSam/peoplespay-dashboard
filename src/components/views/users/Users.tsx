@@ -1,7 +1,6 @@
 import React,{ChangeEvent,useState} from 'react'
 import { usersSelector} from '../../../state/users.state';
 import { useSelector } from 'react-redux';
-
 import UsersTable from '../../tables/UsersTable'
 import Spinner from '../layout/Spinner';
 import PageHeader from '../../header/PageHeader';
@@ -12,6 +11,8 @@ import useFetchUsers from './useFetchUsers';
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 import usersService from '../../../services/users.service';
 import DetailsModal from '../../modal/UserDetailsModal'
+import {CSVLink} from "react-csv"
+import { HiDownload } from 'react-icons/hi';
 
 export default function Users() {
     useFetchUsers()
@@ -79,18 +80,38 @@ export default function Users() {
         }catch(err){}
       }
 
+      const headers = [
+        { label: "CUSTOMER ID", key: "_id" },
+        { label: "CREATED AT", key: "createdAt"},
+        { label: "PROFILE", key: "profile" },
+        { label: "FULLNAME", key: "fullname" },
+        { label: "EMAIL", key: "email" },
+        { label: "PHONE", key: "phone" },
+     ]
    
     return (
         <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
-         <PageHeader title="All Subscribers"/>
+         <PageHeader title="Customers"/>
          <DetailsModal showModal={showModal} user={user} action={()=>{setShowModal(false)}}/>
        {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
-            <div className="flex flex-row mb-1 sm:mb-0">
-                <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
-                <ValueFilterSelector setFilter={setCategory} value={category} options={['select','name','phone']}/>  
+        <div className="flex flex-row items-center justify-between">
+            <div className="my-2 flex sm:flex-row flex-col">
+                <div className="flex flex-row mb-1 sm:mb-0">
+                    <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
+                    <ValueFilterSelector setFilter={setCategory} value={category} options={['select','name','phone']}/>  
+                </div>
+                <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
             </div>
-            <SearchForm value={searchQuery} onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearchQuery(e.target.value.trim())} placeholder={`Search ${category} name ...`}/>
+            <div>
+            <CSVLink 
+                headers = {headers}
+                data = {results}
+                filename={'customers.csv'}
+                className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
+                    <HiDownload/>
+                    <span>{ 'Download Customers'}</span>
+            </CSVLink>
+            </div>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
@@ -116,10 +137,6 @@ export default function Users() {
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Status
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
-                                Phone Verified
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">

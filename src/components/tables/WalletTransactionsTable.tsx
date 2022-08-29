@@ -1,12 +1,10 @@
-import { formatDate, formatTime } from "../../utils/Date";
-
-const swal = require('@sweetalert/with-react');
-
 interface AppProps{
     transactions : any[],
+    setShowModal:any,
+    setTransaction:any
 }
 
-const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
+const WalletTransactionsTable = ({transactions,setShowModal,setTransaction}:AppProps):JSX.Element => (
     <>
     {
     transactions.length > 0 ? transactions.map(t=>(
@@ -22,7 +20,7 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    {formatDate(t?.createdAt)}
+                    {t?.createdAt}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -30,7 +28,7 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
                     className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                     <span aria-hidden
                         className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                    <span className="relative">{formatTime(t?.time)}</span>
+                    <span className="relative">{t?.time}</span>
                 </span>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -40,17 +38,17 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                    GHS{Number.parseFloat(t.amount).toFixed(2)}
+                    {t.amount}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                GHS{Number.parseFloat(t.charges).toFixed(2)}
+                  {t.charges}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
-                GHS{Number.parseFloat(t.elevyCharges).toFixed(2)}
+                  {t.elevyCharges}
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
@@ -87,7 +85,7 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                 {
-                    t.status === 'paid' ? 
+                    t.status === 'PAID' ? 
                     (
                     <span
                         className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
@@ -96,7 +94,7 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
                         <span className="relative">Paid</span>
                     </span>
                     )
-                    :  t.status === 'failed' ?
+                    :  t.status === 'FAILED' ?
                     (
                         <span
                     className="relative inline-block px-3 py-1 font-semibold text-white leading-4 tracking-widest">
@@ -145,85 +143,7 @@ const WalletTransactionsTable = ({transactions}:AppProps):JSX.Element => (
                 </p>
             </td>
             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                <i className="far fa-eye" onClick={()=>{
-                    swal(
-                        <div>
-                            <h2 className='text-red-800 font-semibold text-xl'>Transaction Details</h2>
-                                <hr className="my-4 md:min-w-full mb-5" />
-                                <div className='grid grid-cols-2 gap-4 text-left'>
-                                <div className='mb-2 ml-1'>
-                                    <h3 className='text-red-800'>transaction ID</h3>
-                                        <h5>{t._id}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Customer Reference</h3>
-                                        <h5>{t.reference}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>transaction date</h3>
-                                        <h5>{t.createdAt}</h5>
-                                        {t.time}
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>transaction type</h3>
-                                        <h5>{t.transaction_type}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Customer Name</h3>
-                                        <h5>{t.customerName}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Customer Phone</h3>
-                                        <h5>{t.customerPhone}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Payment Account Number</h3>
-                                        <h5>{t.paymentNumber}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Payment Account Name</h3>
-                                        <h5>{t.paymentName}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Total Amount</h3>
-                                        <h5>{t.amount}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Charge</h3>
-                                        <h5>{t.charges}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Amount</h3>
-                                        <h5>{t.actualAmount}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Recipient Name</h3>
-                                        <h5>{t.recipientName}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Recipient Number</h3>
-                                        <h5>{t.recipientNumber}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Recipient Issuer</h3>
-                                        <h5>{t.recipientIssuer}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Status</h3>
-                                        <h5>{t.status}</h5>
-                                </div>
-                                <div className='mb-2'>
-                                    <h3 className='text-red-800'>Payment Issuer</h3>
-                                        <h5>{t?.paymentIssuer}</h5>
-                                </div>
-                                {/* <div className='mb-2'>
-                                    <h3 className='text-red-800'>Reason</h3>
-                                        <h5>{t?.getReason() || ''}</h5>
-                                </div> */}
-                                </div> 
-                            </div>
-                                )
-                }}/>
+                <i className="far fa-eye" onClick={()=>{setShowModal(true);setTransaction(t)}}/>
             </td>
 </tr>
     )) :

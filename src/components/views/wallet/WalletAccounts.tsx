@@ -1,4 +1,5 @@
 import React,{useState, ChangeEvent} from 'react'
+import { useNavigate } from 'react-router-dom';
 import useFetchWallets from './UseFetchWallets';
 import WalletAccounts from '../../tables/WalletsTable';
 import {reportSelector, setWalletTransactions,setCustomerName} from '../../../state/report.state'
@@ -9,10 +10,12 @@ import SearchForm from '../../forms/SearchForm';
 import RowNumberSelector from '../../buttons/RowNumberSelector';
 import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 import PageHeader from '../../header/PageHeader';
+import { ReportModel } from '../../../models/report.model';
 
 function Wallets(){
     useFetchWallets();
     const dispatch = useDispatch()
+    const navigate=useNavigate()
     
     const {loading,wallets} = useSelector(reportSelector);
 
@@ -25,9 +28,10 @@ function Wallets(){
         try{
             const res=await ReportService.getWalletTransactions(id)
             if(res.success){
-                dispatch(setWalletTransactions(res.data))
+                const transactions=res?.data?.map((d:any)=>new ReportModel(d))
+                dispatch(setWalletTransactions(transactions))
                 dispatch(setCustomerName(name))
-                window.location.href="/#/wallettransactions"
+                navigate('/wallets/transactions') 
             }
         }catch(err){}
      }
@@ -108,10 +112,10 @@ function Wallets(){
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Actual Balance
                             </th>
-                            <th
+                            {/* <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Charge
-                            </th>
+                            </th> */}
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Date Updated

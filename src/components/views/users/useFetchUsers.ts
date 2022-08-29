@@ -1,8 +1,8 @@
-import React,{useEffect} from 'react'
+import {useEffect} from 'react'
 import {setUsers } from '../../../state/users.state';
 import { useDispatch} from 'react-redux';
 import UsersService from '../../../services/users.service'
-
+import { UserModel } from '../../../models/user.model';
 export default function useFetchUsers() {
     const dispatch = useDispatch()
     useEffect(()=>{ 
@@ -12,7 +12,8 @@ export default function useFetchUsers() {
                 if(!response?.success){
                    return alert(response?.message)
                 }  
-              return  dispatch(setUsers(response?.data))
+              let users= response?.data.map((user:any)=>new UserModel(user))
+              return  dispatch(setUsers(users))
             }
             loadUsers()
         }catch(err:any){

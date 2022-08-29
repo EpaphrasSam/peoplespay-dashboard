@@ -1,6 +1,6 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import {MdModeEditOutline} from 'react-icons/md'
+import {MdReadMore} from 'react-icons/md'
 import {FiChevronDown} from 'react-icons/fi'
 import {FaRegEyeSlash} from 'react-icons/fa'
 //import {GrPowerReset} from 'react-icons/gr'
@@ -35,7 +35,7 @@ export default function MerchantConfigTableOptions({seeDetails,seeApps,blockMerc
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="z-10 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
@@ -45,7 +45,7 @@ export default function MerchantConfigTableOptions({seeDetails,seeApps,blockMerc
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                    onClick={()=>seeDetails()}
                   >
-                      <MdModeEditOutline
+                      <MdReadMore
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
                       />

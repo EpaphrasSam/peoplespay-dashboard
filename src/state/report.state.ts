@@ -83,12 +83,14 @@ const state=createSlice(
                 return{
                     ...state,
                     walletTransactions : action.payload,
+                    loading:false
                 }
             },
             setCustomerName: (state,action)=>{
                 return{
                     ...state,
                     customerName : action.payload,
+                    loading:false
                 }
             }
         }

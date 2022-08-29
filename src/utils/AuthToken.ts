@@ -15,14 +15,14 @@ const AuthToken = () =>{
             window.location.href='/#/login';
             return '';
         }else if(isExpired){
-            window.location.href='/#/login'    
+            window.location.href='/#/login';   
            return window.localStorage.clear() 
         }else if(isUndefined){
-             window.location.href='/#/login'
+            window.location.href='/#/login';
         }
             return token?.toString();
         }catch(err){
-       return window.location.href='/#/login'
+       return  window.location.href='/#/login';
     }
 }
 

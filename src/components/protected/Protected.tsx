@@ -14,15 +14,17 @@ function ProtectedRoute({children}:ProtectedProps){
     React.useEffect(()=>{
         loadProfile()
     },[]) 
+    
     React.useEffect(()=>{
       if(user&&user===null){
         return navigate('/login')
        }
      
-      if(user&&user?.isPasswordChanged===true){
+      if(user&&user?.isPasswordChanged===false){
           return navigate('/change-password')
        }
-    },[])
+    },[user])
+
     const loadProfile=()=>{
         const session=sessionStorage.getItem('PP-USER');
         if(typeof session==='string'){

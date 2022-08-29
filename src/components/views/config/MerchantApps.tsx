@@ -38,7 +38,7 @@ function MerchantApps(){
                         icon:res?.success?'success':'error',
                         response:res.message
                      })
-                    navigate('/merchants-control')
+                    navigate('/configurations/merchants')
                 }
             })
          }catch(err){}

@@ -6,23 +6,28 @@ import AccountsService from '../../../services/accounts.service';
 import Spinner from '../layout/Spinner';
 import SearchForm from '../../forms/SearchForm';
 import "react-datepicker/dist/react-datepicker.css";
-import Swal from 'sweetalert2'
 import RowNumberSelector from '../../buttons/RowNumberSelector';
 import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 import { OutlinedButton } from '../../buttons/BasicButton';
 import { BiFilterAlt } from 'react-icons/bi';
 import PageHeader from '../../header/PageHeader';
+import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
+import BlockReasonModal from "../../modal/BlockReasonModal";
 
 function AllSettlements(){
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
+    const [isLoading,setIsLoading]=useState(false)
     const [searchQuery, setSearchQuery] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
     const [startDate,setStartDate]=useState('')
     const [endDate,setEndDate]=useState('')
+    const [showModal,setShowModal]=useState(false);
+    const [reason,setReason]=useState('')
+    const [settlementId,setSettlementId]=useState('')
+
     useEffect(()=>{
         response();
     },[]) 
@@ -43,42 +48,72 @@ function AllSettlements(){
         }catch(err:any){setIsLoading(false)}
     }
 
-const approve = (id:string) => {
-   try{
-       setLoading(true)
-    Swal.fire({  
-        title: 'Confirm Approval',  
-        showDenyButton: true,  
-        confirmButtonText: `Confirm`,  
-        denyButtonText: `Cancel`,
-      }).then(async (result) => {   
-          if (result.isConfirmed) {   
-            const res = await AccountsService.approve(id)
-            if(!res.success){
+    const approve = (id:string) => {
+    try{
+        confirmAlert({
+            text:'This will approve the selected settlement',
+            confirmButtonText:'Yes, approve'
+        }).then(async(result)=>{
+            if(result.isConfirmed){
+                const res = await AccountsService.approve(id)
+                await alertResponse({
+                    icon:res.success?'success':'error',
+                    response:res.message
+                })
+                if(res.success) return window.location.reload();
+            }
+        })
+        }
+        catch(err:any){
+        alertResponse({
+            icon:'info',
+            response:err.message
+        })
+    }
+    }
+
+    const decline = (id:string,reason:string) => {
+        try{
+        setLoading(true)
+        if(reason===null||reason===""){
+            throw new Error('Please provide a reason for declining')
+        }
+        confirmAlert({
+            text:'This settlement will be discarded',
+            confirmButtonText:'Yes, decline'
+        }).then(async(result)=>{
+            if(result.isConfirmed){
+                const res = await AccountsService.decline({
+                    id,
+                    reason,
+                })
                 setLoading(false)
-                return Swal.fire( res.message, '', 'error')  
-            }else{
-                setLoading(false)
-              return Swal.fire( res.message, '', 'success')
-            }   
-          } else if (result.isDenied) {
-              setLoading(false)    
-             return Swal.fire('Settlement not approved', '', 'error')  
-           }
-      });
-     }
-    catch(err){
-       alert(err)
-   }
-}
+                await alertResponse({
+                    icon:res.success?'success':'error',
+                    response:res.message
+                })
+                if(res.success) return window.location.reload();
+            }
+            setLoading(false)
+        })
+        }
+        catch(err:any){
+            setLoading(false)
+            alertResponse({
+            icon:'info',
+            response:err.message
+            })
+        }
+    }
+
  
-const {pendingSettlements} = useSelector(accountsSelector)
+    const {pendingSettlements} = useSelector(accountsSelector)
 
-const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
-    setRowsPerPage(parseInt(e.target.value))
-}
+    const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
+        setRowsPerPage(parseInt(e.target.value))
+    }
 
-const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
+  const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTransactionCategory(e.target.value);
  
  //button actions
  const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
@@ -86,6 +121,15 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
 
     return(
         <div className="font-segoe relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
+            {/**block Reason */}
+            <BlockReasonModal 
+                showModal={showModal} 
+                action={()=>decline(settlementId,reason)}
+                type={'Decline'} 
+                reason={reason} 
+                onChange={(e:any)=>setReason(e.target.value)} 
+                cancel={()=>{setShowModal(false)}}             
+            />
             {/**page heading */}
            <PageHeader title="Pending Settlements"/>    
         {/**date picker */}
@@ -104,7 +148,7 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                 placeholder='End date'
                 onChange={(date:any)=>setEndDate(date.target.value)}
                 value={endDate}/>   
-       </div>
+        </div>
        {/**filter btn */}
        <OutlinedButton 
         value={'Filter'}
@@ -115,7 +159,7 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
        />
      </div>
      {/**end date */}
-{/**filters */}
+     {/**filters */}
         <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
                 <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler}/>
@@ -126,17 +170,13 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
                 <table className="overflow-x-scroll min-w-full leading-normal">
-                    <thead>
+                    <thead className="text-sm">
                         <tr>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Date
+                                Date Initiated
                             </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Merchant Id
-                            </th>
-                            <th
+                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Description
                             </th>
@@ -150,19 +190,15 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Acc_Number
+                                Account Number
                             </th>
                              <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Acc_Name
+                                Account Name
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Acc_Issuer
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Acc_Type
+                                Account Issuer
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
@@ -170,20 +206,16 @@ const transactionCategoryHandler   = (e:ChangeEvent<HTMLSelectElement>) => setTr
                             </th>
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
-                                Status
-                            </th>
-                            <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-md font-semibold tracking-wider">
                                 Action
                             </th>
                         </tr>
                     </thead>
-                    <tbody className="text-md">
+                    <tbody className="text-sm">
                        {
                            isLoading ?
                            <Spinner/>
                            :
-                           <PendingSettlementsTable data={pendingSettlements} approve={approve} loading={loading}/>
+                           <PendingSettlementsTable data={pendingSettlements} approve={approve} setShowModal={setShowModal} setSettlementId={setSettlementId} />
                        }
                     </tbody>
                 </table>

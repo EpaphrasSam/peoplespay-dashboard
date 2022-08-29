@@ -72,6 +72,18 @@ const approve = (id:any) =>fetch(
     }
 ).then(res=>res.json())
 
+const decline = (data:any) =>fetch(
+    `${BASE_URL}/settlements/discard`,
+    {
+        method:'PUT',
+        headers:{
+            'Content-type':'Application/json',
+            'Authorization':Utils.AuthToken()
+        },
+        body : JSON.stringify(data)
+    }
+).then(res=>res.json())
+
 const debitWallet = (data:any) =>fetch(
         `${BASE_URL}/transactions/debit`,
         {
@@ -84,6 +96,64 @@ const debitWallet = (data:any) =>fetch(
         }
     ).then(res=>res.json())
 
+const creditWallet = (data:any) =>fetch(
+        `${BASE_URL}/transactions/credit`,
+        {
+            method:'POST',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            },
+            body : JSON.stringify(data)
+        }
+    ).then(res=>res.json())
 
-const AccountsService = {debitWallet,getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
+const initiatePayout = (data:any) =>fetch(
+        `${BASE_URL}/transactions/bpayout`,
+        {
+            method:'POST',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            },
+            body : JSON.stringify(data)
+        }
+    ).then(res=>res.json())
+
+const approvePayout = (data:any) =>fetch(
+        `${BASE_URL}/transactions/approve/bpayout`,
+        {
+            method:'PUT',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            },
+            body : JSON.stringify(data)
+        }
+    ).then(res=>res.json())
+
+const getPendingPayouts=()=>fetch(
+        `${BASE_URL}/transactions/bpayout/get`,
+        {
+            method:'GET',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            }
+        }
+    ).then(res=>res.json())
+
+const declinePayout=(data:any)=>fetch(
+        `${BASE_URL}/transactions/payout/discard`,
+        {
+            method:'PUT',
+            headers:{
+                'Content-type':'Application/json',
+                'Authorization':Utils.AuthToken()
+            },
+            body : JSON.stringify(data)
+        }
+    ).then(res=>res.json())
+
+const AccountsService = {declinePayout,approvePayout,getPendingPayouts,decline,initiatePayout,creditWallet,debitWallet,getIssuers,nec,getSettlements,settle, approve, getPendingSettlements}
 export default AccountsService;

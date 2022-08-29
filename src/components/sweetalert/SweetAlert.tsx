@@ -1,4 +1,5 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import TransactionService from '../../services/transactions.service'
 
 type AlertResponseProps={
     icon:SweetAlertIcon;
@@ -10,13 +11,18 @@ type ConfirmAlertProps={
     confirmButtonText:string
 }
 
+type InputAlertProps={
+  title:string,
+  input:string,
+}
+
 export const alertResponse=({icon,response}:AlertResponseProps)=>(
     Swal.fire({
-        position: 'top-end',
+        position: 'center',
         icon: icon,
         text: response,
         showConfirmButton: false,
-        timer: 3000
+        timer: 2000
       })
 )
 
@@ -32,3 +38,35 @@ export const confirmAlert=async({text,confirmButtonText}:ConfirmAlertProps):Prom
         confirmButtonText: confirmButtonText
     }
  ))
+
+ export const OTPAlertInput:any=async()=>{
+    try{ 
+    const res= await TransactionService.sendEmailOTP();
+    if(res.success){
+        return Swal.fire({
+            title:'OTP sent to your email',
+            input:'text',
+            inputLabel:'Enter OTP',
+            inputValue:'',
+            showCancelButton:true,
+            inputValidator:(inputValue):any=>{
+                if(!inputValue){return 'Please enter OTP'}
+            }
+        })
+    }else{
+        throw alertResponse({
+            icon:'error',
+            response:'Could not send OTP to your email.Try again'
+        })
+    }
+    
+     
+    }catch(err:any){
+        alertResponse({
+            icon:'info',
+            response:err.message
+        })
+    }
+    
+    
+ }
