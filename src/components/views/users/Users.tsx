@@ -13,12 +13,13 @@ import usersService from '../../../services/users.service';
 import DetailsModal from '../../modal/UserDetailsModal'
 import {CSVLink} from "react-csv"
 import { HiDownload } from 'react-icons/hi';
+import Pagination from '../../pagination/Pagination';
 
 export default function Users() {
     useFetchUsers()
     const {users,loading} = useSelector(usersSelector)
     const[user,setUser]=useState<any>(null)
-    const [currentIndex, setCurrentIndex] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [searchQuery, setSearchQuery] = useState('')
     const [category,setCategory] = useState('') 
@@ -49,13 +50,10 @@ export default function Users() {
 
      const results:any[] = filterResults.length === 0 ? users : filterResults
    
-      //Get Current rows
-    const indexOfLastRow:number = currentIndex * rowsPerPage;
-    const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-    const currentRows = results.slice(indexOfFirstRow,indexOfLastRow)
-
-    const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
-    const paginateBack = () => setCurrentIndex(currentIndex - 1)
+     const firstPageIndex=(currentPage-1)*rowsPerPage;
+     const lastPageIndex = firstPageIndex+rowsPerPage;
+     const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
+ 
    
     const blockUser=(id:string,blocked:boolean)=>{
         try{
@@ -150,37 +148,20 @@ export default function Users() {
                             ? 
                            <Spinner/>
                            :
-                           <UsersTable users={currentRows} blockUser={blockUser} setShowModal={setShowModal} setUser={setUser}/>
+                           <UsersTable users={currentTableData} blockUser={blockUser} setShowModal={setShowModal} setUser={setUser}/>
                        }       
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between">
-                    <span className="text-sm sm:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{results.length}</span>{' '}Entries
-                    </span>
-                    <div className="inline-flex mt-2 sm:mt-0">
-                        {
-                            currentIndex === 1 ? 
-                            (
-                             <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
-                             >
-                            Prev
-                        </button>
-                            )
-                            :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                                    onClick = {paginateBack}
-                                >
-                                    Prev
-                            </button>)
-                        }    
-                        <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                        onClick = {paginateFront}
-                        >
-                            Next
-                        </button>
-                    </div>
+                 {/** Pagination */}
+                 <div className='my-7'>
+                    <Pagination 
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={users?.length}
+                            pageSize={rowsPerPage}
+                            onPageChange={(page: React.SetStateAction<number>) => setCurrentPage(page)}/>
                 </div>
+
             </div>
         </div>
       </div>

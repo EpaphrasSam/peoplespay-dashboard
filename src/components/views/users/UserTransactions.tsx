@@ -20,6 +20,7 @@ import Spinner from '../layout/Spinner';
 //import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 import TransactionDetailsModal from '../../modal/TransactionDetailsModal'
 import { formatCurrency, formatNumber } from '../../../utils/Date';
+import Pagination from '../../pagination/Pagination';
 
 const swal = require('sweetalert2');
 
@@ -51,10 +52,10 @@ const headers = [
     { label: "PAYMENT ACCOUNT NUMBER", key: "paymentNumber" },
     { label: "PAYMENT ACCOUNT ISSUER", key: "paymentIssuer" },
     { label: "PAYMENT ACCOUNT TYPE", key: "payment_account_type" },
-    { label: "AMOUNT", key: "actualAmount" },
-    { label: "CHARGES", key: "charges" },
-    { label: "E-LEVY CHARGES", key: "elevyCharges" },
-    { label: "TOTAL AMOUNT", key: "amount" },
+    { label: "AMOUNT", key: "_actualAmount" },
+    { label: "CHARGES", key: "_charges" },
+    { label: "E-LEVY CHARGES", key: "_elevyCharges" },
+    { label: "TOTAL AMOUNT", key: "_amount" },
     { label: "RECIPIENT NAME", key: "recipientName" },
     { label: "RECIPIENT NUMBER", key: "recipientNumber"},
     { label: "RECIPIENT ISSUER", key: "recipientIssuer" },
@@ -73,7 +74,7 @@ const headers = [
     const [totalTransactionCount, setTotalTransactionCount] = useState<string>('0')
     const [searchQuery, setSearchQuery] = useState('')
     //const [searchBy , setSearchBy] = useState('All')
-    const [currentIndex, setCurrentIndex] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     const [transactionCategory, setTransactionCategory] = useState<string>('')
 
@@ -138,14 +139,10 @@ const transactionCategoryHandler = (e:ChangeEvent<HTMLSelectElement>) => setTran
 
 const results:any[] = filterResults.length === 0 ? transactions : filterResults
 
- //Get Current rows
- const indexOfLastRow:number = currentIndex * rowsPerPage;
- const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
- const currentRows = results?.slice(indexOfFirstRow,indexOfLastRow)
- 
- //button actions
- const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
- const paginateBack = () => setCurrentIndex(currentIndex - 1)
+const firstPageIndex=(currentPage-1)*rowsPerPage;
+const lastPageIndex = firstPageIndex+rowsPerPage;
+const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
+
 
   const clickDateFilter = async() => {
     try{
@@ -170,76 +167,76 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
     }
   }
 
-  const reverseSelectedTransactions = async(data:any) => {
-      try{
-        const res = await transactionService.reverseTransaction(data)
-        if(!res.success){
-            alert(res.message)
-            }else{
-                swal.fire(
-                {
-                    html : "<div>Transactions have been successfully reversed</div>"
-                }
-                )
-            }
-      }
-      catch(err:any){
-          swal.fire(
-              {
-                  html : "<div>Sorry, the OTP you entered may be wrong. Try again</div>"
-              }
-          )
-      }
-  }
+//   const reverseSelectedTransactions = async(data:any) => {
+//       try{
+//         const res = await transactionService.reverseTransaction(data)
+//         if(!res.success){
+//             alert(res.message)
+//             }else{
+//                 swal.fire(
+//                 {
+//                     html : "<div>Transactions have been successfully reversed</div>"
+//                 }
+//                 )
+//             }
+//       }
+//       catch(err:any){
+//           swal.fire(
+//               {
+//                   html : "<div>Sorry, the OTP you entered may be wrong. Try again</div>"
+//               }
+//           )
+//       }
+//   }
   
 
- const initiateReversal = async() => {
-   try{
-    if(reverseIDArray.current.length < 1){
-        return swal.fire(
-            {
-                html : "<div><p>No transaction has been selected</p></div>"
-            }
-        )
-    }
+//  const initiateReversal = async() => {
+//    try{
+//     if(reverseIDArray.current.length < 1){
+//         return swal.fire(
+//             {
+//                 html : "<div><p>No transaction has been selected</p></div>"
+//             }
+//         )
+//     }
 
-    const res = await transactionService.otpReversal();
+//     const res = await transactionService.otpReversal();
 
-    if(!res.success){
-      return swal.fire(
-             {
-                 html : "<div><p>" + res.message + "</p></div>"
-             }
-        )
-    }
-    swal.fire(
-        {   
-            title: "Enter the OTP received",
-            input: 'text',
-            showDenyButton: true,
-            denyButtonText : "Cancel Reversal",
-            confirmButtonText : "Confirm Reversal"
-        }
-        ).then(function(input:any){
-               if(input){
-                const data = {
-                             transactions : reverseIDArray.current,
-                             otp : input.value
-                             }
-                //console.log(input.value)
-                reverseSelectedTransactions(data)
-               }
+//     if(!res.success){
+//       return swal.fire(
+//              {
+//                  html : "<div><p>" + res.message + "</p></div>"
+//              }
+//         )
+//     }
+//     swal.fire(
+//         {   
+//             title: "Enter the OTP received",
+//             input: 'text',
+//             showDenyButton: true,
+//             denyButtonText : "Cancel Reversal",
+//             confirmButtonText : "Confirm Reversal"
+//         }
+//         ).then(function(input:any){
+//                if(input){
+//                 const data = {
+//                              transactions : reverseIDArray.current,
+//                              otp : input.value
+//                              }
+//                 //console.log(input.value)
+//                 reverseSelectedTransactions(data)
+//                }
                
-         })
-   }catch(err){
+//          })
+//    }catch(err){
     
-    swal(
-        {
-            html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
-        }
-    )
-   }
- }
+//     swal(
+//         {
+//             html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
+//         }
+//     )
+//    }
+//  }
  
 
  const addIdToReverseIDs = (id:any)=> {
@@ -368,107 +365,76 @@ const results:any[] = filterResults.length === 0 ? transactions : filterResults
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden font-segoe">
                 <table className="min-w-full leading-normal">
-                    <thead>
+                    <thead className="text-sm text-gray-600">
                         <tr>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                  Description
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Date
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  font-semibold tracking-wider">
                                 Transaction Time
                             </th>
                              <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Customer Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Recipient Name
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Amount
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Charge
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 E-levy
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Debit Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Credit Status
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Pay_Acc_Type
                             </th>
                             <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold tracking-wider">
+                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                                 Actions
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-sm">
                        {
                            loading ?
                             <Spinner/>
                            :
-                           <Transaction transactions={currentRows} addId={addIdToReverseIDs} reverseIds={reverseIDArray.current} checked={checked} setShowModal={setShowModal} setTransaction={setTransaction}/>
+                           <Transaction transactions={currentTableData} addId={addIdToReverseIDs} reverseIds={reverseIDArray.current} checked={checked} setShowModal={setShowModal} setTransaction={setTransaction}/>
                        }
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-                    <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10 < 0 ? 0 : currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < results.length ? (currentIndex * rowsPerPage): transactions.length}</span> of <span>{results.length}</span>{' '}Transactions
-                    </span> 
-                    <div className="inline-flex mt-2 xs:mt-0">
-                        {
-                            currentIndex === 1 ? 
-                            (
-                             <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
-                             >
-                            Prev
-                        </button>
-                            )
-                            :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                                    onClick = {paginateBack}
-                                >
-                                    Prev
-                            </button>)
-                        } 
-                         {
-                            currentIndex * rowsPerPage === transactions.length ? 
-                            (
-                                <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                                onClick = {paginateFront}
-                                >
-                                    Next
-                                </button>
-                            )
-                            :
-                            (
-                            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                            onClick = {paginateFront}
-                            >
-                                Next
-                            </button>
-                            )
-                        }       
-                        
-                    </div>
+                
+                {/** Pagination */}
+                <div className='my-7'>
+                    <Pagination 
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={transactions?.length}
+                            pageSize={rowsPerPage}
+                            onPageChange={(page: React.SetStateAction<number>) => setCurrentPage(page)}/>
                 </div>
             </div>
         </div>

@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import WalletTransactionsTable from '../../tables/WalletTransactionsTable'
 import {useSelector} from 'react-redux';
 import {reportSelector} from '../../../state/report.state' 
-//import {ReportModel} from '../../../models/report.model'
-//import ReportService from '../../../services/reports.service';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
