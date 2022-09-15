@@ -102,6 +102,7 @@ const headers = [
                 setPaidCharges(resReport?.data?.paid[0].charges)
                 setFailedAmount(resReport?.data?.failed[0].totalAmount)
                 setTotalTransactionCount(res.data.length);
+                console.log(setTotalTransactionCount(res.data.length))
             }catch(err:any){}
         }
         response();
