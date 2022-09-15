@@ -45,6 +45,17 @@ const summary=()=>fetch(
     }
 ).then(res=>res.json())
 
+const changeTransStatus = (data: any) => fetch(
+    `${BASE_URL}/transactions/change/status`,
+    {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'Application/json',
+            'Authorization': Utils.AuthToken()
+        },
+        body: JSON.stringify(data)
+    }
+).then(res => res.json());
 
 const payFailed=(data:any)=>fetch(
     `${BASE_URL}/`,
@@ -124,7 +135,8 @@ const transactionServices = {
     otpReversal,
     reverseTransaction,
     initiateReversal,
-    sendEmailOTP
+    sendEmailOTP,
+    changeTransStatus
 }
 
 export default transactionServices;
