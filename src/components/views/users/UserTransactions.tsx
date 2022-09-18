@@ -168,6 +168,7 @@ const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
     }
   }
 
+
 //   const reverseSelectedTransactions = async(data:any) => {
 //       try{
 //         const res = await transactionService.reverseTransaction(data)
@@ -444,3 +445,6 @@ const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
     )
 }
 export default UserTransactions;
+
+
+

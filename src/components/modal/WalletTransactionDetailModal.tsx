@@ -1,6 +1,3 @@
-import Swal from "sweetalert2";
-import transactionServices from "../../services/transactions.service";
-import { alertResponse, confirmAlert, transStatusAlert } from "../sweetalert/SweetAlert";
 
 type ModalProps={
     showModal:boolean,
@@ -81,59 +78,6 @@ type ModalProps={
                         >
                    Ok
                 </button>
-                { 
-                 (transaction?.status !== 'paid' && transaction?.status !== 'PAID') &&
-                  <button 
-                        type="button" 
-                        className="w-full inline-flex justify-center rounded-md border border-green-500 shadow-sm px-4 py-2 hover:bg-green-500 text-base font-medium text-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={
-                          ()=>{
-                            Swal.fire({
-                              title: 'This will change status of this transaction',
-                              showDenyButton: true,
-                              showCancelButton: true,
-                              confirmButtonText: 'Paid',
-                              denyButtonText: `Failed`,
-                            }).then(async(result)=>{
-                                    if(result?.isConfirmed){
-                                      confirmAlert({
-                                        text:'This will change status to PAID',
-                                        confirmButtonText:'Yes, proceed'
-                                      }).then(async(response)=>{
-                                        if(response.isConfirmed){
-                                          const res=await transactionServices.changeTransStatus({
-                                            id:transaction?._id,
-                                            status:'paid'
-                                          })
-                                          return alertResponse({
-                                            icon:res.success?'success':'error',
-                                            response:res.message
-                                          })
-                                        }
-                                      })
-                                    }else if(result?.isDenied){
-                                      confirmAlert({
-                                        text:'This will change status to FAILED',
-                                        confirmButtonText:'Yes, proceed'
-                                      }).then(async(response)=>{
-                                        if(response.isConfirmed){
-                                          const res=await transactionServices.changeTransStatus({
-                                            id:transaction?._id,
-                                            status:'failed'
-                                          })
-                                          return alertResponse({
-                                            icon:res.success?'success':'error',
-                                            response:res.message
-                                          })
-                                        }
-                                      })
-                                    }
-                          })}
-                        }
-                        >
-                    Update Status
-                  </button>
-                }
               </div>
             </div>
           </div>
