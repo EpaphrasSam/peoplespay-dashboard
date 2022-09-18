@@ -13,7 +13,7 @@ import { OutlinedButton } from '../../buttons/BasicButton';
 import { BiFilterAlt } from 'react-icons/bi';
 import { HiDownload } from 'react-icons/hi';
 import PageHeader from '../../header/PageHeader';
-import TransactionDetailsModal from '../../modal/TransactionDetailsModal'
+import TransactionDetailsModal from '../../modal/WalletTransactionDetailModal'
 import Spinner from '../layout/Spinner';
 
 function WalletTransactions(){
