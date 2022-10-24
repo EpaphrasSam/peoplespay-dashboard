@@ -303,6 +303,17 @@ const toggleDisbursement = (id:string)=>fetch(
     }
 ).then(res=>res.json())
 
+const deleteMerchant = (id: string) => fetch(
+    `${BASE_URL}/merchants/delete/${id}`,
+    {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'Application/json',
+            'Authorization': Utils.AuthToken()
+        }
+    }
+).then(res => res.json())
+
 
 
 const merchantsService =  {
@@ -323,6 +334,7 @@ const merchantsService =  {
     // declineMerchants,
     getApps,
     declineMerchant,
-    toggleDisbursement
+    toggleDisbursement,
+    deleteMerchant
 }
 export default merchantsService;
