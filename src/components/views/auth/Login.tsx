@@ -1,20 +1,38 @@
 import React, { useState } from "react";
-import {useNavigate,useLocation}from 'react-router-dom'
+import { useNavigate }from 'react-router-dom'
 import AuthService from "../../../services/auth.service";
+import transactionServices from "../../../services/transactions.service";
 import Utils from "../../../utils/AuthToken";
 import { alertResponse } from "../../sweetalert/SweetAlert";
 
 
 function Login() {
-  const navigate=useNavigate()
-  const location=useLocation()
-  const from = location.state?.from?.pathname||'/dashboard'
+  const navigate=useNavigate();
+  // const location=useLocation()
+  // const from = location.state?.from?.pathname||'/dashboard'
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+
+  const sendOtp = async (email: string, data: any) => {
+    try {
+      const response = await transactionServices.sendEmailOTP();
+      if(!response.success) {
+        await alertResponse({
+          icon: 'error',
+          response: response.message
+        })
+      }
+      console.log(response.data)
+      navigate('/verify', {state: {email, data}})
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
 
   const login = async () => {
     try {
@@ -33,9 +51,10 @@ function Login() {
        }).then(()=> setLoading(false))
       if(response.success){
         Utils.setAuthToken(response.token);
-        sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
+        // sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
         //navigate(response.data._role?.access[0].path);
-        navigate(from,{replace:true})
+        // navigate(from,{replace:true})
+        sendOtp(email, response.data);
       }
     } catch (err: any) {
       setLoading(false);
