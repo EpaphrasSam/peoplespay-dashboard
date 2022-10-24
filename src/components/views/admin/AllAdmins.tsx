@@ -9,6 +9,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
 import RowNumberSelector from '../../buttons/RowNumberSelector';
+import Pagination from '../../pagination/Pagination';
 
 function AllAdmins(){
     const navigate=useNavigate()
@@ -17,7 +18,7 @@ function AllAdmins(){
     
     const [searchQuery, setSearchQuery] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [currentIndex, setCurrentIndex] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     
     useEffect(()=>{
@@ -105,14 +106,11 @@ const filterResults = admins?.filter((r:any)=>{
 
 const results:any[] = filterResults.length === 0 ? admins : filterResults
 
-//Get Current Rows
-const indexofLastRow:number = currentIndex*rowsPerPage;
-const indexofFirstRow:number = indexofLastRow - rowsPerPage; 
-const currentRows = results.slice(indexofFirstRow,indexofLastRow)
 
- //button actions
- const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
- const paginateBack = () => setCurrentIndex(currentIndex - 1)
+const firstPageIndex=(currentPage-1)*rowsPerPage;
+const lastPageIndex = firstPageIndex+rowsPerPage;
+
+const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
 
     return(
         <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
@@ -170,49 +168,17 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                            isLoading ?
                            <Spinner/>
                            :
-                           <AdminsTable data={currentRows} resetPassword={resetPassword} blockAdmin={blockAdmin} editAdmin={editAdmin}/>
+                           <AdminsTable data={currentTableData} resetPassword={resetPassword} blockAdmin={blockAdmin} editAdmin={editAdmin}/>
                        }
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col  items-center justify-center">
-                    <div className="text-md md:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < admins.length ? (currentIndex * rowsPerPage): admins.length}</span> of <span>{admins.length}</span>{' '}users
-                    </div> 
-                    <div className="inline-flex mt-2 md:mt-0">
-                        {
-                            currentIndex === 1 ? 
-                            (
-                             <button className="text-sm bg-gray-100 text-gray-800 py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
-                             >
-                            Prev
-                        </button>
-                            )
-                            :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-l"
-                                    onClick = {paginateBack}
-                                >
-                                    Prev
-                            </button>)
-                        } 
-                         {
-                            currentIndex * rowsPerPage === admins.length ? 
-                            (
-                                <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
-                                onClick = {paginateFront}
-                                >
-                                    Next
-                                </button>
-                            )
-                            :
-                            (
-                            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
-                            onClick = {paginateFront}
-                            >
-                                Next
-                            </button>
-                            )
-                        }       
-                    </div>
+                <div className='my-7'>
+                    <Pagination 
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={admins?.length}
+                            pageSize={rowsPerPage}
+                            onPageChange={(page: React.SetStateAction<number>) => setCurrentPage(page)}/>
                 </div>
             </div>
         </div>

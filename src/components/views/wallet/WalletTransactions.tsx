@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import WalletTransactionsTable from '../../tables/WalletTransactionsTable'
 import {useSelector} from 'react-redux';
 import {reportSelector} from '../../../state/report.state' 
-//import {ReportModel} from '../../../models/report.model'
-//import ReportService from '../../../services/reports.service';
 import SearchForm from '../../forms/SearchForm';
 import {CSVLink} from "react-csv"
 import DatePicker from 'react-datepicker'
@@ -15,7 +13,7 @@ import { OutlinedButton } from '../../buttons/BasicButton';
 import { BiFilterAlt } from 'react-icons/bi';
 import { HiDownload } from 'react-icons/hi';
 import PageHeader from '../../header/PageHeader';
-import TransactionDetailsModal from '../../modal/TransactionDetailsModal'
+import TransactionDetailsModal from '../../modal/WalletTransactionDetailModal'
 import Spinner from '../layout/Spinner';
 
 function WalletTransactions(){

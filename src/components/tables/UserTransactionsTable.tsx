@@ -12,7 +12,7 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
     {
     transactions.length > 0 ? transactions.map(t=>(
         <tr  className='cursor-pointer hover:bg-green-100 click:bg-green-200'>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <div className="flex items-center">
                     <div className="ml-3">
                         <p className="text-gray-900 whitespace-no-wrap">
@@ -21,12 +21,12 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
                     </div>
                 </div>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {t.createdAt}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <span
                     className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                     <span aria-hidden
@@ -34,32 +34,32 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
                     <span className="relative">{t.time}</span>
                 </span>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
                 <p className="text-gray-900 whitespace-no-wrap uppercase">
                     {t.customerName}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <p className="text-gray-900 whitespace-no-wrap uppercase">
                     {t.recipientName}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {t.amount}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     {t.charges}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 <p className="text-gray-900 whitespace-no-wrap">
                     GHS{t.elevyCharges}
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
             {
                     t.debit_status === 'paid' ? 
                     (
@@ -91,7 +91,7 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
                 }
 
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
                 {
                     t.status === 'PAID' ? 
                     (
@@ -122,7 +122,7 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
                 }
                 
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm  border-t-0 border-l-0 border-r-0">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white   border-t-0 border-l-0 border-r-0">
                 <p className="text-gray-900 whitespace-no-wrap text-left">
                     {
                         t.payment_account_type === 'momo' ? 
@@ -157,7 +157,7 @@ const UserTransactionsTable = ({setTransaction,setShowModal,transactions, addId,
                 
                 </p>
             </td>
-            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <td className="px-5 py-5 border-b border-gray-200 bg-white">
                 <input 
                         className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:border-red-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" 
                         type="checkbox"

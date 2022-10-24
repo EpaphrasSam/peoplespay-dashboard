@@ -106,6 +106,18 @@ const updateRole=(data:any)=>fetch(
     }
 ).then(res=>res.json())
 
+const validateOtp = (data: any) => fetch(
+    `${BASE_URL}/merchants/otp/check`,
+    {
+        method: 'POST',
+        headers: {
+            'Content-type': 'Application/json',
+            'Authorization': AuthToken.AuthToken()
+        },
+        body: JSON.stringify(data)
+    }
+).then(res => res.json())
+
 
 const authService = {
     login,
@@ -116,7 +128,8 @@ const authService = {
     changePassword,
     addRole,
     getRoles,
-    updateRole
+    updateRole,
+    validateOtp
 }
 
 export default authService;

@@ -66,7 +66,54 @@ export const confirmAlert=async({text,confirmButtonText}:ConfirmAlertProps):Prom
             icon:'info',
             response:err.message
         })
-    }
-    
-    
+    }   
  }
+
+ export const transStatusAlert=async():Promise<any>=>{
+    Swal.fire({
+        title: 'This will change status of this transaction',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Paid',
+        denyButtonText: `Failed`,
+      })
+ }
+
+//  async()=>{
+//     await transStatusAlert().then(async(result)=>{
+//       const _result= await result;console.log(_result)
+//       if(_result?.isConfirmed){
+//         confirmAlert({
+//           text:'This will change status to PAID',
+//           confirmButtonText:'Yes, proceed'
+//         }).then(async(response)=>{
+//           if(response.isConfirmed){
+//             const res=await transactionServices.changeTransStatus({
+//               id:transaction?._id,
+//               status:'paid'
+//             })
+//             return alertResponse({
+//               icon:res.success?'success':'error',
+//               response:res.message
+//             })
+//           }
+//         })
+//       }else if(_result?.isDenied){
+//         confirmAlert({
+//           text:'This will change status to FAILED',
+//           confirmButtonText:'Yes, proceed'
+//         }).then(async(response)=>{
+//           if(response.isConfirmed){
+//             const res=await transactionServices.changeTransStatus({
+//               id:transaction?._id,
+//               status:'failed'
+//             })
+//             return alertResponse({
+//               icon:res.success?'success':'error',
+//               response:res.message
+//             })
+//           }
+//         })
+//       }
+//     })
+//   }

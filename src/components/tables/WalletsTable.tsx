@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from "moment"
-import { formatDate } from '../../utils/Date';
+import { formatCurrency, formatDate } from '../../utils/Date';
 
 
 type AppProps = {
@@ -12,9 +12,9 @@ type AppProps = {
 const WalletsTable = ({wallets,goTo}:AppProps): JSX.Element=>(
   <>
   {
-    wallets.map((t:any)=>(
+    wallets?.map((t:any)=>(
         <tr>
-        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white ">
             <div className="flex items-center">
                 <div>
                     <p className="text-gray-900 whitespace-no-wrap text-left">
@@ -23,43 +23,43 @@ const WalletsTable = ({wallets,goTo}:AppProps): JSX.Element=>(
                 </div>
             </div>
         </td> */}
-        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <p className="text-gray-900 whitespace-no-wrap">{t.customerId?._id || t.merchantId?._id}</p>
         </td> */}
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <p className="text-gray-900 whitespace-no-wrap uppercase">
-                {t.customerId?.fullname || t.merchantId.merchant_tradeName}
+                {t.customerId?.fullname || t.merchantId?.merchant_tradeName}
             </p>
         </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <p className="text-gray-900 whitespace-no-wrap">{t?.type==="customer"?"Customer":"Merchant"}</p>
         </td>
         
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                <span className="relative">{`₵${Number.parseFloat(t?.totalBalance).toFixed(2)}`}</span>
+                <span className="relative">{formatCurrency(t?.totalBalance)}</span>
             </span>
         </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                <span className="relative">{`₵${Number.parseFloat(t?.lastBalance).toFixed(2)}`}</span>
+                <span className="relative">{formatCurrency(t?.lastBalance)}</span>
             </span>
         </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                <span className="relative">{`₵${Number.parseFloat(t?.balance).toFixed(2)}`}</span>
+                <span className="relative">{formatCurrency(t?.balance)}</span>
             </span>
         </td>
-        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        {/* <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <span
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
@@ -69,12 +69,12 @@ const WalletsTable = ({wallets,goTo}:AppProps): JSX.Element=>(
                 </span>
             </span>
         </td> */}
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <p className="text-gray-900 whitespace-no-wrap">
                 {formatDate(t?.updatedAt)}
             </p>
         </td>
-        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+        <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             {
                 t?.customerId?.blocked || t?.merchantId?.blocked? 
                 (

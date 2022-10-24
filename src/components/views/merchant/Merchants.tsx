@@ -16,6 +16,7 @@ import Loader from '../users/Loader';
 import { BiFilterAlt } from 'react-icons/bi';
 import { CSVLink } from 'react-csv';
 import { HiDownload } from 'react-icons/hi';
+import Pagination from '../../pagination/Pagination';
 
 
 function Merchants(){
@@ -25,7 +26,7 @@ function Merchants(){
     const [startDate, setStartDate] = useState<any>()
     const [endDate, setEndDate] = useState<any>()
     const [searchQuery, setSearchQuery] = React.useState('')
-    const [currentIndex, setCurrentIndex] = React.useState(1)
+    const [currentPage, setCurrentPage] = React.useState(1)
     const [rowsPerPage,setRowsPerPage] = React.useState(10)
     
     const [merchantCategory, setMerchantCategory] = useState<string>('')
@@ -53,14 +54,10 @@ const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
 
 const results:any[] = filterResults.length === 0 ? merchants : filterResults
 
-//Get Current rows
-const indexOfLastRow:number = currentIndex * rowsPerPage;
-const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-const currentRows = results?.slice(indexOfFirstRow,indexOfLastRow)
+const firstPageIndex=(currentPage-1)*rowsPerPage;
+const lastPageIndex = firstPageIndex+rowsPerPage;
+const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
 
-//buttonactions
-const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
-const paginateBack = () => setCurrentIndex(currentIndex - 1)
 
 const handleSelectedId:Function = async (id:string) => {
     try{
@@ -98,14 +95,14 @@ const handleSelectedId:Function = async (id:string) => {
           <div className="flex items-center space-x-2">
                 <div>
                 <input type="date" 
-                    className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                    className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm fo focu'
                     placeholder='Start date'
                     onChange={(date:any)=>setStartDate(date.target.value)}
                     value={startDate}/>
                 </div>
                 <div>
                 <input type="date" 
-                        className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500'
+                        className='rounded bg-white border border-gray-400 text-gray-700 sm:text-sm fo focu'
                         placeholder='End date'
                         onChange={(date:any)=>setEndDate(date.target.value)}
                         value={endDate}/>  
@@ -128,7 +125,7 @@ const handleSelectedId:Function = async (id:string) => {
                     <select
                             onChange = {merchantCategoryHandler}
                             value = {merchantCategory}
-                            className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                            className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focu">
                             <option>column search</option>
                             <option value="name">comp name</option>
                             <option value="category">comp category</option>
@@ -141,9 +138,9 @@ const handleSelectedId:Function = async (id:string) => {
                     headers = {headers}
                     data = {unapprovedMerchants}
                     filename={'onboarding-merchants.csv'}
-                    className='py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2'>
+                    className='py-2 px-2 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-15 bg-green-500 tracking-wide font-inter inline-flex items-center space-x-1'>
                         <HiDownload/>
-                        <span>{ 'Download Report'}</span>
+                        <span>{ 'Download'}</span>
                 </CSVLink>
             </div>
         </div>
@@ -166,80 +163,61 @@ const handleSelectedId:Function = async (id:string) => {
                 </div>
                 <div className="block w-full overflow-x-auto">
                     {/* Projects table */}
-                    <table className="items-center w-full bg-transparent border-collapse text-sm">
-                        <thead>
+                    <table className="items-center w-full bg-transparent border-collapse">
+                        <thead className="text-xs text-gray-600">
                             <tr>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left"
                                 >
                                     Date created
                                 </th>
                                 <th
                                     className={
-                                        "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                        "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left"
                                     }
                                 >
                                    Company Name
                                 </th>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left"
                                 >
                                  Submitted
                                 </th>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left "
                                 >
                                  Status
                                 </th>
                                 <th
                                     className=
-                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                    "px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left"
                                 >
                                  Declined
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                        {
-                           loading
-                            ? 
-                           <Spinner/>
-                           :
-                           <MerchantsTable merchants={currentRows} handleSelectedId={handleSelectedId}/>
-                       }     
-                                            
+                        <tbody className="text-xs">
+                            {
+                            loading
+                                ? 
+                            <Spinner/>
+                            :
+                            <MerchantsTable merchants={currentTableData} handleSelectedId={handleSelectedId}/>
+                            }                        
                         </tbody>
                     </table>
-                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                    <span className="text-xs xs:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{merchants.length}</span>{' '}Entries
-                    </span>
-                    <div className="inline-flex mt-2 xs:mt-0">
-                        {
-                            currentIndex === 1 ? 
-                            (
-                             <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
-                             >
-                            Prev
-                        </button>
-                            )
-                            :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                                    onClick = {paginateBack}
-                                >
-                                    Prev
-                            </button>)
-                        }    
-                        <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                        onClick = {paginateFront}
-                        >
-                            Next
-                        </button>
-                    </div>
-                </div>   
+                    {/** Pagination */}
+                    <div className='my-7'>
+                        <Pagination 
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={merchants?.length}
+                            pageSize={rowsPerPage}
+                            onPageChange={(page: React.SetStateAction<number>) => setCurrentPage(page)}/>
+                </div>
                 </div>
             </div>
         </div>

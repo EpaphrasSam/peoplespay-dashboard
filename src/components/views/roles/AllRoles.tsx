@@ -12,6 +12,7 @@ import useFetchRoles from './useFetchRoles';
 import RowNumberSelector from '../../buttons/RowNumberSelector';
 import PageHeader from '../../header/PageHeader';
 import { alertResponse, confirmAlert } from '../../sweetalert/SweetAlert';
+import Pagination from '../../pagination/Pagination';
 
 function AllAdmins(){
     useFetchRoles()
@@ -20,7 +21,7 @@ function AllAdmins(){
     let navigate= useNavigate()
     
     const [searchQuery, setSearchQuery] = useState('')
-    const [currentIndex, setCurrentIndex] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage,setRowsPerPage] = useState(10)
     
  const goToEdit=(role:any)=>{
@@ -62,16 +63,11 @@ const filterResults = roles?.filter((r:any)=>{
   if((hasSearchResults))return r;
 })
 
-const results:any[] = filterResults.length === 0 ? roles : filterResults
+const results:any[] = filterResults?.length === 0 ? roles : filterResults
 
-//Get Current Rows
-const indexofLastRow:number = currentIndex*rowsPerPage;
-const indexofFirstRow:number = indexofLastRow - rowsPerPage; 
-const currentRows = results.slice(indexofFirstRow,indexofLastRow)
-
- //button actions
- const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
- const paginateBack = () => setCurrentIndex(currentIndex - 1)
+const firstPageIndex=(currentPage-1)*rowsPerPage;
+const lastPageIndex = firstPageIndex+rowsPerPage;
+const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
 
     return(
         <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
@@ -128,49 +124,18 @@ const currentRows = results.slice(indexofFirstRow,indexofLastRow)
                            loading ?
                            <Spinner/>
                            :
-                           <RolesTable data={currentRows}  onEditClick={goToEdit} deactivateRole={deactivateRole}/>
+                           <RolesTable data={currentTableData}  onEditClick={goToEdit} deactivateRole={deactivateRole}/>
                        }
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col  items-center justify-center">
-                    <div className="text-md md:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{(currentIndex * rowsPerPage) < roles.length ? (currentIndex * rowsPerPage): roles.length}</span> of <span>{roles.length}</span>{' '}records
-                    </div> 
-                    <div className="inline-flex mt-2 md:mt-0">
-                        {
-                            currentIndex === 1 ? 
-                            (
-                             <button className="text-sm bg-gray-100 text-gray-800 py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
-                             >
-                            Prev
-                        </button>
-                            )
-                            :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-l"
-                                    onClick = {paginateBack}
-                                >
-                                    Prev
-                            </button>)
-                        } 
-                         {
-                            currentIndex * rowsPerPage === roles.length ? 
-                            (
-                                <button className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
-                                onClick = {paginateFront}
-                                >
-                                    Next
-                                </button>
-                            )
-                            :
-                            (
-                            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
-                            onClick = {paginateFront}
-                            >
-                                Next
-                            </button>
-                            )
-                        }       
-                    </div>
+                {/** Pagination */}
+                <div className='my-7'>
+                    <Pagination 
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={roles?.length}
+                            pageSize={rowsPerPage}
+                            onPageChange={(page: React.SetStateAction<number>) => setCurrentPage(page)}/>
                 </div>
             </div>
         </div>

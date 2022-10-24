@@ -42,6 +42,7 @@ const DirectCredit=(lazy(()=>import('./components/views/directdebit/DirectCredit
 const PendingReversals=(lazy(()=>import('./components/views/reversals/Approvals')))
 const InitiateDirectPayout=(lazy(()=>import('./components/views/directpayout/InitiatePayoutPage')))
 const PayoutApprovals=(lazy(()=>import('./components/views/directpayout/PayoutApprovals')))
+const VerifyOtp = (lazy(() => import('./components/views/login-otp/VerifyOtp')));
 
 // create a component
 const Navigation=()=>{
@@ -56,6 +57,7 @@ const Navigation=()=>{
                             <Route  path='*' element={<NotFound/>} />
                             <Route  path='login' element={<Login/>} />
                             <Route path="change-password"  element={<ChangePasswordForm/>}/>
+                            <Route path="verify" element={<VerifyOtp />} />
                             <Route  path='/' element={<ProtectedRoute><Layout/></ProtectedRoute>}>
                                 
                                 <Route path="dashboard" element={<Dashboard/>}/>

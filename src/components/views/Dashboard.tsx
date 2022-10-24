@@ -64,16 +64,14 @@ function Dashboard() {
       setLoading(true)
       const [merchantResponse, res, resReport, resTransactions] =
         await Promise.all([
-          MerchantService.summary(),
+          MerchantService.getApprovedMerchants(),
           TransactionService.summary(),
           ReportService.summaryReport(startDate, endDate),
           ReportService.dateFilter(startDate, endDate),
         ]);
 
       //HighLight table
-      const transactions = resTransactions.data.map(
-        (d: any) => new ReportModel(d)
-      );
+      const transactions = resTransactions.data.map((d: any) => new ReportModel(d));
       const paidTransactions = transactions?.filter(
         (t: any) => t.debit_status === "paid" && t.status === "PAID"
       );
@@ -92,11 +90,11 @@ function Dashboard() {
       let walletcount = 0;
 
       for (let i = 0; i < transactions.length; i++) {
-        if (transactions[i].paymentIssuer === "MTN") {
+        if (transactions[i].paymentAccountIssuerName === "MTN") {
           mtncount += 1;
-        } else if (transactions[i].paymentIssuer === "VODAFONE") {
+        } else if (transactions[i].paymentAccountIssuerName === "VODAFONE") {
           vodacount += 1;
-        } else if (transactions[i].paymentIssuer === "AIRTELTIGO") {
+        } else if (transactions[i].paymentAccountIssuerName === "AIRTELTIGO") {
           airtelcount += 1;
         } else if (transactions[i].payment_account_type === "card") {
           cardcount += 1;
@@ -104,7 +102,6 @@ function Dashboard() {
           walletcount += 1;
         }
       }
-
       setData({
         totalTransactions: transactions.length,
         successfulCount: paidTransactions.length,
@@ -114,8 +111,7 @@ function Dashboard() {
         paidCharges: resReport?.data?.paid[0]?.charges,
         totalAmountFailed: resReport?.data?.failed[0]?.totalAmount,
         totalAmountSuccess: resReport?.data?.paid[0]?.totalAmount,
-        merchantsNumb:
-        merchantResponse.data && merchantResponse?.data[0]?.count,
+        merchantsNumb: merchantResponse.data.length ?? 0,
         paidSliced: _paidSliced,
         failedSliced: _failedSliced,
         mtn: mtncount,
@@ -165,7 +161,7 @@ function Dashboard() {
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 w-full">
             {!loading ?
             <>
-            <Link to="/user-transactions">
+            <Link to="/transactions">
               <HeaderCard
                 title="TRANSACTIONS"
                 value={formatNumber(data?.totalTransactions) ?? 0}
@@ -211,7 +207,7 @@ function Dashboard() {
               }
             />
 
-            <Link to="/allpaid-transactions">
+            <Link to="/e-levy">
               <HeaderCard
                 title="TOTAL ELEVY"
                 color="red"
@@ -236,7 +232,7 @@ function Dashboard() {
             </Link>
             <Link to="/allpaid-transactions">
               <HeaderCard
-                title="TOTAL MERCHANTS"
+                title="APPROVED MERCHANTS"
                 color="red"
                 value={formatNumber(data?.merchantsNumb)}
                 icon={

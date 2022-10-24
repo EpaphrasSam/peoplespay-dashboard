@@ -1,4 +1,4 @@
-import React,{useState, ChangeEvent} from 'react'
+import React,{useState, ChangeEvent, useMemo} from 'react'
 import { useNavigate } from 'react-router-dom';
 import useFetchWallets from './UseFetchWallets';
 import WalletAccounts from '../../tables/WalletsTable';
@@ -11,6 +11,9 @@ import RowNumberSelector from '../../buttons/RowNumberSelector';
 import ValueFilterSelector from '../../buttons/ValueFilterSelector';
 import PageHeader from '../../header/PageHeader';
 import { ReportModel } from '../../../models/report.model';
+import Pagination from '../../pagination/Pagination';
+
+
 
 function Wallets(){
     useFetchWallets();
@@ -18,12 +21,16 @@ function Wallets(){
     const navigate=useNavigate()
     
     const {loading,wallets} = useSelector(reportSelector);
-
+    
     const [searchQuery, setSearchQuery] = useState('')
-    const [currentIndex, setCurrentIndex] = useState(1)
-    const [rowsPerPage,setRowsPerPage] = useState(10)
     const [category,setCategory] = useState('merchant') 
+    const [currentPage, setCurrentPage] = useState(1)
+    const [rowsPerPage,setRowsPerPage] = useState(10)
 
+    const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
+        setRowsPerPage(parseInt(e.target.value))
+    }
+    
      const goTo=async(id:string,name:any)=>{
         try{
             const res=await ReportService.getWalletTransactions(id)
@@ -36,7 +43,7 @@ function Wallets(){
         }catch(err){}
      }
      
-     const filterResults = wallets.filter((cus)=>{
+     const filterResults = wallets?.filter((cus)=>{
         switch(category){
             case "merchant":
               const hasSearchResults:boolean = cus?.merchantId?.merchant_tradeName?.toLowerCase().startsWith(searchQuery?.toLowerCase())
@@ -54,18 +61,11 @@ function Wallets(){
 
      const results:any[] = filterResults.length === 0 ? wallets : filterResults
      
-     //Get Current rows
-    const indexOfLastRow:number = currentIndex * rowsPerPage;
-    const indexOfFirstRow:number = indexOfLastRow - rowsPerPage;
-    const currentRows = results.slice(indexOfFirstRow,indexOfLastRow)
+     
+        const firstPageIndex=(currentPage-1)*rowsPerPage;
+        const lastPageIndex = firstPageIndex+rowsPerPage;
+        const currentTableData= results?.slice(firstPageIndex,lastPageIndex)
     
-    //buttonactions
-   const paginateFront = () => {setCurrentIndex(currentIndex + 1)};
-   const paginateBack = () => setCurrentIndex(currentIndex - 1)
-
-   const pageRowsHandler = (e:ChangeEvent<HTMLSelectElement>) =>{
-    setRowsPerPage(parseInt(e.target.value))
-}
 
     return(
         <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
@@ -81,17 +81,9 @@ function Wallets(){
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow-lg overflow-hidden">
-                <table className="min-w-full leading-normal font-segoe">
-                    <thead>
+                <table className="min-w-full leading-normal font-segoe mb-3">
+                    <thead className="text-xs">
                         <tr>
-                            {/* <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
-                                Wallet ID
-                            </th> */}
-                            {/* <th
-                                className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
-                                Customer ID
-                            </th> */}
                             <th
                                 className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                                 Name
@@ -130,43 +122,28 @@ function Wallets(){
                             </th>                    
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-sm">
                        {
                            loading
                             ? 
                            <Spinner/>
                            :
-                           <WalletAccounts wallets={currentRows} goTo={goTo}/>
+                           <WalletAccounts wallets={currentTableData} goTo={goTo}/>
                        }       
                     </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between">
-                    <span className="text-sm sm:text-sm text-gray-900">
-                        Showing <span>{currentIndex * rowsPerPage - 10}{' '}</span> to{' '}<span>{currentIndex * rowsPerPage}</span> of <span>{wallets.length}</span>{' '}Entries
-                    </span>
-                    <div className="inline-flex mt-2 sm:mt-0">
-                        {
-                            currentIndex === 1 ? 
-                            (
-                             <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed"
-                             >
-                            Prev
-                        </button>
-                            )
-                            :
-                            (<button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                                    onClick = {paginateBack}
-                                >
-                                    Prev
-                            </button>)
-                        }    
-                        <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                        onClick = {paginateFront}
-                        >
-                            Next
-                        </button>
-                    </div>
+                {/** Pagination */}
+                <div className='my-7'>
+                    <Pagination 
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={wallets?.length}
+                            pageSize={rowsPerPage}
+                            onPageChange={(page: React.SetStateAction<number>) => setCurrentPage(page)}/>
                 </div>
+                
+                    
+
             </div>
         </div>
      </div>

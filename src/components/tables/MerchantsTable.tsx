@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment'
+import { formatDate } from '../../utils/Date';
 
 interface AppProps {
     merchants : {}[],
@@ -10,13 +10,10 @@ const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
 <>
 {
     merchants.map((m:any)=>(
-        <tr className='hover:bg-green-100 click:bg-green-200 cursor-pointer text-sm' onClick={()=>{handleSelectedId(m._id)}}>
+        <tr className='hover:bg-green-100 click:bg-green-200 cursor-pointer' onClick={()=>{handleSelectedId(m._id)}}>
         <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left flex items-center">
-            <span
-                className=
-                "ml-3 text-blueGray-600"
-            >
-                {moment(m.createdAt).format('DD/MMM/YYY')}
+            <span className="">
+                {formatDate(m.createdAt)}
             </span>
         </th>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">

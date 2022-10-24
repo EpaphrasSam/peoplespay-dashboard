@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDate } from '../../utils/Date';
+import { formatCurrency, formatDate } from '../../utils/Date';
 import MerchantConfigTableOptions from '../dropdowns/MerchantConfigTableOptions'
 
 
@@ -31,7 +31,7 @@ const MerchantsConfigTable = ({merchants,getApps,blockMerchant,setMerchant,setSh
                 className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                 <span aria-hidden
                     className="absolute inset-0 bg-gray-200 opacity-50 rounded-full"></span>
-                <span className="relative">GHS {Number.parseFloat(m?.wallet?.balance).toFixed(2)}</span>
+                <span className="relative">{formatCurrency(m?.wallet?.balance)}</span>
             </span>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">

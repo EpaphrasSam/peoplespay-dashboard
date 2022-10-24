@@ -20,11 +20,11 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "rgb(199,27,67)",
-        borderColor: "rgb(199,27,67)",
+        backgroundColor: "#49abdc",
+        borderColor: "#49abdc",
         tension: 0.3,
         borderWidth: 2,
-        data: [1, 3, 2, 5, 4, 5, 7],
+        data: [2, 2, 1, 5, 4, 5, 7],
       },
     ],
   };
@@ -48,8 +48,8 @@ export default function MetricsChart({succ_amount,fail_amount,succ_count,fail_co
     datasets: [
       {
         fill: "origin",
-        backgroundColor: "#49abdc",
-        borderColor: "#49abdc",
+        backgroundColor: "rgb(199,27,67)",
+        borderColor: "rgb(199,27,67)",
         tension: 0.3,
         borderWidth: 2,
         data: [2, 5, 4, 6, 3, 5, 7],

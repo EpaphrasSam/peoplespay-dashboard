@@ -1,4 +1,4 @@
-import { formatCurrency, formatDate, formatTime } from "../utils/Date";
+import { csvCurrency, formatCurrency, formatDate, formatTime } from "../utils/Date";
 import { ghippsMsgs } from "../utils/ghipps_code";
 import { EnumTransactionTypes } from "./transactiontypes.enum";
 
@@ -12,8 +12,11 @@ export class ReportModel {
     customerName:string;
     customerPhone:string;
     actualAmount:string;
+    _actualAmount:string;
     charges:string;
+    _charges:string;
     amount:string;
+    _amount:string;
     status:string;
     recipientNumber:string;
     recipientName:string;
@@ -32,7 +35,8 @@ export class ReportModel {
     ecard_transaction:any;
     reversal_status : string;
     elevyCharges: string;
-
+    _elevyCharges:string;
+    paymentAccountIssuerName:string
 
     constructor(report:any){
 
@@ -52,8 +56,11 @@ export class ReportModel {
         this.transaction_type=report.transaction_type;
         this.getTransactionType(report.transaction_type);
         this.actualAmount=formatCurrency(report.actualAmount);
+        this._actualAmount=csvCurrency(report.actualAmount);
         this.charges= formatCurrency(report.charges);
+        this._charges= csvCurrency(report.charges);
         this.amount= formatCurrency(report.amount);
+        this._amount= csvCurrency(report.amount);
         this.paymentNumber=report.payment_account_number;
         this.paymentName=report.payment_account_name;
         this.recipientName=report.recipient_account_name;
@@ -67,6 +74,8 @@ export class ReportModel {
         this.payment_account_type=report.payment_account_type;
         this.reversal_status = report.reversal_status;
         this.elevyCharges = formatCurrency(report.elevyCharges);
+        this._elevyCharges = csvCurrency(report.elevyCharges);
+        this.paymentAccountIssuerName=report.payment_account_issuer_name;
     };
 
     getStatus(status:string){
