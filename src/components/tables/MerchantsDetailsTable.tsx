@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { merchantsSelector, setDocuments,setBanks } from "../../state/merchant.state";
 import merchantsService from "../../services/merchant.service";
 import { OutlinedButton } from "../buttons/BasicButton";
-import {FcCancel} from 'react-icons/fc'
+import {FcCancel} from 'react-icons/fc';
 import{IoMdCheckmarkCircle}from 'react-icons/io'
 import BlockReasonModal from "../modal/BlockReasonModal";
 import { alertResponse } from "../sweetalert/SweetAlert";
@@ -43,6 +43,25 @@ const MerchantDetails: React.FC = () => {
       });
     }
   };
+
+  const confirmDeleteMerchant = async () => {
+    try {
+      const response = await merchantsService.deleteMerchant(selected['_id']);
+      if(!response.success) {
+        return swal.fire({
+          text: response.message,
+        });
+      }else {
+        return swal.fire({
+          text: response.message,
+        });
+      }
+    } catch (err: any) {
+      swal.fire({
+        text: err.message,
+      });
+    }
+  }
 
   // const blockMerchant = async () => {
   //   try {
@@ -85,19 +104,19 @@ const MerchantDetails: React.FC = () => {
     }
   };
 
-  const getBankAccounts=async()=>{
-    try{
-      if (selected._id !== undefined) {
-        const response = await merchantsService.getMerchantBank(selected._id)
-        if (!response.success) {
-          throw alert(response.message);
-        }
-        //console.log(response.data)
-        const data = response.data.map((t: any) => t);
-        dispatch(setBanks(data));
-      }
-    }catch(err){}
-  }
+  // const getBankAccounts=async()=>{
+  //   try{
+  //     if (selected._id !== undefined) {
+  //       const response = await merchantsService.getMerchantBank(selected._id)
+  //       if (!response.success) {
+  //         throw alert(response.message);
+  //       }
+  //       //console.log(response.data)
+  //       const data = response.data.map((t: any) => t);
+  //       dispatch(setBanks(data));
+  //     }
+  //   }catch(err){}
+  // }
 
   const approve=()=>{
     try {
@@ -125,6 +144,31 @@ const MerchantDetails: React.FC = () => {
     }
   }
 
+  const deleteMerchant = () => {
+    try {
+      if (selected._id === undefined) {
+        swal.fire({
+          text: "No merchant selected",
+        });
+      }else {
+        swal
+          .fire({
+            text: " Confirm merchant deletion",
+            showDenyButton: true,
+            denyButtonText: "Cancel Deletion",
+            confirmButtonText: "Confirm Deletion",
+          })
+          .then((result: any) => {
+            if (result.isConfirmed) {
+              confirmDeleteMerchant();
+            }
+          });
+      }
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
+
   const declineMerchant=async():Promise<any>=>{
     try{
       if(reason==="" ||reason=== null)return alert('Please provide a reason')
@@ -144,13 +188,13 @@ const MerchantDetails: React.FC = () => {
   React.useEffect(() => {
     try {
       getDocuments()
-      getBankAccounts()
+      // getBankAccounts()
     } catch (err: any) {
       alert(err.message);
     }
   }, [selected]);
 
-  const { docx,banks } = useSelector(merchantsSelector);
+  const { docx } = useSelector(merchantsSelector);
 
   return (
     <>
@@ -169,16 +213,19 @@ const MerchantDetails: React.FC = () => {
                 Details
               </h3>
               <div className="space-x-2">
-                <button
-                  className={`inline-flex items-center space-x-3 ${selected?.active?'opacity-75':''} bg-blue-500 text-white font-bold text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
-                  type="button"
-                  disabled={selected?.active}
-                  onClick={() =>{approve()}}
+                {
+                  selected.submitted && 
+                  <button
+                    className={`inline-flex items-center space-x-3 ${selected?.active?'opacity-75':''} bg-blue-500 text-white font-bold text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
+                    type="button"
+                    disabled={selected?.active}
+                    onClick={() =>{approve()}}
                   >
-                  <IoMdCheckmarkCircle/>
-                  {selected?.active ? 'Approved' : 'Approve Merchant'}
-                </button>
-                {!selected.active &&<OutlinedButton
+                    <IoMdCheckmarkCircle/>
+                    {selected?.active ? 'Approved' : 'Approve Merchant'}
+                  </button>
+                }
+                {!selected.active && selected.submitted &&<OutlinedButton
                    action={()=>{
                     if(selected._id===undefined){return alert('No merchant selected')}
                     else if(!selected?.submitted && !selected?.decline){return alert('Merchant has not submitted business details')}
@@ -191,6 +238,16 @@ const MerchantDetails: React.FC = () => {
                    paddingWide
                    icon={<FcCancel/>}
                  />}
+                 {
+                  !selected?.submitted && <OutlinedButton
+                    action = {() => deleteMerchant()}
+                    value="Delete"
+                    color="red"
+                    borderVisible
+                    paddingWide
+                    icon={<FcCancel/>}
+                  />
+                 }
               </div>
               
             </div>
@@ -409,57 +466,27 @@ const MerchantDetails: React.FC = () => {
                         <th className="border border-slate-300 px-6 py-3">Value</th>
                         </tr>
                     </thead>
-                <tbody>
-                  {banks.map(b=>
-                  (
-                    <>
-                      <tr>
-                      <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Name</td>
+                  <tbody>
+                    <tr>
+                      <td className="border border-slate-300 px-6 py-3 text-left">Account Provider</td>
                       <td className="border border-slate-300 px-6 py-3">
-                          {b?.account_name}
+                          {selected?.account_issuer_name}
+                      </td>
+                    </tr> 
+                    <tr>
+                      <td className="border border-slate-300 px-6 py-3 text-left">Account Name</td>
+                      <td className="border border-slate-300 px-6 py-3">
+                          {selected?.account_name}
                       </td>
                     </tr>
                     <tr>
-                      <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Issuer</td>
+                      <td className="border border-slate-300 px-6 py-3 text-left">Account Number</td>
                       <td className="border border-slate-300 px-6 py-3">
-                          {b?.account_issuer_name}
+                          {selected?.account_number}
                       </td>
                     </tr>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Bank Account Number</td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {b?.account_number}
-                    </td>
-                    </tr>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">
-                        Momo Account Name
-                    </td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {b?.momo_account_name}
-                    </td>
-                    </tr>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">
-                        Momo Account Issuer
-                    </td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {b?.momo_account_issuer}
-                    </td>
-                    </tr>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">
-                        Momo Account Number
-                    </td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {b?.momo_account_number}
-                    </td>
-                    </tr>
-                    </>
-                  ))}
-                    
-              </tbody>
-            </table>
+                  </tbody>
+                </table>
               ) :
 
               (
@@ -471,26 +498,29 @@ const MerchantDetails: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody className="overflow-y-scroll" style={{height: '20vh'}}>
-                    {docx?.map(d=>
+                    {docx?.map((d: any, i: number)=>
                         (
-                            <tr>
-                                <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">{d.name}</td>
-                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap flex justify-center"><img src={d?.data} alt={d.name} className="w-22 h-20"/></td>
-                                 <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">
+                            <tr key={i}>
+                                <td className="border border-slate-300 px-6 py-4 text-left">{d.name}</td>
+                                  <td className="border border-slate-300 px-6 py-4 whitespace-nowrap flex justify-center">
+                                    <a href={d?.data} download className="bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                      Download
+                                    </a>
+                                  </td>
+                                 {/* <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">
                                    <button className="bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
-                                   onClick={()=>{
-                                  
-                                    let w = window.open('about:blank');
-                                    let image = new Image();
-                                    image.src = d?.data;
-                                    setTimeout(function(){
-                                      w?.document.write(image.outerHTML);
-                                    }, 0);
-                                   }}>
+                                    onClick={()=>{
+                                      let w = window.open('about:blank');
+                                      let image = new Image();
+                                      image.src = d?.data;
+                                      setTimeout(function(){
+                                        w?.document.write(image.outerHTML);
+                                      }, 0);
+                                    }}>
                                     view
                                   </button>
                                   
-                                </td>
+                                </td> */}
                             </tr>
                         
                     ))}

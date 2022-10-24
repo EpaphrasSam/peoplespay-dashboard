@@ -9,8 +9,8 @@ interface AppProps {
 const MerchantsTable = ({merchants,handleSelectedId}:AppProps):JSX.Element => (
 <>
 {
-    merchants.map((m:any)=>(
-        <tr className='hover:bg-green-100 click:bg-green-200 cursor-pointer' onClick={()=>{handleSelectedId(m._id)}}>
+    merchants.map((m:any, i: number)=>(
+        <tr key={i} className='hover:bg-green-100 click:bg-green-200 cursor-pointer' onClick={()=>{handleSelectedId(m._id)}}>
         <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left flex items-center">
             <span className="">
                 {formatDate(m.createdAt)}
