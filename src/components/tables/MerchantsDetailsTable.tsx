@@ -408,7 +408,31 @@ const MerchantDetails: React.FC = () => {
                       Phone
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                    {selected?.phone}
+                      {selected?.phone}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Tier Choice
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.tier_choice?.title}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Monthly Limit
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.tier_choice?.monthly_limit}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Documents Limited
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.tier_choice?.documents}
                     </td>
                   </tr>
                 </tbody>
