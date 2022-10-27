@@ -519,6 +519,12 @@ const AccessTable= ({accessClick,permissionClick,checkedList,isSelectedAll,handl
                                     Approved Merchants
                                 </label>
                             </div>
+                            <div className="form-check">
+                                <Checkbox id="29" value="merchants/add-documents" name="Add Documents" click={accessClick} isChecked={Array.isArray(checkedList)&&checkedList.some((id)=>(id==='29r')||(id==='29w')||(id==='29d'))}/>
+                                <label className="form-check-label inline-block ">
+                                    Add Documents
+                                </label>
+                            </div>
                         </td>
                         <td className="border border-slate-300 text-left py-4">
                             <div className="form-check flex space-x-5">
@@ -556,6 +562,26 @@ const AccessTable= ({accessClick,permissionClick,checkedList,isSelectedAll,handl
                              </div>
                              <div>
                                 <Checkbox id="6d" value="delete" name="Approved Merchants" click={permissionClick} isChecked={Array.isArray(checkedList)&&checkedList.includes('6d')}/>
+                                <label className="form-check-label inline-block ">
+                                    Delete
+                                </label>
+                             </div> 
+                          </div>
+                          <div className="form-check flex space-x-5">
+                             <div>
+                                <Checkbox id="29r" value="read" name="Add Documents" click={permissionClick} isChecked={Array.isArray(checkedList)&&checkedList.includes('29r')}/>
+                                <label className="form-check-label inline-block ">
+                                    Read
+                                </label>
+                             </div>
+                             <div>
+                                <Checkbox id="29w" value="write" name="Add Documents" click={permissionClick} isChecked={Array.isArray(checkedList)&&checkedList.includes('29w')} />
+                                <label className="form-check-label inline-block ">
+                                    Write
+                                </label>
+                             </div>
+                             <div>
+                                <Checkbox id="29d" value="delete" name="Add Documents" click={permissionClick} isChecked={Array.isArray(checkedList)&&checkedList.includes('29d')}/>
                                 <label className="form-check-label inline-block ">
                                     Delete
                                 </label>
