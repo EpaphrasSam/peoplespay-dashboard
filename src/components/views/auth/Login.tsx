@@ -27,7 +27,6 @@ function Login() {
           response: response.message
         })
       }
-      console.log(response.data)
       navigate('/verify', {state: {email, data}})
     } catch (err: any) {
       alert(err.message);
