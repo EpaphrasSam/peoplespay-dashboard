@@ -9,7 +9,7 @@ import {RiShareForwardLine,RiApps2Line, RiPaypalFill}from 'react-icons/ri'
 import {SiPayoneer, SiWebmoney}from 'react-icons/si'
 import{TbHammer}from 'react-icons/tb'
 import { MdOutlineSkateboarding } from "react-icons/md";
-import { AiOutlineBarChart, AiOutlineDashboard } from 'react-icons/ai'
+import { AiOutlineBarChart, AiOutlineDashboard, AiOutlineFilePdf } from 'react-icons/ai'
 
 
 
@@ -152,6 +152,11 @@ const routes:Route[]=[
                 icon:<BiCategory className="mr-3 text-xl"/>,
                 title:'Categories'
             },
+            {
+                path: 'merchants/add-documents',
+                icon: <AiOutlineFilePdf className="mr-3 text-xl"/>,
+                title: 'Add Documents'
+            }
         ]
     },
     {
@@ -285,6 +290,11 @@ const roles:Route[]=[
                 icon:<BiCategory className="mr-3 text-xl"/>,
                 title:'Categories'
             },
+            {
+                path: 'merchants/add-documents',
+                icon: <AiOutlineFilePdf className="mr-3 text-xl"/>,
+                title: 'Add Documents'
+            }
         ]
     },
     {

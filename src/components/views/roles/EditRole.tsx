@@ -43,6 +43,7 @@ export type RoleStateParams={
                    break;
               case 'delete':
                    checkedList.current.push('1d')
+                   break;
              }
            })
           break;
@@ -57,6 +58,7 @@ export type RoleStateParams={
                       break;
                    case 'delete':
                       checkedList.current.push('2d')
+                      break;
                 }
                 })
                 break;
@@ -71,6 +73,7 @@ export type RoleStateParams={
                         break;
                    case 'delete':
                         checkedList.current.push('3d')
+                        break;
                   }
                 })
                break;
@@ -85,6 +88,7 @@ export type RoleStateParams={
                         break;
                    case 'delete':
                         checkedList.current.push('4d')
+                        break;
                   }
                 })
                break;
@@ -99,6 +103,7 @@ export type RoleStateParams={
                         break;
                    case 'delete':
                         checkedList.current.push('5d')
+                        break;
                   }
                 })
                break;
@@ -113,6 +118,7 @@ export type RoleStateParams={
                         break;
                    case 'delete':
                         checkedList.current.push('6d')
+                        break;
                   }
                 })
                break;
@@ -127,9 +133,25 @@ export type RoleStateParams={
                             break;
                        case 'delete':
                             checkedList.current.push('15d')
+                            break;
                       }
                     })
                    break;
+          case 'Add Documents':
+               _access.permissions.map((p:string)=>{
+                      switch(p){
+                        case 'read':
+                            checkedList.current.push('29r')
+                            break;
+                       case 'write':
+                            checkedList.current.push('29w')
+                            break;
+                       case 'delete':
+                            checkedList.current.push('29d')
+                            break;
+                      }
+                    })
+                    break;
           case 'Customer Profile':
                 _access.permissions.map((p:string)=>{
                   switch(p){
@@ -141,6 +163,7 @@ export type RoleStateParams={
                         break;
                    case 'delete':
                         checkedList.current.push('7d')
+                        break;
                   }
                 })
                break;
@@ -155,6 +178,7 @@ export type RoleStateParams={
                         break;
                    case 'delete':
                         checkedList.current.push('8d')
+                        break;
                   }
                 })
                break;
@@ -169,6 +193,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('9d')
+                          break;
                     }
                   })
                  break;
@@ -183,6 +208,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('10d')
+                          break;
                     }
                   })
                  break;
@@ -197,6 +223,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('11d')
+                          break;
                     }
                   })
                  break;
@@ -211,6 +238,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('12d')
+                          break;
                     }
                   })
                  break;
@@ -225,6 +253,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('13d')
+                          break;
                     }
                   })
                  break;
@@ -239,6 +268,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('19d')
+                          break;
                     }
                   })
                  break;
@@ -253,6 +283,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('14d')
+                          break;
                     }
                   })
                  break;
@@ -267,6 +298,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('20d')
+                          break;
                     }
                   })
                  break;
@@ -281,6 +313,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('16d')
+                          break;
                     }
                   })
                  break;
@@ -295,6 +328,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('17d')
+                          break;
                     }
                   })
                  break;
@@ -309,6 +343,7 @@ export type RoleStateParams={
                           break;
                      case 'delete':
                           checkedList.current.push('18d')
+                          break;
                     }
                   })
                  break;
@@ -323,6 +358,7 @@ export type RoleStateParams={
                             break;
                        case 'delete':
                             checkedList.current.push('21d')
+                            break;
                       }
                     })
                    break;     
@@ -337,6 +373,7 @@ export type RoleStateParams={
                             break;
                        case 'delete':
                             checkedList.current.push('22d')
+                            break;
                       }
                     })
                    break;

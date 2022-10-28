@@ -38,7 +38,7 @@ export default function Admin():any {
         <>
          <ErrorBoundary>
             <Sidebar />
-            <div className="relative md:ml-56 mb-2 font-inter">
+            <div className="relative md:ml-56 mt-12 font-inter gap-5 flex flex-col">
                     <Navbar />
 
                 {/* Header */}

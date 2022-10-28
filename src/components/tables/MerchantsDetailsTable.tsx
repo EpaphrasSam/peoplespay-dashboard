@@ -429,7 +429,7 @@ const MerchantDetails: React.FC = () => {
                   </tr>
                   <tr>
                     <td className="border border-slate-300 px-6 py-3 text-left">
-                      Documents Limited
+                      Documents Needed
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
                       {selected?.tier_choice?.documents}
