@@ -1,5 +1,5 @@
 import React, {  Suspense,lazy } from 'react';
-import { HashRouter, Route, Routes} from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes} from 'react-router-dom';
 import {AnimatePresence}  from 'framer-motion';
 import Layout from './components/views/layout/Layout'
 import PageLoading from './components/views/layout/PageLoading'
@@ -43,6 +43,7 @@ const PendingReversals=(lazy(()=>import('./components/views/reversals/Approvals'
 const InitiateDirectPayout=(lazy(()=>import('./components/views/directpayout/InitiatePayoutPage')))
 const PayoutApprovals=(lazy(()=>import('./components/views/directpayout/PayoutApprovals')))
 const VerifyOtp = (lazy(() => import('./components/views/login-otp/VerifyOtp')));
+const AddDocuments = (lazy(() => import('./components/views/merchant/AddDocuments')));
 
 // create a component
 const Navigation=()=>{
@@ -58,7 +59,8 @@ const Navigation=()=>{
                             <Route  path='login' element={<Login/>} />
                             <Route path="change-password"  element={<ChangePasswordForm/>}/>
                             <Route path="verify" element={<VerifyOtp />} />
-                            <Route  path='/' element={<ProtectedRoute><Layout/></ProtectedRoute>}>
+                            <Route  path='/'  element={ <ProtectedRoute><Layout/></ProtectedRoute>}>
+                            <Route path="/" element={<Navigate to="dashboard"/>} />
                                 
                                 <Route path="dashboard" element={<Dashboard/>}/>
 
@@ -111,6 +113,7 @@ const Navigation=()=>{
                                     <Route path="transactions"  element={<MerchantTransactions/>} />
                                     <Route path="create-merchant"  element={<MerchantForm/>}/> 
                                     <Route path="all/onboarding"   element={<OnboardingMerchants/>}/>
+                                    <Route path="add-documents" element={<AddDocuments />} />
                                 </Route>
 
                                 {/**Wallet account route */}
