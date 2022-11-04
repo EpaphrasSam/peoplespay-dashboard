@@ -220,6 +220,18 @@ const getDocuments = (merchantId:string) => fetch(
     }
 ).then(res=>res.json())
 
+const addDocuments = (data: any) => fetch(
+    `${BASE_URL}/documents/add`,
+    {
+        method: 'POST',
+        headers: {
+            'Content-type': 'Application/json',
+            'Authorization': Utils.AuthToken()
+        },
+        body: JSON.stringify(data)
+    }
+).then(res => res.json());
+
 const approveMerchant = (body:any) => fetch(
     
     `${BASE_URL}/merchants/approve`,
@@ -303,6 +315,17 @@ const toggleDisbursement = (id:string)=>fetch(
     }
 ).then(res=>res.json())
 
+const deleteMerchant = (id: string) => fetch(
+    `${BASE_URL}/merchants/delete/${id}`,
+    {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'Application/json',
+            'Authorization': Utils.AuthToken()
+        }
+    }
+).then(res => res.json())
+
 
 
 const merchantsService =  {
@@ -323,6 +346,8 @@ const merchantsService =  {
     // declineMerchants,
     getApps,
     declineMerchant,
-    toggleDisbursement
+    toggleDisbursement,
+    deleteMerchant,
+    addDocuments
 }
 export default merchantsService;

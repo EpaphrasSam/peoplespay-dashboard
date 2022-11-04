@@ -13,17 +13,29 @@ const _sendMessage=(message:any)=>fetch(
     }
 ).then(res=>res.json())
 
-const sendMessage=(message:any)=>fetch(
-    `${BASE_URL}/customers/sms/push`,
+const sendMessage=(data:any)=>fetch(
+    `${BASE_URL}/admin/sms`,
     {
         method:'POST',
         headers:{
             'Content-type':'Application/json',
             'Authorization' : Utils.AuthToken()
         },
-        body : JSON.stringify(message)
+        body : JSON.stringify(data)
     }
 ).then(res=>res.json())
 
-const MessageService = {sendMessage}
+const sendEmails = (data: any) => fetch(
+    `${BASE_URL}/admin/send/emails`,
+    {
+        method: 'POST',
+        headers: {
+            'Content-type': 'Application/json',
+            'Authorization': Utils.AuthToken()
+        },
+        body: JSON.stringify(data)
+    }
+).then(res => res.json())
+
+const MessageService = {sendMessage, sendEmails}
 export default MessageService;

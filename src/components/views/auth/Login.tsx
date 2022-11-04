@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthService from "../../../services/auth.service";
 import Utils from "../../../utils/AuthToken";
+import transactionServices from "../../../services/transactions.service";
 import { alertResponse } from "../../sweetalert/SweetAlert";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -18,6 +19,22 @@ function Login() {
     password: "",
   });
 
+
+  const sendOtp = async (email: string, data: any) => {
+    try {
+      const response = await transactionServices.sendEmailOTP();
+      if(!response.success) {
+        await alertResponse({
+          icon: 'error',
+          response: response.message
+        })
+      }
+      navigate('/verify', {state: {email, data}})
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
+
   const login = async () => {
     try {
       const { email, password } = formData;
@@ -29,16 +46,16 @@ function Login() {
         email: email,
         password: password,
       });
-      console.log("login :", response);
       await alertResponse({
-        icon: response.success ? "success" : "error",
-        response: response.message,
-      }).then(() => setLoading(false));
-      if (response.success) {
+        icon: response.success?'success':'error',
+        response:response.message
+       }).then(()=> setLoading(false))
+      if(response.success){
         Utils.setAuthToken(response.token);
-        sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
+        // sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
         //navigate(response.data._role?.access[0].path);
-        navigate(from, { replace: true });
+        // navigate(from,{replace:true})
+        sendOtp(email, response.data);
       }
     } catch (err: any) {
       setLoading(false);
