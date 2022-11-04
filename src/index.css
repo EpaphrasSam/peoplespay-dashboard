@@ -1,0 +1,27 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('./utils/fonts/Poppins/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Segoe';
+    src: url('./utils/fonts/Segoe/Segoe\ UI.ttf');
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('./utils//fonts//Inter//Inter-Regular.ttf');
+}
+
+/* .react-datepicker-popper {
+        z-index: 10 !important;
+    } */
+
+.react-datepicker-popper {
+        z-index: 9999 !important;
+}
