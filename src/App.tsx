@@ -1,4 +1,4 @@
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import state from './state/state';
 
 import './App.css';
@@ -10,7 +10,7 @@ function App() {
   return (
     <Provider store={state}>
         <Navigation />
-      </Provider>
+    </Provider>
        );
 }
 export default App;
