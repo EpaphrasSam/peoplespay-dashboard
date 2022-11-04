@@ -8,9 +8,9 @@ import ErrorBoundary from "./components/error-boundary/ErrorBoundary";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <ErrorBoundary> */}
+    <ErrorBoundary>
     <App />
-    {/* </ErrorBoundary>     */}
+    </ErrorBoundary>    
   </React.StrictMode>,
   document.getElementById("root")
 );

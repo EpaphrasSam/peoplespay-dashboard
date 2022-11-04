@@ -53,7 +53,7 @@ function Login() {
       if(response.success){
         Utils.setAuthToken(response.token);
         // sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
-        //navigate(response.data._role?.access[0].path);
+        // navigate(response.data._role?.access[0].path);
         // navigate(from,{replace:true})
         sendOtp(email, response.data);
       }

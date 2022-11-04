@@ -102,7 +102,7 @@ export default function BroadCastMessage() {
         className="uppercase rounded-md bg-red-800 text-white font-sans tracking-widest w-1/2 leading-tight px-12 py-4 mt-4 focus:shadow-lg focus:bg-red-900"
         onClick={() => sendMessage()}
       >
-        {loading ? "sending message..." : "Send message to users"}
+        {loading ? "Sending message..." : "Send"}
       </button>
     </div>
   );

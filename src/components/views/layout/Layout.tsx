@@ -27,7 +27,7 @@ export default function Admin(): any {
 
   return (
     <>
-      {/* <ErrorBoundary> */}
+      <ErrorBoundary>
       <Sidebar />
       <div className="relative md:ml-56 mb-2 font-inter">
         <Navbar />
@@ -39,7 +39,7 @@ export default function Admin(): any {
           <Footer />
         </div>
       </div>
-      {/* </ErrorBoundary> */}
+      </ErrorBoundary>
     </>
   );
 }
