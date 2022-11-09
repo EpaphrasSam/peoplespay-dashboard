@@ -12,6 +12,7 @@ export default function Users() {
   const dispatch = useDispatch();
   const [isNecLoading, setIsNecLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [merc, setmerc] = useState<any>([]);
 
   const { merchants } = useSelector((state: any) => state.merchants);
   const { issuers } = useSelector((state: any) => state.accounts);
@@ -72,6 +73,20 @@ export default function Users() {
     }
   };
 
+  const handleChangeInput = (event: ChangeEvent<any>) => {
+    const merch = merchants.filter((m: any) => event.target.value === m._id);
+    setFormData({
+      ...formData,
+      merchantId: merch.length !== 0 ? merch[0]._id : "",
+      accountType: merch.length !== 0 ? merch[0].type : "",
+      accountIssuer: merch.length !== 0 ? merch[0].account_issuer : "",
+      accountIssuerName: merch.length !== 0 ? merch[0].account_issuer : "",
+      accountNumber: merch.length !== 0 ? merch[0].account_number : "",
+      accountName: merch.length !== 0 ? merch[0].account_name : "",
+    });
+    setmerc(merch);
+  };
+
   const handleChange = (event: ChangeEvent<any>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -92,7 +107,8 @@ export default function Users() {
     }
   };
 
-  const pay = async (): Promise<void> => {
+  const pay = async (event: any): Promise<void> => {
+    event.preventDefault();
     try {
       setIsLoading(true);
       Object.keys(formData).forEach((key: any) => {
@@ -146,7 +162,10 @@ export default function Users() {
         <div className="w-full mb-2 px-4">
           <div className="relative pb-10 p-2 w-full mb-12 px-4">
             <div className="relative md:pt-4 pb-10 p-2">
-              <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0">
+              <form
+                className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0"
+                onSubmit={pay}
+              >
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                   <div className="text-center flex justify-between">
                     <h6 className="text-blueGray-700 text-xl font-bold">
@@ -171,10 +190,13 @@ export default function Users() {
                           <select
                             className="border-0 px-3 py-3 placeholder-blueGray-300  bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             name="merchantId"
-                            value={formData.merchantId}
-                            onChange={handleChange}
+                            required
+                            onChange={handleChangeInput}
                             placeholder="select merchant"
                           >
+                            <option value="" disabled selected>
+                              --Select Merchant--
+                            </option>
                             {merchants.map((mer: any, i: number) => (
                               <option key={i} value={mer?._id}>
                                 {mer.merchant_tradeName}
@@ -187,7 +209,7 @@ export default function Users() {
                           <label className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left">
                             Account type
                           </label>
-                          <select
+                          {/* <select
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             name="accountType"
                             value={formData.accountType}
@@ -196,7 +218,15 @@ export default function Users() {
                             <option defaultValue="">choose type</option>
                             <option value="momo">momo</option>
                             <option value="bank">bank</option>
-                          </select>
+                          </select> */}
+                          <input
+                            type="text"
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            name="accountType"
+                            defaultValue={merc.length !== 0 ? merc[0].type : ""}
+                            required
+                            disabled={true}
+                          />
                         </div>
                       </div>
 
@@ -205,7 +235,7 @@ export default function Users() {
                           <label className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left">
                             Account Issuer
                           </label>
-                          <select
+                          {/* <select
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             name="accountIssuer"
                             value={formData.accountIssuer}
@@ -216,7 +246,17 @@ export default function Users() {
                                 {issuer.name}
                               </option>
                             ))}
-                          </select>
+                          </select> */}
+                          <input
+                            type="text"
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            name="accountIssuer"
+                            defaultValue={
+                              merc.length !== 0 ? merc[0].account_issuer : ""
+                            }
+                            required
+                            disabled={true}
+                          />
                         </div>
 
                         <div className="relative w-6/12 mb-3">
@@ -227,7 +267,12 @@ export default function Users() {
                             type="text"
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             name="accountIssuerName"
-                            value={formData.accountIssuerName}
+                            defaultValue={
+                              merc.length !== 0
+                                ? merc[0].account_issuer_name
+                                : ""
+                            }
+                            required
                             disabled={true}
                           />
                         </div>
@@ -242,28 +287,20 @@ export default function Users() {
                             type="text"
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             name="accountNumber"
-                            value={formData.accountNumber}
+                            defaultValue={
+                              merc.length !== 0 ? merc[0].account_number : ""
+                            }
+                            required
                             onChange={handleChange}
+                            disabled={true}
                           />
 
-                          <button
+                          {/* <button
                             className="mt-2 w-full bg-red-800 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                             onClick={verifyNumberDetails}
                           >
                             {isNecLoading ? "verifying..." : "verify"}
-                          </button>
-                        </div>
-                        <div className="relative w-6/12 mb-3">
-                          <label className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left">
-                            Enter Amount
-                          </label>
-                          <input
-                            type="text"
-                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            name="amount"
-                            value={formData.amount}
-                            onChange={handleChange}
-                          />
+                          </button> */}
                         </div>
 
                         <div className="relative w-6/12 mb-3">
@@ -275,7 +312,26 @@ export default function Users() {
                             disabled={true}
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             name="accountName"
-                            value={formData.accountName}
+                            defaultValue={
+                              merc.length !== 0 ? merc[0].account_name : ""
+                            }
+                            required
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div className="relative w-1/6 mb-3">
+                          <label className="block uppercase text-gray-700 text-xs font-semibold mb-2 text-left">
+                            Enter Amount
+                          </label>
+                          <input
+                            type="text"
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            name="amount"
+                            // value={(event: ChangeEvent<any>) =>
+                            //   event.target.value
+                            // }
+                            required
                             onChange={handleChange}
                           />
                         </div>
@@ -289,6 +345,7 @@ export default function Users() {
                             type="date"
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-44 n:w-full  ease-linear transition-all duration-150"
                             name="startDate"
+                            required
                             value={formData.startDate}
                             onChange={handleChange}
                           />
@@ -303,6 +360,7 @@ export default function Users() {
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-44 n:w-full  ease-linear transition-all duration-150"
                             name="endDate"
                             value={formData.endDate}
+                            required
                             onChange={handleChange}
                           />
                         </div>
@@ -337,6 +395,7 @@ export default function Users() {
                           placeholder="Your message"
                           name="description"
                           value={formData.description}
+                          required
                           onChange={handleChange}
                         ></textarea>
                       </div>
@@ -345,12 +404,12 @@ export default function Users() {
                 </div>
                 <button
                   disabled={isLoading}
-                  onClick={pay}
+                  type="submit"
                   className="w-8/12 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800"
                 >
                   Submit for Approval
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>

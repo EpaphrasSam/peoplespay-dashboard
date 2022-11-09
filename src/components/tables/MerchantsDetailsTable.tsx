@@ -268,7 +268,7 @@ const MerchantDetails: React.FC = () => {
             </div>
           </div>
           <hr />
-          <ul className="nav nav-pills flex flex-col md:flex-row list-none pl-0 mb-4">
+          <ul className="nav nav-pills flex flex-col xl:flex-row list-none pl-0 mb-4">
             <li
               className="nav-item flex-auto text-center my-2 md:mr-2"
               onClick={() => setTitle("BASIC")}
