@@ -1,10 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { merchantsSelector, setDocuments,setBanks } from "../../state/merchant.state";
+import {
+  merchantsSelector,
+  setDocuments,
+  setBanks,
+} from "../../state/merchant.state";
 import merchantsService from "../../services/merchant.service";
 import { OutlinedButton } from "../buttons/BasicButton";
-import {FcCancel} from 'react-icons/fc';
-import{IoMdCheckmarkCircle}from 'react-icons/io'
+import { FcCancel } from "react-icons/fc";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 import BlockReasonModal from "../modal/BlockReasonModal";
 import { alertResponse } from "../sweetalert/SweetAlert";
 
@@ -18,15 +22,15 @@ const MerchantDetails: React.FC = () => {
   const { selected } = useSelector(merchantsSelector);
 
   const [title, setTitle] = React.useState("BASIC");
-  
+
   /**Decline Modal */
-  const[showModal,setShowModal]=React.useState(false)
-  const[reason,setReason]=React.useState('')
+  const [showModal, setShowModal] = React.useState(false);
+  const [reason, setReason] = React.useState("");
 
   const confirmMerchantApproval = async () => {
     try {
       const response = await merchantsService.approveMerchant({
-        'id': selected._id
+        id: selected._id,
       });
       if (!response.success) {
         return swal.fire({
@@ -46,12 +50,12 @@ const MerchantDetails: React.FC = () => {
 
   const confirmDeleteMerchant = async () => {
     try {
-      const response = await merchantsService.deleteMerchant(selected['_id']);
-      if(!response.success) {
+      const response = await merchantsService.deleteMerchant(selected["_id"]);
+      if (!response.success) {
         return swal.fire({
           text: response.message,
         });
-      }else {
+      } else {
         return swal.fire({
           text: response.message,
         });
@@ -61,7 +65,7 @@ const MerchantDetails: React.FC = () => {
         text: err.message,
       });
     }
-  }
+  };
 
   // const blockMerchant = async () => {
   //   try {
@@ -85,11 +89,8 @@ const MerchantDetails: React.FC = () => {
   //   }
   // };
 
-  
-
   const getDocuments = async () => {
-    try{
-      
+    try {
       if (selected._id !== undefined) {
         const response = await merchantsService.getDocuments(selected._id);
         if (!response.success) {
@@ -99,8 +100,8 @@ const MerchantDetails: React.FC = () => {
         const data = response.data.map((t: any) => t);
         dispatch(setDocuments(data));
       }
-    }catch(err:any){
-      console.log(err.message)
+    } catch (err: any) {
+      console.log(err.message);
     }
   };
 
@@ -118,9 +119,9 @@ const MerchantDetails: React.FC = () => {
   //   }catch(err){}
   // }
 
-  const approve=()=>{
+  const approve = () => {
     try {
-       if (selected._id === undefined) {
+      if (selected._id === undefined) {
         swal.fire({
           text: "No merchant selected",
         });
@@ -142,7 +143,7 @@ const MerchantDetails: React.FC = () => {
     } catch (err: any) {
       alert(err.message);
     }
-  }
+  };
 
   const deleteMerchant = () => {
     try {
@@ -150,7 +151,7 @@ const MerchantDetails: React.FC = () => {
         swal.fire({
           text: "No merchant selected",
         });
-      }else {
+      } else {
         swal
           .fire({
             text: " Confirm merchant deletion",
@@ -161,33 +162,37 @@ const MerchantDetails: React.FC = () => {
           .then((result: any) => {
             if (result.isConfirmed) {
               confirmDeleteMerchant();
+              return window.location.reload();
             }
           });
       }
     } catch (err: any) {
       alert(err.message);
     }
-  }
+  };
 
-  const declineMerchant=async():Promise<any>=>{
-    try{
-      if(reason==="" ||reason=== null)return alert('Please provide a reason')
-      const data={
-        id:selected?._id,
-        declineReason:reason
-      }
-      const res=await merchantsService.declineMerchant(data)
+  const declineMerchant = async (): Promise<any> => {
+    try {
+      if (reason === "" || reason === null)
+        return alert("Please provide a reason");
+      const data = {
+        id: selected?._id,
+        declineReason: reason,
+      };
+      const res = await merchantsService.declineMerchant(data);
       await alertResponse({
-       icon:res.success?'success':'error',
-       response:res.success?res.message:'Sorry, please check your internet and try again'
-      })
-      if(res.success)return setShowModal(false)
-    }catch(err){}
-  }
+        icon: res.success ? "success" : "error",
+        response: res.success
+          ? res.message
+          : "Sorry, please check your internet and try again",
+      });
+      if (res.success) return setShowModal(false);
+    } catch (err) {}
+  };
 
   React.useEffect(() => {
     try {
-      getDocuments()
+      getDocuments();
       // getBankAccounts()
     } catch (err: any) {
       alert(err.message);
@@ -198,13 +203,14 @@ const MerchantDetails: React.FC = () => {
 
   return (
     <>
-     <BlockReasonModal 
-          showModal={showModal} 
-          action={()=>declineMerchant()} 
-          type="Decline" reason={reason} 
-          onChange={(e:any)=>setReason(e.target.value)}
-          cancel={()=>setShowModal(false)}
-          />
+      <BlockReasonModal
+        showModal={showModal}
+        action={() => declineMerchant()}
+        type="Decline"
+        reason={reason}
+        onChange={(e: any) => setReason(e.target.value)}
+        cancel={() => setShowModal(false)}
+      />
       <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
           <div className="rounded-t mb-0 px-4 py-3 border-0">
@@ -213,43 +219,52 @@ const MerchantDetails: React.FC = () => {
                 Details
               </h3>
               <div className="space-x-2">
-                {
-                  selected.submitted && 
+                {selected.submitted && (
                   <button
-                    className={`inline-flex items-center space-x-3 ${selected?.active?'opacity-75':''} bg-blue-500 text-white font-bold text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
+                    className={`inline-flex items-center space-x-3 ${
+                      selected?.active ? "opacity-75" : ""
+                    } bg-blue-500 text-white font-bold text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150`}
                     type="button"
                     disabled={selected?.active}
-                    onClick={() =>{approve()}}
+                    onClick={() => {
+                      approve();
+                    }}
                   >
-                    <IoMdCheckmarkCircle/>
-                    {selected?.active ? 'Approved' : 'Approve Merchant'}
+                    <IoMdCheckmarkCircle />
+                    {selected?.active ? "Approved" : "Approve Merchant"}
                   </button>
-                }
-                {!selected.active && selected.submitted &&<OutlinedButton
-                   action={()=>{
-                    if(selected._id===undefined){return alert('No merchant selected')}
-                    else if(!selected?.submitted && !selected?.decline){return alert('Merchant has not submitted business details')}
-                    else if(selected?.decline)return alert('This merchant has been declined')
-                    setShowModal(true)}
-                  }
-                   value="Decline"
-                   color="red"
-                   borderVisible
-                   paddingWide
-                   icon={<FcCancel/>}
-                 />}
-                 {
-                  !selected?.submitted && <OutlinedButton
-                    action = {() => deleteMerchant()}
+                )}
+                {!selected.active && selected.submitted && (
+                  <OutlinedButton
+                    action={() => {
+                      if (selected._id === undefined) {
+                        return alert("No merchant selected");
+                      } else if (!selected?.submitted && !selected?.decline) {
+                        return alert(
+                          "Merchant has not submitted business details"
+                        );
+                      } else if (selected?.decline)
+                        return alert("This merchant has been declined");
+                      setShowModal(true);
+                    }}
+                    value="Decline"
+                    color="red"
+                    borderVisible
+                    paddingWide
+                    icon={<FcCancel />}
+                  />
+                )}
+                {!selected?.submitted && (
+                  <OutlinedButton
+                    action={() => deleteMerchant()}
                     value="Delete"
                     color="red"
                     borderVisible
                     paddingWide
-                    icon={<FcCancel/>}
+                    icon={<FcCancel />}
                   />
-                 }
+                )}
               </div>
-              
             </div>
           </div>
           <hr />
@@ -260,7 +275,11 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                    ${title === 'BASIC' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
+                    ${
+                      title === "BASIC"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-100"
+                    }
                     nav-link
                     w-full
                     block
@@ -284,7 +303,9 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                ${title === 'CONTACT' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
+                ${
+                  title === "CONTACT" ? "bg-blue-500 text-white" : "bg-gray-100"
+                }
                 nav-link
                 w-full
                 block
@@ -307,7 +328,7 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                ${title === 'BANK' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
+                ${title === "BANK" ? "bg-blue-500 text-white" : "bg-gray-100"}
                 nav-link
                 w-full
                 block
@@ -330,7 +351,7 @@ const MerchantDetails: React.FC = () => {
             >
               <p
                 className={`
-                ${title === 'DOCX' ? 'bg-blue-500 text-white' : 'bg-gray-100'}
+                ${title === "DOCX" ? "bg-blue-500 text-white" : "bg-gray-100"}
                 nav-link
                 w-full
                 block
@@ -349,11 +370,8 @@ const MerchantDetails: React.FC = () => {
             </li>
           </ul>
           <div className=" overflow-x-auto">
-              { 
-                title === 'BASIC' ? 
-              
-              (
-                <table className="w-full border-separate border border-slate-400 ">
+            {title === "BASIC" ? (
+              <table className="w-full border-separate border border-slate-400 ">
                 <thead>
                   <tr>
                     <th className="border border-slate-300 px-6 py-3">Field</th>
@@ -362,19 +380,25 @@ const MerchantDetails: React.FC = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Merchant ID</td>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Merchant ID
+                    </td>
                     <td className="border border-slate-300 px-6 py-3">
                       {selected?._id}
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Merchant Trade Name</td>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Merchant Trade Name
+                    </td>
                     <td className="border border-slate-300 px-6 py-3">
                       {selected?.merchant_tradeName}
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Email</td>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Email
+                    </td>
                     <td className="border border-slate-300 px-6 py-3">
                       {selected?.email}
                     </td>
@@ -384,7 +408,7 @@ const MerchantDetails: React.FC = () => {
                       Registration Number
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                    {selected?.registrationNumber}
+                      {selected?.registrationNumber}
                     </td>
                   </tr>
                   <tr>
@@ -392,7 +416,7 @@ const MerchantDetails: React.FC = () => {
                       Line of Business
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                    {selected?.lineOfBusiness}
+                      {selected?.lineOfBusiness}
                     </td>
                   </tr>
                   <tr>
@@ -400,7 +424,7 @@ const MerchantDetails: React.FC = () => {
                       Location
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                    {selected?.location}
+                      {selected?.location}
                     </td>
                   </tr>
                   <tr>
@@ -437,101 +461,112 @@ const MerchantDetails: React.FC = () => {
                   </tr>
                 </tbody>
               </table>
-
-              ) :
-              title === 'CONTACT' ?
-
-              (
-                <table className="w-full border-separate border border-slate-400 ">
-                    <thead>
-                        <tr>
-                        <th className="border border-slate-300 px-6 py-3">Field</th>
-                        <th className="border border-slate-300 px-6 py-3">Value</th>
-                        </tr>
-                    </thead>
+            ) : title === "CONTACT" ? (
+              <table className="w-full border-separate border border-slate-400 ">
+                <thead>
+                  <tr>
+                    <th className="border border-slate-300 px-6 py-3">Field</th>
+                    <th className="border border-slate-300 px-6 py-3">Value</th>
+                  </tr>
+                </thead>
                 <tbody>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Contact Person</td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {selected?.contact_person}
-                    </td>
-                    </tr>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Contact Person Email</td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {selected?.contactPersonEmail}
-                    </td>
-                    </tr>
-                    <tr>
-                    <td className="border border-slate-300 px-6 py-3 text-left">Contact Person Phone</td>
-                    <td className="border border-slate-300 px-6 py-3">
-                        {selected?.contactPersonPhone}
-                    </td>
-                    </tr>
-                    <tr>
+                  <tr>
                     <td className="border border-slate-300 px-6 py-3 text-left">
-                        Contact Person Designation
+                      Contact Person
                     </td>
                     <td className="border border-slate-300 px-6 py-3">
-                    {selected?.contactPersonDesignation}
+                      {selected?.contact_person}
                     </td>
-                    </tr>
-              </tbody>
-            </table>
-              ) :
-
-              title === 'BANK' ? 
-
-              (
-                <table className="w-full border-separate border border-slate-400 ">
-                    <thead>
-                        <tr>
-                        <th className="border border-slate-300 px-6 py-3">Field</th>
-                        <th className="border border-slate-300 px-6 py-3">Value</th>
-                        </tr>
-                    </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border border-slate-300 px-6 py-3 text-left">Account Provider</td>
-                      <td className="border border-slate-300 px-6 py-3">
-                          {selected?.account_issuer_name}
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Contact Person Email
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.contactPersonEmail}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Contact Person Phone
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.contactPersonPhone}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Contact Person Designation
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.contactPersonDesignation}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : title === "BANK" ? (
+              <table className="w-full border-separate border border-slate-400 ">
+                <thead>
+                  <tr>
+                    <th className="border border-slate-300 px-6 py-3">Field</th>
+                    <th className="border border-slate-300 px-6 py-3">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Account Provider
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.account_issuer_name}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Account Name
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.account_name}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 px-6 py-3 text-left">
+                      Account Number
+                    </td>
+                    <td className="border border-slate-300 px-6 py-3">
+                      {selected?.account_number}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : (
+              <table className="border-collapse border border-slate-400 w-full">
+                <thead>
+                  <tr>
+                    <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Key
+                    </th>
+                    <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Value
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="overflow-y-scroll" style={{ height: "20vh" }}>
+                  {docx?.map((d: any, i: number) => (
+                    <tr key={i}>
+                      <td className="border border-slate-300 px-6 py-4 text-left">
+                        {d.name}
                       </td>
-                    </tr> 
-                    <tr>
-                      <td className="border border-slate-300 px-6 py-3 text-left">Account Name</td>
-                      <td className="border border-slate-300 px-6 py-3">
-                          {selected?.account_name}
+                      <td className="border border-slate-300 px-6 py-4 whitespace-nowrap flex justify-center">
+                        <a
+                          href={d?.data}
+                          download
+                          className="bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                        >
+                          Download
+                        </a>
                       </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-slate-300 px-6 py-3 text-left">Account Number</td>
-                      <td className="border border-slate-300 px-6 py-3">
-                          {selected?.account_number}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              ) :
-
-              (
-                <table className="border-collapse border border-slate-400 w-full">
-                    <thead>
-                        <tr>
-                            <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
-                            <th className="border border-slate-300 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody className="overflow-y-scroll" style={{height: '20vh'}}>
-                    {docx?.map((d: any, i: number)=>
-                        (
-                            <tr key={i}>
-                                <td className="border border-slate-300 px-6 py-4 text-left">{d.name}</td>
-                                  <td className="border border-slate-300 px-6 py-4 whitespace-nowrap flex justify-center">
-                                    <a href={d?.data} download className="bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
-                                      Download
-                                    </a>
-                                  </td>
-                                 {/* <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">
+                      {/* <td className="border border-slate-300 px-6 py-4 whitespace-nowrap text-left">
                                    <button className="bg-red-800 text-white font-bold uppercase text-xs px-10 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
                                     onClick={()=>{
                                       let w = window.open('about:blank');
@@ -545,15 +580,11 @@ const MerchantDetails: React.FC = () => {
                                   </button>
                                   
                                 </td> */}
-                            </tr>
-                        
-                    ))}
-                    </tbody> 
-                </table>      
-              )
-            
-            }
-            
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

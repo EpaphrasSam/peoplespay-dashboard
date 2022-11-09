@@ -28,17 +28,17 @@ export default function Admin(): any {
   return (
     <>
       <ErrorBoundary>
-      <Sidebar />
-      <div className="relative md:ml-56 mb-2 font-inter">
-        <Navbar />
+        <Sidebar />
+        <div className="relative md:ml-56 mb-2 font-inter">
+          <Navbar />
 
-        {/* Header */}
-        <div className="px-4 md:px-10 mx-auto w-full -m-24 mt-12 pt-10">
-          <Outlet />
+          {/* Header */}
+          <div className="px-4 md:px-10 mx-auto w-full -m-24 mt-12 pt-10">
+            <Outlet />
 
-          <Footer />
+            <Footer />
+          </div>
         </div>
-      </div>
       </ErrorBoundary>
     </>
   );
