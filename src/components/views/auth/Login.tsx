@@ -19,21 +19,20 @@ function Login() {
     password: "",
   });
 
-
   const sendOtp = async (email: string, data: any) => {
     try {
       const response = await transactionServices.sendEmailOTP();
-      if(!response.success) {
+      if (!response.success) {
         await alertResponse({
-          icon: 'error',
-          response: response.message
-        })
+          icon: "error",
+          response: response.message,
+        });
       }
-      navigate('/verify', {state: {email, data}})
+      navigate("/verify", { state: { email, data } });
     } catch (err: any) {
       alert(err.message);
     }
-  }
+  };
 
   const login = async () => {
     try {
@@ -47,10 +46,10 @@ function Login() {
         password: password,
       });
       await alertResponse({
-        icon: response.success?'success':'error',
-        response:response.message
-       }).then(()=> setLoading(false))
-      if(response.success){
+        icon: response.success ? "success" : "error",
+        response: response.message,
+      }).then(() => setLoading(false));
+      if (response.success) {
         Utils.setAuthToken(response.token);
         // sessionStorage.setItem("PP-USER", JSON.stringify(response.data));
         // navigate(response.data._role?.access[0].path);
