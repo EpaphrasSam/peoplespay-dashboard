@@ -94,40 +94,38 @@ function Merchants() {
       <PageHeader title="Merchants Onboarding" />
 
       {/**date picker */}
-      <div className="flex items-center flex-col sm:flex-row gap-2 space-x-2">
-        <div className="flex flex-col gap-3 nn:flex-row">
-          <div>
-            <input
-              type="date"
-              className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm fo focu"
-              placeholder="Start date"
-              onChange={(date: any) => setStartDate(date.target.value)}
-              value={startDate}
-            />
-          </div>
-          <div>
-            <input
-              type="date"
-              className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm fo focu"
-              placeholder="End date"
-              onChange={(date: any) => setEndDate(date.target.value)}
-              value={endDate}
-            />
-          </div>
-          {/**filter btn */}
-          <OutlinedButton
-            value={loading ? <Loader /> : "Filter"}
-            action={() => {}}
-            color="gray"
-            icon={<BiFilterAlt />}
+      <div className="flex items-center space-x-2">
+        <div>
+          <input
+            type="date"
+            className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm fo focu"
+            placeholder="Start date"
+            onChange={(date: any) => setStartDate(date.target.value)}
+            value={startDate}
           />
         </div>
+        <div>
+          <input
+            type="date"
+            className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm fo focu"
+            placeholder="End date"
+            onChange={(date: any) => setEndDate(date.target.value)}
+            value={endDate}
+          />
+        </div>
+        {/**filter btn */}
+        <OutlinedButton
+          value={loading ? <Loader /> : "Filter"}
+          action={() => {}}
+          color="gray"
+          icon={<BiFilterAlt />}
+        />
       </div>
-      <div className="flex flex-wrap">
-        <div className="w-full sm:w-6/12 mb-12 ">
-          <div className="relative  pb-10 p-2 w-full mb-12 ">
+      <div className="flex flex-wrap -mt-24">
+        <div className="w-full sm:w-6/12 mb-12 md:mb-0">
+          <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 ">
             <div className="my-2 flex sm:flex-row flex-col mt-0 pt-0 space-x-2 items-center">
-              <div className="flex flex-row gap-2 mb-1 sm:mb-0 items-center">
+              <div className="flex flex-row mb-1 sm:mb-0 items-center">
                 <RowNumberSelector
                   value={rowsPerPage}
                   onChange={pageRowsHandler}
@@ -136,7 +134,7 @@ function Merchants() {
                   <select
                     onChange={merchantCategoryHandler}
                     value={merchantCategory}
-                    className="h-full rounded-r border-t sm:rounded-r-none  border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focu"
+                    className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focu"
                   >
                     <option>column search</option>
                     <option value="name">comp name</option>
@@ -151,17 +149,17 @@ function Merchants() {
                   placeholder={`Search by ${merchantCategory}`}
                 />
               </div>
-            </div>
-            <div>
-              <CSVLink
-                headers={headers}
-                data={unapprovedMerchants}
-                filename={"onboarding-merchants.csv"}
-                className="py-2 px-2 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-15 bg-green-500 tracking-wide font-inter inline-flex items-center space-x-1"
-              >
-                <HiDownload />
-                <span>{"Download"}</span>
-              </CSVLink>
+              <div>
+                <CSVLink
+                  headers={headers}
+                  data={unapprovedMerchants}
+                  filename={"onboarding-merchants.csv"}
+                  className="py-2 px-2 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-15 bg-green-500 tracking-wide font-inter inline-flex items-center space-x-1"
+                >
+                  <HiDownload />
+                  <span>{"Download"}</span>
+                </CSVLink>
+              </div>
             </div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
               <div className="rounded-t mb-0 px-4 py-3 border-0">

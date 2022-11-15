@@ -162,6 +162,7 @@ const MerchantDetails: React.FC = () => {
           .then((result: any) => {
             if (result.isConfirmed) {
               confirmDeleteMerchant();
+              return window.location.reload();
             }
           });
       }

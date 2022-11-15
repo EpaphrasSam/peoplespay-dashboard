@@ -86,19 +86,21 @@ function AllAdmins() {
         confirmButtonText: isblocked
           ? "Yes, unblock this admin user"
           : "Yes, block admin user",
-      }).then(async () => {
-        const data = {
-          id: id,
-          data: {
-            blocked: isblocked ? false : true,
-          },
-        };
-        const res = await authService.update(data);
-        await alertResponse({
-          icon: res?.success ? "success" : "error",
-          response: res.message,
-        });
-        if (res.success) return window.location.reload();
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const data = {
+            id: id,
+            data: {
+              blocked: isblocked ? false : true,
+            },
+          };
+          const res = await authService.update(data);
+          await alertResponse({
+            icon: res?.success ? "success" : "error",
+            response: res.message,
+          });
+          if (res.success) return window.location.reload();
+        }
       });
     } catch (err: any) {
       alert(err.message);

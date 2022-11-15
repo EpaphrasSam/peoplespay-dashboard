@@ -113,10 +113,10 @@ function MerchantsConfig() {
     <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
       <PageHeader title="Merchants Configurations" />
 
-      <div className="flex flex-row gap-2 justify-between items-center">
+      <div className="flex flex-row justify-between items-center">
         {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col gap-2">
-          <div className="flex flex-row mb-1 sm:mb-0 gap-2">
+        <div className="my-2 flex sm:flex-row flex-col">
+          <div className="flex flex-row mb-1 sm:mb-0">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
             <ValueFilterSelector
               setFilter={setCategory}
