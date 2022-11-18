@@ -44,8 +44,17 @@ function MerchantsConfig() {
     } catch (err) {}
   };
 
+  const getUsers = (id: string) => {
+    try {
+      navigate("/merchants/all/onboarding/allusers", { state: id });
+    } catch (err: any) {
+      alert(err.message);
+    }
+    console.log(id);
+  };
+
   const data = approvedMerchants.map((d) => d.merchant);
-  console.log(data);
+  // console.log(data);
 
   const blockMerchant = (id: string, blocked: boolean) => {
     try {
@@ -115,8 +124,8 @@ function MerchantsConfig() {
 
       <div className="flex flex-row justify-between items-center">
         {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
-          <div className="flex flex-row mb-1 sm:mb-0">
+        <div className="my-2 flex sm:flex-row flex-col gap-4">
+          <div className="flex flex-row mb-1 sm:mb-0 gap-2">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
             <ValueFilterSelector
               setFilter={setCategory}
@@ -184,6 +193,7 @@ function MerchantsConfig() {
                   blockMerchant={blockMerchant}
                   setMerchant={setMerchant}
                   setShowModal={setShowModal}
+                  viewUsers={getUsers}
                 />
               )}
             </tbody>

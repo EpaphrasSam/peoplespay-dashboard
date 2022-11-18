@@ -201,9 +201,9 @@ export default function Sidebar() {
             </div>
 
             {/* Heading */}
-            <h6 className="text-center md:min-w-full text-pink-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline mt-4 ">
+            {/* <h6 className="text-center md:min-w-full text-pink-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline mt-4 ">
               Admin Layout Pages
-            </h6>
+            </h6> */}
             {/* Navigation */}
             <ul className="text-left flex flex-col list-none">
               {paths.map((p: any, i: number) => (
