@@ -11,6 +11,7 @@ import { FcCancel } from "react-icons/fc";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import BlockReasonModal from "../modal/BlockReasonModal";
 import { alertResponse } from "../sweetalert/SweetAlert";
+import { useNavigate } from "react-router-dom";
 
 //const QRCode = require("qrcode.react");
 
@@ -22,7 +23,7 @@ const MerchantDetails: React.FC = () => {
   const { selected } = useSelector(merchantsSelector);
 
   const [title, setTitle] = React.useState("BASIC");
-
+  let navigate = useNavigate();
   /**Decline Modal */
   const [showModal, setShowModal] = React.useState(false);
   const [reason, setReason] = React.useState("");
@@ -171,6 +172,20 @@ const MerchantDetails: React.FC = () => {
     }
   };
 
+  const getUsers = () => {
+    try {
+      if (selected._id === undefined) {
+        swal.fire({
+          text: "No merchant selected",
+        });
+      } else {
+        navigate("allusers", { state: selected._id });
+      }
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
   const declineMerchant = async (): Promise<any> => {
     try {
       if (reason === "" || reason === null)
@@ -264,6 +279,14 @@ const MerchantDetails: React.FC = () => {
                     icon={<FcCancel />}
                   />
                 )}
+                <OutlinedButton
+                  action={() => getUsers()}
+                  value="View Users"
+                  color="blue"
+                  borderVisible
+                  paddingWide
+                  // icon={<FcCancel />}
+                />
               </div>
             </div>
           </div>

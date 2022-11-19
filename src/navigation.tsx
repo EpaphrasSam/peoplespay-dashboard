@@ -18,6 +18,7 @@ const Wallets = lazy(() => import("./components/views/wallet/WalletAccounts"));
 const OnboardingMerchants = lazy(
   () => import("./components/views/merchant/Merchants")
 );
+const AllUsers = lazy(() => import("./components/views/merchant/AllUsers"));
 const PaidTransactions = lazy(
   () => import("./components/views/paid/PaidTransactions")
 );
@@ -176,6 +177,10 @@ const Navigation = () => {
                     <Route
                       path="all/onboarding"
                       element={<OnboardingMerchants />}
+                    />
+                    <Route
+                      path="all/onboarding/allusers"
+                      element={<AllUsers />}
                     />
                     <Route path="add-documents" element={<AddDocuments />} />
                   </Route>
