@@ -302,6 +302,11 @@ const roles: Route[] = [
         icon: <BiCategory className="mr-3 text-xl" />,
         title: "Categories",
       },
+      {
+        path: "merchants/add-documents",
+        icon: <BiCategory className="mr-3 text-xl" />,
+        title: "Add Documents",
+      },
     ],
   },
   {
