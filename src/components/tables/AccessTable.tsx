@@ -519,7 +519,7 @@ const AccessTable = ({
                     name="Transactions"
                     click={permissionClick}
                     isChecked={
-                      Array.isArray(checkedList) && checkedList.includes("9r")
+                      Array.isArray(checkedList) && checkedList.includes("30r")
                     }
                   />
                   <label className="form-check-label inline-block ">Read</label>
@@ -531,7 +531,7 @@ const AccessTable = ({
                     name="Transactions"
                     click={permissionClick}
                     isChecked={
-                      Array.isArray(checkedList) && checkedList.includes("9w")
+                      Array.isArray(checkedList) && checkedList.includes("30w")
                     }
                   />
                   <label className="form-check-label inline-block ">
@@ -545,7 +545,7 @@ const AccessTable = ({
                     name="Transactions"
                     click={permissionClick}
                     isChecked={
-                      Array.isArray(checkedList) && checkedList.includes("9d")
+                      Array.isArray(checkedList) && checkedList.includes("30d")
                     }
                   />
                   <label className="form-check-label inline-block ">
@@ -561,7 +561,7 @@ const AccessTable = ({
                     name="Transactions"
                     click={permissionClick}
                     isChecked={
-                      Array.isArray(checkedList) && checkedList.includes("9r")
+                      Array.isArray(checkedList) && checkedList.includes("31r")
                     }
                   />
                   <label className="form-check-label inline-block ">Read</label>
@@ -573,7 +573,7 @@ const AccessTable = ({
                     name="Transactions"
                     click={permissionClick}
                     isChecked={
-                      Array.isArray(checkedList) && checkedList.includes("9w")
+                      Array.isArray(checkedList) && checkedList.includes("31w")
                     }
                   />
                   <label className="form-check-label inline-block ">
@@ -587,7 +587,7 @@ const AccessTable = ({
                     name="Transactions"
                     click={permissionClick}
                     isChecked={
-                      Array.isArray(checkedList) && checkedList.includes("9d")
+                      Array.isArray(checkedList) && checkedList.includes("31d")
                     }
                   />
                   <label className="form-check-label inline-block ">
