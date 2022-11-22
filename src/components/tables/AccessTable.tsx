@@ -436,7 +436,7 @@ const AccessTable = ({
               <div className="form-check">
                 <Checkbox
                   id="30"
-                  value="merchants"
+                  value="transactions/merchants"
                   name="Merchants"
                   click={accessClick}
                   isChecked={
@@ -453,7 +453,7 @@ const AccessTable = ({
               <div className="form-check">
                 <Checkbox
                   id="31"
-                  value="customers"
+                  value="transactions/customers"
                   name="Customers"
                   click={accessClick}
                   isChecked={

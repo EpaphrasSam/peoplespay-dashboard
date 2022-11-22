@@ -252,12 +252,12 @@ const roles: Route[] = [
         title: "Transactions",
       },
       {
-        path: "merchants",
+        path: "transactions/merchants",
         icon: <GiPayMoney className="mr-3 text-xl" />,
         title: "Merchants",
       },
       {
-        path: "customers",
+        path: "transactions/customers",
         icon: <GiPayMoney className="mr-3 text-xl" />,
         title: "Customers",
       },
