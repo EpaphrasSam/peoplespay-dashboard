@@ -12,6 +12,12 @@ const Login = lazy(() => import("./components/views/auth/Login"));
 const UserTransactions = lazy(
   () => import("./components/views/users/UserTransactions")
 );
+const TransactionsMerchant = lazy(
+  () => import("./components/views/users/TransactionsMerchant")
+);
+const TransactionsCustomer = lazy(
+  () => import("./components/views/users/TransactionCustomers")
+);
 const Users = lazy(() => import("./components/views/users/Users"));
 const MerchantForm = lazy(() => import("./components/forms/MerchantForm"));
 const Wallets = lazy(() => import("./components/views/wallet/WalletAccounts"));
@@ -138,6 +144,14 @@ const Navigation = () => {
                   {/**Transactions route */}
                   <Route path="transactions">
                     <Route index={true} element={<UserTransactions />} />
+                    <Route
+                      path="merchants"
+                      element={<TransactionsMerchant />}
+                    />
+                    <Route
+                      path="customers"
+                      element={<TransactionsCustomer />}
+                    />
                   </Route>
 
                   {/**users routes */}
