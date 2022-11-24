@@ -13,13 +13,18 @@ import {
 } from "react-icons/vsc";
 //import {GrUserAdmin} from 'react-icons/gr'
 import { GiPayMoney, GiReceiveMoney, GiSpeaker } from "react-icons/gi";
+import { GrTransaction } from "react-icons/gr";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiCategory } from "react-icons/bi";
 import { RiShareForwardLine, RiApps2Line, RiPaypalFill } from "react-icons/ri";
 import { SiPayoneer, SiWebmoney } from "react-icons/si";
 import { TbHammer } from "react-icons/tb";
 import { MdOutlineSkateboarding } from "react-icons/md";
-import { AiOutlineBarChart, AiOutlineDashboard } from "react-icons/ai";
+import {
+  AiOutlineBarChart,
+  AiOutlineDashboard,
+  AiOutlineTransaction,
+} from "react-icons/ai";
 
 export interface Route {
   path: string;
@@ -249,17 +254,17 @@ const roles: Route[] = [
       {
         path: "transactions",
         icon: <GiPayMoney className="mr-3 text-xl" />,
-        title: "Transactions",
+        title: "All Transactions",
       },
       {
         path: "transactions/merchants",
-        icon: <GiPayMoney className="mr-3 text-xl" />,
-        title: "Merchants",
+        icon: <VscArrowSwap className="mr-3 text-xl" />,
+        title: "Merchants' Transactions",
       },
       {
         path: "transactions/customers",
-        icon: <GiPayMoney className="mr-3 text-xl" />,
-        title: "Customers",
+        icon: <AiOutlineTransaction className="mr-3 text-xl" />,
+        title: "Customers' Transactions",
       },
     ],
   },

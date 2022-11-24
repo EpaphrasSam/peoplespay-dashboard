@@ -40,6 +40,7 @@ function UserTransactions() {
   };
 
   const { transactions, loading } = useSelector(reportSelector);
+
   const dispatch = useDispatch();
 
   const headers = [
@@ -98,12 +99,21 @@ function UserTransactions() {
         const transactions = res.data.map((d: any) => new ReportModel(d));
 
         dispatch(setUserTransactions(transactions));
-        //Update states
-        setAmount(resReport?.data?.paid[0].totalAmount);
-        setPaidCharges(resReport?.data?.paid[0].charges);
-        setFailedAmount(resReport?.data?.failed[0].totalAmount);
         setTotalTransactionCount(res.data.length);
-        console.log(setTotalTransactionCount(res.data.length));
+        //Update states
+        if (resReport.data.paid.length !== 0) {
+          setAmount(resReport?.data?.paid[0].totalAmount);
+          setPaidCharges(resReport?.data?.paid[0].charges);
+        } else {
+          setAmount("0");
+          setPaidCharges("0");
+        }
+
+        if (resReport.data.failed.length !== 0) {
+          setFailedAmount(resReport?.data?.failed[0].totalAmount);
+        } else {
+          setFailedAmount("0");
+        }
       } catch (err: any) {}
     };
     response();
@@ -163,12 +173,22 @@ function UserTransactions() {
 
       const transactions = res.data.map((d: any) => new ReportModel(d));
       dispatch(setUserTransactions(transactions));
-
-      //Update states
-      setAmount(resReport?.data?.paid[0].totalAmount);
-      setPaidCharges(resReport?.data?.paid[0].charges);
-      setFailedAmount(resReport?.data?.failed[0].totalAmount);
       setTotalTransactionCount(transactions.length);
+      //Update states
+      if (resReport.data.paid.length !== 0) {
+        setAmount(resReport?.data?.paid[0].totalAmount);
+        setPaidCharges(resReport?.data?.paid[0].charges);
+      } else {
+        setAmount("0");
+        setPaidCharges("0");
+      }
+
+      if (resReport.data.failed.length !== 0) {
+        setFailedAmount(resReport?.data?.failed[0].totalAmount);
+      } else {
+        setFailedAmount("0");
+      }
+
       setLoading(false);
     } catch (err: any) {
       setLoading(false);
@@ -268,11 +288,11 @@ function UserTransactions() {
         exit="exit"
         variants={group1Motion}
       >
-        <PageHeader title="Transactions" />
+        <PageHeader title="All Transactions" />
 
         {/**deviders */}
-        <div className="grid grid-cols-4 divide-x divide-green-500 mb-10">
-          <div>
+        <div className="grid sm:grid-cols-4 grid-cols-2 gap-4  mb-10">
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-green-100 rounded-md px-2 break-all w-full">
               Transactions
             </span>
@@ -280,7 +300,7 @@ function UserTransactions() {
               {formatNumber(totalTransactionCount)}
             </h2>
           </div>
-          <div>
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-yellow-100 rounded-md px-2 break-all w-full">
               Amount
             </span>
@@ -288,7 +308,7 @@ function UserTransactions() {
               {formatCurrency(amount) ?? 0.0}
             </h2>
           </div>
-          <div>
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-red-100 rounded-md px-2 break-all w-full">
               Failed
             </span>
@@ -296,11 +316,11 @@ function UserTransactions() {
               {formatCurrency(failedAmount) ?? 0.0}
             </h2>
           </div>
-          <div>
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-blue-100 rounded-md px-2 break-all w-full">
               Charges
             </span>
-            <h2 className="text-3xl leading-tight pyd-4">
+            <h2 className="text-3xl leading-tight py-4">
               {formatCurrency(paidCharges) ?? 0.0}
             </h2>
           </div>
@@ -322,13 +342,13 @@ function UserTransactions() {
 
       {/**date picker */}
       <div className="flex items-center flex-col sm:flex-row gap-2 space-x-2">
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 nnn:flex-row">
           <div className="relative">
             <DatePicker
               selected={startDate}
               value={startDate}
               onChange={(date) => setStartDate(date)}
-              className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
+              className="rounded sm:w-full w-2/3 bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
               dateFormat="dd/MM/yyyy"
               selectsStart
               startDate={startDate}
@@ -343,7 +363,7 @@ function UserTransactions() {
               onChange={(date) => {
                 setEndDate(date);
               }}
-              className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
+              className="rounded sm:w-full w-2/3 bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
               dateFormat="dd/MM/yyyy"
               selectsEnd
               endDate={endDate}
@@ -363,14 +383,14 @@ function UserTransactions() {
       {/**end date */}
 
       {/**filters */}
-      <div className="my-2 flex sm:flex-row flex-col  space-x-0 sm:space-x-5">
-        <div className="flex gap-2 flex-row mb-1 sm:mb-0">
+      <div className="my-2 flex sm:flex-row flex-col  space-x-0 sm:space-x-5 gap-5">
+        <div className="flex gap-5 flex-col sm:flex-row mb-1 sm:mb-0">
           <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           <div className="relative">
             <select
               onChange={transactionCategoryHandler}
               value={transactionCategory}
-              className="h-full rounded-r border-t sm:rounded-r-none border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+              className="h-full rounded-r border-t sm:rounded-r-none border-r border-b block appearance-none bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
             >
               <option value="none" selected>
                 search column

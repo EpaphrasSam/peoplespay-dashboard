@@ -155,7 +155,7 @@ function AllSettlements() {
         {/**end date */}
 
         {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5">
+        <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5 gap-5">
           <div className="flex flex-row mb-1 sm:mb-0 gap-4">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
             {/* <ValueFilterSelector setFilter={setCategory} value={category} options={['name']}/> */}
@@ -172,7 +172,7 @@ function AllSettlements() {
           headers={headers}
           data={settlementHistory}
           filename={"settlements.csv"}
-          className="py-2 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2"
+          className="py-2 my-4 px-1 bg-green-500  text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2"
         >
           Download CSV
         </CSVLink>

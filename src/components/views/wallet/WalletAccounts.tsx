@@ -75,8 +75,8 @@ function Wallets() {
       <PageHeader title="Wallets" />
 
       {/**filters */}
-      <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5">
-        <div className="flex gap-2 flex-row mb-1 sm:mb-0">
+      <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5 gap-5">
+        <div className="flex gap-5 flex-col sm:flex-row mb-1 sm:mb-0">
           <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           <ValueFilterSelector
             setFilter={setCategory}

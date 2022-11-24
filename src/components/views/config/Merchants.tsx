@@ -124,22 +124,31 @@ function MerchantsConfig() {
 
       <div className="flex flex-row justify-between items-center">
         {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col gap-4">
-          <div className="flex flex-row mb-1 sm:mb-0 gap-2">
-            <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
-            <ValueFilterSelector
-              setFilter={setCategory}
-              value={category}
-              options={[]}
+        <div className="flex flex-row gap-5 items-center justify-between">
+          <div className="my-2 gap-4 flex sm:flex-row flex-col">
+            <div className="flex sm:gap-3 gap-5 flex-col mb-1 sm:mb-0 sm:flex-row">
+              <div>
+                <RowNumberSelector
+                  value={rowsPerPage}
+                  onChange={pageRowsHandler}
+                />
+              </div>
+              <div className="pr-1">
+                <ValueFilterSelector
+                  setFilter={setCategory}
+                  value={category}
+                  options={[]}
+                />
+              </div>
+            </div>
+            <SearchForm
+              value={searchQuery}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setSearchQuery(e.target.value.trim())
+              }
+              placeholder={`Search ${category} name ...`}
             />
           </div>
-          <SearchForm
-            value={searchQuery}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setSearchQuery(e.target.value.trim())
-            }
-            placeholder={`Search ${category} name ...`}
-          />
         </div>
         <div>
           <CSVLink

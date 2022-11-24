@@ -140,7 +140,7 @@ function AllSettlements() {
       {/**page heading */}
       <PageHeader title="Pending Settlements" />
       {/**date picker */}
-      <div className="flex flex-col sm:flex-row items-center space-x-2">
+      <div className="flex flex-col sm:flex-row items-center space-x-2 gap-3">
         <div className="flex flex-col gap-3 nn:flex-row">
           <div className="relative">
             <input
@@ -173,8 +173,8 @@ function AllSettlements() {
       </div>
       {/**end date */}
       {/**filters */}
-      <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5">
-        <div className="flex gap-2 flex-row mb-1 sm:mb-0">
+      <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5 gap-5">
+        <div className="flex gap-5 flex-col sm:flex-row mb-1 sm:mb-0">
           <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           <ValueFilterSelector
             setFilter={transactionCategoryHandler}

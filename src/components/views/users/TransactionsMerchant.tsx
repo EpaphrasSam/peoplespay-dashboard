@@ -39,7 +39,8 @@ function TransactionsMerchant() {
     exit: { opacity: 0, x: 0, transition: { duration: 2 } },
   };
 
-  const { transactions, loading } = useSelector(reportSelector);
+  const { transactions } = useSelector(reportSelector);
+  //   console.log(transactions);
   const dispatch = useDispatch();
 
   const headers = [
@@ -68,7 +69,7 @@ function TransactionsMerchant() {
   const [showModal, setShowModal] = useState(false);
   const [startDate, setStartDate] = useState<any>(new Date());
   const [endDate, setEndDate] = useState<any>(new Date());
-
+  const [load, setload] = useState(false);
   const [isloading, setLoading] = useState(false);
   const [amount, setAmount] = useState<string>("0");
   const [paidCharges, setPaidCharges] = useState<string>("0");
@@ -87,23 +88,41 @@ function TransactionsMerchant() {
   useEffect(() => {
     const response = async () => {
       try {
-        const [res, resReport] = await Promise.all([
-          ReportService.dateFilter(startDate, endDate),
-          ReportService.summaryReport(startDate, endDate),
-        ]);
+        const res = await ReportService?.dateFilterCusMerc(
+          startDate,
+          endDate,
+          "merchants"
+        );
         if (!res.success) {
           throw Error(res.message);
         }
 
-        const transactions = res.data.map((d: any) => new ReportModel(d));
+        if (res.data.all.length !== 0) {
+          const transactions = res.data.all[0].transactions.map(
+            (d: any) => new ReportModel(d)
+          );
+          dispatch(setUserTransactions(transactions));
+          setTotalTransactionCount(transactions.length);
+        } else {
+          dispatch(setUserTransactions([]));
+          setTotalTransactionCount("0");
+        }
 
-        dispatch(setUserTransactions(transactions));
         //Update states
-        setAmount(resReport?.data?.paid[0].totalAmount);
-        setPaidCharges(resReport?.data?.paid[0].charges);
-        setFailedAmount(resReport?.data?.failed[0].totalAmount);
-        setTotalTransactionCount(res.data.length);
-        console.log(setTotalTransactionCount(res.data.length));
+        if (res.data.paid.length !== 0) {
+          setAmount(res?.data?.paid[0].totalAmount);
+          setPaidCharges(res?.data?.paid[0].charges);
+        } else {
+          setAmount("0");
+          setPaidCharges("0");
+        }
+
+        if (res.data.failed.length !== 0) {
+          setFailedAmount(res?.data?.failed[0].totalAmount);
+        } else {
+          setFailedAmount("0");
+        }
+        setload(false);
       } catch (err: any) {}
     };
     response();
@@ -157,94 +176,44 @@ function TransactionsMerchant() {
   const clickDateFilter = async () => {
     try {
       setLoading(true);
-      const res = await ReportService?.dateFilter(startDate, endDate);
-      const resReport = await ReportService?.summaryReport(startDate, endDate);
-      //const transactionResponse = await TransactionService.summary()
+      const res = await ReportService?.dateFilterCusMerc(
+        startDate,
+        endDate,
+        "merchants"
+      );
 
-      const transactions = res.data.map((d: any) => new ReportModel(d));
-      dispatch(setUserTransactions(transactions));
+      if (res.data.all.length !== 0) {
+        const transactions = res.data.all[0].transactions.map(
+          (d: any) => new ReportModel(d)
+        );
+        dispatch(setUserTransactions(transactions));
+        setTotalTransactionCount(transactions.length);
+      } else {
+        dispatch(setUserTransactions([]));
+        setTotalTransactionCount("0");
+      }
 
       //Update states
-      setAmount(resReport?.data?.paid[0].totalAmount);
-      setPaidCharges(resReport?.data?.paid[0].charges);
-      setFailedAmount(resReport?.data?.failed[0].totalAmount);
-      setTotalTransactionCount(transactions.length);
+      if (res.data.paid.length !== 0) {
+        setAmount(res?.data?.paid[0].totalAmount);
+        setPaidCharges(res?.data?.paid[0].charges);
+      } else {
+        setAmount("0");
+        setPaidCharges("0");
+      }
+
+      if (res.data.failed.length !== 0) {
+        setFailedAmount(res?.data?.failed[0].totalAmount);
+      } else {
+        setFailedAmount("0");
+      }
+
       setLoading(false);
     } catch (err: any) {
       setLoading(false);
       alert(err.message);
     }
   };
-
-  //   const reverseSelectedTransactions = async(data:any) => {
-  //       try{
-  //         const res = await transactionService.reverseTransaction(data)
-  //         if(!res.success){
-  //             alert(res.message)
-  //             }else{
-  //                 swal.fire(
-  //                 {
-  //                     html : "<div>Transactions have been successfully reversed</div>"
-  //                 }
-  //                 )
-  //             }
-  //       }
-  //       catch(err:any){
-  //           swal.fire(
-  //               {
-  //                   html : "<div>Sorry, the OTP you entered may be wrong. Try again</div>"
-  //               }
-  //           )
-  //       }
-  //   }
-
-  //  const initiateReversal = async() => {
-  //    try{
-  //     if(reverseIDArray.current.length < 1){
-  //         return swal.fire(
-  //             {
-  //                 html : "<div><p>No transaction has been selected</p></div>"
-  //             }
-  //         )
-  //     }
-
-  //     const res = await transactionService.otpReversal();
-
-  //     if(!res.success){
-  //       return swal.fire(
-  //              {
-  //                  html : "<div><p>" + res.message + "</p></div>"
-  //              }
-  //         )
-  //     }
-  //     swal.fire(
-  //         {
-  //             title: "Enter the OTP received",
-  //             input: 'text',
-  //             showDenyButton: true,
-  //             denyButtonText : "Cancel Reversal",
-  //             confirmButtonText : "Confirm Reversal"
-  //         }
-  //         ).then(function(input:any){
-  //                if(input){
-  //                 const data = {
-  //                              transactions : reverseIDArray.current,
-  //                              otp : input.value
-  //                              }
-  //                 //console.log(input.value)
-  //                 reverseSelectedTransactions(data)
-  //                }
-
-  //          })
-  //    }catch(err){
-
-  //     swal(
-  //         {
-  //             html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
-  //         }
-  //     )
-  //    }
-  //  }
 
   const addIdToReverseIDs = (id: any) => {
     if (reverseIDArray.current.includes(id)) {
@@ -268,11 +237,11 @@ function TransactionsMerchant() {
         exit="exit"
         variants={group1Motion}
       >
-        <PageHeader title="Transactions-Merchants" />
+        <PageHeader title="Merchants' Transactions" />
 
         {/**deviders */}
-        <div className="grid grid-cols-4 divide-x divide-green-500 mb-10">
-          <div>
+        <div className="grid sm:grid-cols-4 grid-cols-2 gap-4  mb-10">
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-green-100 rounded-md px-2 break-all w-full">
               Transactions
             </span>
@@ -280,7 +249,7 @@ function TransactionsMerchant() {
               {formatNumber(totalTransactionCount)}
             </h2>
           </div>
-          <div>
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-yellow-100 rounded-md px-2 break-all w-full">
               Amount
             </span>
@@ -288,7 +257,7 @@ function TransactionsMerchant() {
               {formatCurrency(amount) ?? 0.0}
             </h2>
           </div>
-          <div>
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-red-100 rounded-md px-2 break-all w-full">
               Failed
             </span>
@@ -296,11 +265,11 @@ function TransactionsMerchant() {
               {formatCurrency(failedAmount) ?? 0.0}
             </h2>
           </div>
-          <div>
+          <div className="border border-gray-300 p-5 rounded-lg">
             <span className="bg-blue-100 rounded-md px-2 break-all w-full">
               Charges
             </span>
-            <h2 className="text-3xl leading-tight pyd-4">
+            <h2 className="text-3xl leading-tight py-4">
               {formatCurrency(paidCharges) ?? 0.0}
             </h2>
           </div>
@@ -322,13 +291,13 @@ function TransactionsMerchant() {
 
       {/**date picker */}
       <div className="flex items-center flex-col sm:flex-row gap-2 space-x-2">
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 nnn:flex-row">
           <div className="relative">
             <DatePicker
               selected={startDate}
               value={startDate}
               onChange={(date) => setStartDate(date)}
-              className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
+              className="rounded sm:w-full w-2/3 bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
               dateFormat="dd/MM/yyyy"
               selectsStart
               startDate={startDate}
@@ -343,7 +312,7 @@ function TransactionsMerchant() {
               onChange={(date) => {
                 setEndDate(date);
               }}
-              className="rounded bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
+              className="rounded sm:w-full w-2/3 bg-white border border-gray-400 text-gray-700 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
               dateFormat="dd/MM/yyyy"
               selectsEnd
               endDate={endDate}
@@ -363,14 +332,14 @@ function TransactionsMerchant() {
       {/**end date */}
 
       {/**filters */}
-      <div className="my-2 flex sm:flex-row flex-col  space-x-0 sm:space-x-5">
-        <div className="flex gap-2 flex-row mb-1 sm:mb-0">
+      <div className="my-2 flex sm:flex-row flex-col  space-x-0 sm:space-x-5 gap-5">
+        <div className="flex gap-5 flex-col sm:flex-row mb-1 sm:mb-0">
           <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           <div className="relative">
             <select
               onChange={transactionCategoryHandler}
               value={transactionCategory}
-              className="h-full rounded-r border-t sm:rounded-r-none border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+              className="h-full rounded-r border-t sm:rounded-r-none border-r border-b block appearance-none bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
             >
               <option value="none" selected>
                 search column
@@ -447,7 +416,7 @@ function TransactionsMerchant() {
                 </tr>
               </thead>
               <tbody className="text-sm">
-                {loading ? (
+                {load ? (
                   <Spinner />
                 ) : (
                   <Transaction

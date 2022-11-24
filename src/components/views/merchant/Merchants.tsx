@@ -96,7 +96,7 @@ function Merchants() {
       <PageHeader title="Merchants Onboarding" />
 
       {/**date picker */}
-      <div className="flex nn:flex-col items-center space-x-2">
+      <div className="flex flex-col nn:flex-row items-center space-x-2">
         <div className="flex flex-row gap-4 pb-2">
           <div>
             <input
@@ -129,7 +129,7 @@ function Merchants() {
         <div className="w-full sm:w-6/12 mb-12 md:mb-0">
           <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 ">
             <div className="my-2 flex sm:flex-row flex-col pt-0 space-x-2 items-center mt-24 md:mt-0">
-              <div className="flex flex-row mb-1 sm:mb-0 items-center gap-4">
+              <div className="flex nn:flex-row flex-col mb-1 sm:mb-0  gap-4">
                 <RowNumberSelector
                   value={rowsPerPage}
                   onChange={pageRowsHandler}

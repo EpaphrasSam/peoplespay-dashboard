@@ -27,6 +27,9 @@ module.exports = {
       'nn': '450px',
       // => @media (min-width: 640px) { ... }
 
+      'nnn': '475px',
+      // => @media (min-width: 640px) { ... }
+
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
 
