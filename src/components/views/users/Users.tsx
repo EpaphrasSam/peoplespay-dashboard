@@ -102,7 +102,7 @@ export default function Users() {
       {/**filters */}
       <div className="flex flex-row gap-5 items-center justify-between">
         <div className="my-2 gap-2 flex sm:flex-row flex-col">
-          <div className="flex gap-1 flex-col mb-1 sm:mb-0 sm:flex-row">
+          <div className="flex sm:gap-1 gap-5 flex-col mb-1 sm:mb-0 sm:flex-row">
             <div className="w-1/2">
               <RowNumberSelector
                 value={rowsPerPage}

@@ -27,7 +27,7 @@ import Pagination from "../../pagination/Pagination";
 
 const swal = require("sweetalert2");
 
-function UserTransactions() {
+function TransactionsCustomer() {
   const group1Motion = {
     initial: { opacity: 0, x: 0 },
     animate: { opacity: 1, y: 10, transition: { duration: 2 } },
@@ -39,8 +39,7 @@ function UserTransactions() {
     exit: { opacity: 0, x: 0, transition: { duration: 2 } },
   };
 
-  const { transactions, loading } = useSelector(reportSelector);
-
+  const { transactions } = useSelector(reportSelector);
   const dispatch = useDispatch();
 
   const headers = [
@@ -69,7 +68,7 @@ function UserTransactions() {
   const [showModal, setShowModal] = useState(false);
   const [startDate, setStartDate] = useState<any>(new Date());
   const [endDate, setEndDate] = useState<any>(new Date());
-
+  const [load, setload] = useState(false);
   const [isloading, setLoading] = useState(false);
   const [amount, setAmount] = useState<string>("0");
   const [paidCharges, setPaidCharges] = useState<string>("0");
@@ -88,32 +87,39 @@ function UserTransactions() {
   useEffect(() => {
     const response = async () => {
       try {
-        const [res, resReport] = await Promise.all([
-          ReportService.dateFilter(startDate, endDate),
-          ReportService.summaryReport(startDate, endDate),
+        const [res] = await Promise.all([
+          ReportService.dateFilterCusMerc(startDate, endDate, "customers"),
         ]);
         if (!res.success) {
           throw Error(res.message);
         }
+        if (res.data.all.length !== 0) {
+          const transactions = res.data.all[0].transactions.map(
+            (d: any) => new ReportModel(d)
+          );
+          dispatch(setUserTransactions(transactions));
+          setTotalTransactionCount(transactions.length);
+        } else {
+          dispatch(setUserTransactions([]));
+          setTotalTransactionCount("0");
+        }
 
-        const transactions = res.data.map((d: any) => new ReportModel(d));
-
-        dispatch(setUserTransactions(transactions));
-        setTotalTransactionCount(res.data.length);
         //Update states
-        if (resReport.data.paid.length !== 0) {
-          setAmount(resReport?.data?.paid[0].totalAmount);
-          setPaidCharges(resReport?.data?.paid[0].charges);
+        if (res.data.paid.length !== 0) {
+          setAmount(res?.data?.paid[0].totalAmount);
+          setPaidCharges(res?.data?.paid[0].charges);
         } else {
           setAmount("0");
           setPaidCharges("0");
         }
 
-        if (resReport.data.failed.length !== 0) {
-          setFailedAmount(resReport?.data?.failed[0].totalAmount);
+        if (res.data.failed.length !== 0) {
+          setFailedAmount(res?.data?.failed[0].totalAmount);
         } else {
           setFailedAmount("0");
         }
+
+        setload(false);
       } catch (err: any) {}
     };
     response();
@@ -167,104 +173,43 @@ function UserTransactions() {
   const clickDateFilter = async () => {
     try {
       setLoading(true);
-      const res = await ReportService?.dateFilter(startDate, endDate);
-      const resReport = await ReportService?.summaryReport(startDate, endDate);
-      //const transactionResponse = await TransactionService.summary()
+      const res = await ReportService?.dateFilterCusMerc(
+        startDate,
+        endDate,
+        "customers"
+      );
 
-      const transactions = res.data.map((d: any) => new ReportModel(d));
-      dispatch(setUserTransactions(transactions));
-      setTotalTransactionCount(transactions.length);
+      if (res.data.all.length !== 0) {
+        const transactions = res.data.all[0].transactions.map(
+          (d: any) => new ReportModel(d)
+        );
+        dispatch(setUserTransactions(transactions));
+        setTotalTransactionCount(transactions.length);
+      } else {
+        dispatch(setUserTransactions([]));
+        setTotalTransactionCount("0");
+      }
+
       //Update states
-      if (resReport.data.paid.length !== 0) {
-        setAmount(resReport?.data?.paid[0].totalAmount);
-        setPaidCharges(resReport?.data?.paid[0].charges);
+      if (res.data.paid.length !== 0) {
+        setAmount(res?.data?.paid[0].totalAmount);
+        setPaidCharges(res?.data?.paid[0].charges);
       } else {
         setAmount("0");
         setPaidCharges("0");
       }
 
-      if (resReport.data.failed.length !== 0) {
-        setFailedAmount(resReport?.data?.failed[0].totalAmount);
+      if (res.data.failed.length !== 0) {
+        setFailedAmount(res?.data?.failed[0].totalAmount);
       } else {
         setFailedAmount("0");
       }
-
       setLoading(false);
     } catch (err: any) {
       setLoading(false);
       alert(err.message);
     }
   };
-
-  //   const reverseSelectedTransactions = async(data:any) => {
-  //       try{
-  //         const res = await transactionService.reverseTransaction(data)
-  //         if(!res.success){
-  //             alert(res.message)
-  //             }else{
-  //                 swal.fire(
-  //                 {
-  //                     html : "<div>Transactions have been successfully reversed</div>"
-  //                 }
-  //                 )
-  //             }
-  //       }
-  //       catch(err:any){
-  //           swal.fire(
-  //               {
-  //                   html : "<div>Sorry, the OTP you entered may be wrong. Try again</div>"
-  //               }
-  //           )
-  //       }
-  //   }
-
-  //  const initiateReversal = async() => {
-  //    try{
-  //     if(reverseIDArray.current.length < 1){
-  //         return swal.fire(
-  //             {
-  //                 html : "<div><p>No transaction has been selected</p></div>"
-  //             }
-  //         )
-  //     }
-
-  //     const res = await transactionService.otpReversal();
-
-  //     if(!res.success){
-  //       return swal.fire(
-  //              {
-  //                  html : "<div><p>" + res.message + "</p></div>"
-  //              }
-  //         )
-  //     }
-  //     swal.fire(
-  //         {
-  //             title: "Enter the OTP received",
-  //             input: 'text',
-  //             showDenyButton: true,
-  //             denyButtonText : "Cancel Reversal",
-  //             confirmButtonText : "Confirm Reversal"
-  //         }
-  //         ).then(function(input:any){
-  //                if(input){
-  //                 const data = {
-  //                              transactions : reverseIDArray.current,
-  //                              otp : input.value
-  //                              }
-  //                 //console.log(input.value)
-  //                 reverseSelectedTransactions(data)
-  //                }
-
-  //          })
-  //    }catch(err){
-
-  //     swal(
-  //         {
-  //             html :"<div><p>Sorry, select transactions and initiate reversal again</p></div>"
-  //         }
-  //     )
-  //    }
-  //  }
 
   const addIdToReverseIDs = (id: any) => {
     if (reverseIDArray.current.includes(id)) {
@@ -288,7 +233,7 @@ function UserTransactions() {
         exit="exit"
         variants={group1Motion}
       >
-        <PageHeader title="All Transactions" />
+        <PageHeader title="Customers' Transactions" />
 
         {/**deviders */}
         <div className="grid sm:grid-cols-4 grid-cols-2 gap-4  mb-10">
@@ -467,7 +412,7 @@ function UserTransactions() {
                 </tr>
               </thead>
               <tbody className="text-sm">
-                {loading ? (
+                {load ? (
                   <Spinner />
                 ) : (
                   <Transaction
@@ -500,4 +445,4 @@ function UserTransactions() {
     </div>
   );
 }
-export default UserTransactions;
+export default TransactionsCustomer;

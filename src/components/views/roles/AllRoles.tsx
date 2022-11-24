@@ -79,9 +79,9 @@ function AllAdmins() {
 
       <PageHeader title="Roles" />
 
-      <div className="flex flex-col md:flex-row md:justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between">
         {/**filters */}
-        <div className="my-2 gap-2 flex sm:flex-row flex-col">
+        <div className="my-2 gap-5 flex sm:flex-row flex-col">
           <div className="flex flex-row mb-1 sm:mb-0">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           </div>

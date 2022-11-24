@@ -132,7 +132,7 @@ function AllAdmins() {
       <PageHeader title="Administrators" />
 
       {/**filters */}
-      <div className="my-2 gap-2 flex sm:flex-row flex-col">
+      <div className="my-2 gap-5 flex sm:flex-row flex-col">
         <div className="flex flex-row mb-1 sm:mb-0">
           <RowNumberSelector onChange={pageRowsHandler} value={rowsPerPage} />
         </div>
