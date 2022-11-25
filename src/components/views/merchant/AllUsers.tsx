@@ -41,7 +41,7 @@ function AllUsers() {
     document.body.style.overflow = "visible";
   }
 
-  const handleSubmit = async (event: any): Promise<void> => {
+  const addUser = async (event: any): Promise<void> => {
     event.preventDefault();
     try {
       confirmAlert({
@@ -158,7 +158,7 @@ function AllUsers() {
             <div className="fixed z-10 inset-0 overflow-y-auto">
               <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
                 <div className="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:min-w-sm w-1/2">
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={addUser}>
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                       <h4 className="text-center pb-3 text-pink">New User</h4>
                       <label className="block mt-4 text-sm text-left">
@@ -251,11 +251,6 @@ function AllUsers() {
 
       <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto font-segoe">
         <div className="inline-block min-w-full shadow-lg overflow-hidden">
-          {/* <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 className="font-semibold text-lg text-blueGray-700">
-              ALL USERS
-            </h3>
-          </div> */}
           <table className="overflow-x-scroll min-w-full leading-normal">
             <thead>
               <tr>

@@ -95,6 +95,7 @@ const VerifyOtp = lazy(() => import("./components/views/login-otp/VerifyOtp"));
 const AddDocuments = lazy(
   () => import("./components/views/merchant/AddDocuments")
 );
+const Advert = lazy(() => import("./components/views/advert/Advert"));
 
 // create a component
 const Navigation = () => {
@@ -166,6 +167,10 @@ const Navigation = () => {
                       path="transactions"
                       element={<ElevyTransactionsDetails />}
                     />
+                  </Route>
+
+                  <Route path="advert">
+                    <Route index={true} element={<Advert />} />
                   </Route>
 
                   {/**Settlement */}

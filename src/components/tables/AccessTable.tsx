@@ -1800,6 +1800,72 @@ const AccessTable = ({
               </div>
             </td>
           </tr>
+          <tr>
+            <td className="border border-slate-300 text-left py-4">
+              Advertisement
+            </td>
+            <td className="border border-slate-300 text-left py-4">
+              <div className="form-check">
+                <Checkbox
+                  id="32"
+                  value="advert"
+                  name="Advert"
+                  click={accessClick}
+                  isChecked={
+                    Array.isArray(checkedList) &&
+                    checkedList.some(
+                      (id) => id === "32r" || id === "32w" || id === "32d"
+                    )
+                  }
+                />
+                <label className="form-check-label inline-block ">Advert</label>
+              </div>
+            </td>
+            <td className="border border-slate-300 text-left py-4">
+              <div className="form-check flex space-x-5">
+                <div>
+                  <Checkbox
+                    id="32r"
+                    value="read"
+                    name="Advert"
+                    click={permissionClick}
+                    isChecked={
+                      Array.isArray(checkedList) && checkedList.includes("32r")
+                    }
+                  />
+                  <label className="form-check-label inline-block ">Read</label>
+                </div>
+                <div>
+                  <Checkbox
+                    id="32w"
+                    value="write"
+                    name="Advert"
+                    click={permissionClick}
+                    isChecked={
+                      Array.isArray(checkedList) && checkedList.includes("32w")
+                    }
+                  />
+                  <label className="form-check-label inline-block ">
+                    Write
+                  </label>
+                </div>
+                <div>
+                  <Checkbox
+                    id="32d"
+                    value="delete"
+                    name="Advert"
+                    click={permissionClick}
+                    isChecked={
+                      Array.isArray(checkedList) && checkedList.includes("32d")
+                    }
+                  />
+                  <label className="form-check-label inline-block ">
+                    Delete
+                  </label>
+                </div>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
