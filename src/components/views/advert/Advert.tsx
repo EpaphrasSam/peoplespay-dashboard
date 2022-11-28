@@ -27,7 +27,6 @@ function Advert() {
     description: "",
     image: "",
   });
-
   useEffect(() => {
     const getAdverts: Function = async () => {
       try {
@@ -47,12 +46,10 @@ function Advert() {
     };
     getAdverts();
   }, []);
-
   const resetFileInput = () => {
     inputRef.current.value = null;
     setFileName("");
   };
-
   const onFileChange = async (e: any) => {
     if (e.target.files != null) {
       if (e.target.files[0].size > 500000) {
@@ -71,7 +68,6 @@ function Advert() {
       setFileName(fN.replace(/\.[^/.]+$/, ""));
     }
   };
-
   const addAdverts = async (event: any): Promise<void> => {
     event.preventDefault();
     try {
@@ -105,7 +101,6 @@ function Advert() {
     console.log(formData);
     setshowModal(false);
   };
-
   const updateAdverts = async (id: string, status: string): Promise<void> => {
     try {
       confirmAlert({
@@ -140,7 +135,6 @@ function Advert() {
       });
     }
   };
-
   const deleteAdverts = async (id: string): Promise<void> => {
     try {
       confirmAlert({
@@ -169,13 +163,11 @@ function Advert() {
       });
     }
   };
-
   if (showModal) {
     document.body.style.overflow = "hidden";
   } else {
     document.body.style.overflow = "visible";
   }
-
   return (
     <div className="relative min-h-screen md:pt-10 pb-10 p-2 w-full mb-12 px-4">
       {showModal && (
@@ -189,7 +181,6 @@ function Advert() {
             onClick={() => setshowModal(false)}
             className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           ></div>
-
           <div className="fixed z-10 inset-0 overflow-y-auto">
             <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
               <div className="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:min-w-sm w-1/2">
@@ -278,9 +269,7 @@ function Advert() {
           </div>
         </div>
       )}
-
       <PageHeader title="Advert" />
-
       <div className="pb-5">
         <PrimaryButton
           value="Add Advert"
@@ -291,7 +280,6 @@ function Advert() {
           }}
         />
       </div>
-
       <div className="wrap">
         {isLoading ? (
           <div
@@ -310,16 +298,20 @@ function Advert() {
               <img className="Cicon" src={ad.image} alt="advert" />
               <div className="Cheader">{ad.title}</div>
               <div>{ad.description}</div>
-              <div
-                className="flex flex-row py-5 gap-5"
-                // style={{ paddingLeft: "240px" }}
-              >
+              <div className="flex flex-row py-5 gap-5">
                 {ad.status === "active" ? (
-                  <HiStatusOnline
-                    size={30}
-                    className="hover:text-red-900 text-sgreen cursor-pointer"
-                    onClick={() => updateAdverts(ad._id, "inactive")}
-                  />
+                  <div className="group">
+                    <HiStatusOnline
+                      size={30}
+                      className="text-sgreen cursor-pointer"
+                      onClick={() => updateAdverts(ad._id, "inactive")}
+                    />
+                    <div className="opacity-0 group-hover:opacity-100 duration-300 break-all absolute text-sgreen font-semibold">
+                      Status:
+                      <br />
+                      Active
+                    </div>
+                  </div>
                 ) : (
                   //   <img
                   //     src={Active}
@@ -327,11 +319,18 @@ function Advert() {
                   //     className="h-7 w-7 cursor-pointer"
                   //     onClick={() => updateAdverts(ad._id, "inactive")}
                   //   />
-                  <HiStatusOffline
-                    size={30}
-                    className="hover:text-sgreen text-red-900 cursor-pointer"
-                    onClick={() => updateAdverts(ad._id, "active")}
-                  />
+                  <div className="group">
+                    <HiStatusOffline
+                      size={30}
+                      className="text-red-900 cursor-pointer"
+                      onClick={() => updateAdverts(ad._id, "active")}
+                    />
+                    <div className="opacity-0 group-hover:opacity-100 duration-300 text-red-900 absolute font-semibold">
+                      Status:
+                      <br />
+                      Inactive
+                    </div>
+                  </div>
                   //   <img
                   //     src={Inactive}
                   //     alt="inactive"
@@ -339,11 +338,16 @@ function Advert() {
                   //     onClick={() => updateAdverts(ad._id, "active")}
                   //   />
                 )}
-                <RiDeleteBinLine
-                  size={30}
-                  className="hover:text-red-800 text-red-600 cursor-pointer"
-                  onClick={() => deleteAdverts(ad._id)}
-                />
+                <div className="group">
+                  <RiDeleteBinLine
+                    size={30}
+                    className="hover:text-red-800 text-red-600 cursor-pointer"
+                    onClick={() => deleteAdverts(ad._id)}
+                  />
+                  <div className="opacity-0 group-hover:opacity-100 duration-300 text-red-900 absolute font-semibold">
+                    Delete
+                  </div>
+                </div>
               </div>
             </div>
           ))
