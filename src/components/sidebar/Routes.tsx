@@ -16,7 +16,12 @@ import { GiPayMoney, GiReceiveMoney, GiSpeaker } from "react-icons/gi";
 import { GrTransaction } from "react-icons/gr";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { BiCategory } from "react-icons/bi";
-import { RiShareForwardLine, RiApps2Line, RiPaypalFill } from "react-icons/ri";
+import {
+  RiShareForwardLine,
+  RiApps2Line,
+  RiPaypalFill,
+  RiAdvertisementLine,
+} from "react-icons/ri";
 import { SiPayoneer, SiWebmoney } from "react-icons/si";
 import { TbHammer } from "react-icons/tb";
 import { MdOutlineSkateboarding } from "react-icons/md";
@@ -458,6 +463,19 @@ const roles: Route[] = [
         path: "reports/fraud",
         title: "Fraud Report",
         icon: <AiOutlineBarChart className="mr-3 text-xl" />,
+      },
+    ],
+  },
+  {
+    path: "advert",
+    title: "Advert",
+    icon: <RiAdvertisementLine className="mr-3 text-xl text-pink" />,
+    hasChild: true,
+    children: [
+      {
+        path: "advert",
+        icon: <RiAdvertisementLine className="mr-3 text-xl" />,
+        title: "Advert",
       },
     ],
   },

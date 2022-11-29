@@ -81,4 +81,7 @@ export const permissionIds = [
   "31r",
   "31w",
   "31d",
+  "32r",
+  "32w",
+  "32d",
 ];

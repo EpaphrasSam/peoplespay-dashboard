@@ -442,6 +442,21 @@ function EditRole() {
           }
         });
         break;
+      case "Advert":
+        _access.permissions.map((p: string) => {
+          switch (p) {
+            case "read":
+              checkedList.current.push("32r");
+              break;
+            case "write":
+              checkedList.current.push("32w");
+              break;
+            case "delete":
+              checkedList.current.push("32d");
+              break;
+          }
+        });
+        break;
     }
   };
 

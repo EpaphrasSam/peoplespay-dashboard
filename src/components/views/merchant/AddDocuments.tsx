@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PageHeader from "../../header/PageHeader";
 import MerchantsService from "../../../services/merchant.service";
@@ -14,6 +14,8 @@ const AddDocuments: React.FC = () => {
   const { merchants } = useSelector((state: any) => state.merchants);
   const [isLoading, setIsLoading] = useState(false);
   const [fileName, setFileName] = useState("");
+  const isTextareaDisable = fileName.length === 0;
+  const inputRef: any = useRef(null);
 
   const loadMerchants = async () => {
     try {
@@ -37,10 +39,16 @@ const AddDocuments: React.FC = () => {
     data: "",
   });
 
+  const resetFileInput = () => {
+    inputRef.current.value = null;
+    setFileName("");
+  };
+
   const onFileChange = async (e: any) => {
     if (e.target.files != null) {
       if (e.target.files[0].size > 500000) {
-        return swal.fire({ html: "<div>File cannot be larger than 5mb</div>" });
+        swal.fire({ html: "<div>File cannot be larger than 5mb</div>" });
+        return resetFileInput();
       }
       const encoded = await converter(e.target.files[0]);
       setFormData({ ...formData, data: encoded });
@@ -114,6 +122,7 @@ const AddDocuments: React.FC = () => {
             className="border-0 px-3 py-3 placeholder-blueGray-300  bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             name="merchantId"
             value={formData.merchantId}
+            required
             onChange={(e) =>
               setFormData({ ...formData, merchantId: e.target.value })
             }
@@ -138,6 +147,7 @@ const AddDocuments: React.FC = () => {
             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             name="documentName"
             value={formData.docxName}
+            required
             onChange={(e) =>
               setFormData({ ...formData, docxName: e.target.value })
             }
@@ -152,6 +162,7 @@ const AddDocuments: React.FC = () => {
           </label>
           <input
             type="file"
+            ref={inputRef}
             id="fileupload"
             className="hidden border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             name="documentName"
@@ -160,8 +171,8 @@ const AddDocuments: React.FC = () => {
           <label
             className={
               fileName
-                ? "block uppercase text-gray-700 shadow p-2 text-xs font-semibold mb-2 text-left"
-                : "block p-2 bg-gray-300 text-gray-700"
+                ? "block uppercase text-gray-700 shadow p-2 text-xs font-semibold mb-2 text-center cursor-pointer hover:bg-gray-100"
+                : "block p-2 bg-gray-300 text-gray-700 text-center cursor-pointer hover:bg-gray-400"
             }
             htmlFor="fileupload"
           >
@@ -171,7 +182,12 @@ const AddDocuments: React.FC = () => {
       </div>
       <button
         onClick={add}
-        className="w-1/3 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800"
+        className={
+          !isTextareaDisable
+            ? "w-1/3 mx-auto uppercase font-bold text-sm float-right mb-4 bg-red-700 leading-tight text-white py-3 px-6 rounded hover:bg-red-900 hover:ring-2 hover:ring-red-800"
+            : "w-1/3 mx-auto uppercase font-bold text-sm float-right mb-4 bg-gray-700 leading-tight text-gray-400 py-3 px-6 rounded cursor-default"
+        }
+        disabled={isTextareaDisable}
       >
         {isLoading ? "Uploading..." : "Upload"}
       </button>
