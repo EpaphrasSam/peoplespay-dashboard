@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import PageHeader from "../../header/PageHeader";
 import { PrimaryButton } from "../../buttons/BasicButton";
-import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import "./Advert.css";
 import converter from "../../../utils/Base64.converter";
 import { HiStatusOffline, HiStatusOnline } from "react-icons/hi";
 import advertService from "../../../services/advert.service";
 import { confirmAlert, alertResponse } from "../../sweetalert/SweetAlert";
 import Spinner from "../layout/Spinner";
-import Active from "./active.png";
-import Inactive from "./inactive.png";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const swal = require("sweetalert2");
@@ -168,6 +166,7 @@ function Advert() {
   } else {
     document.body.style.overflow = "visible";
   }
+
   return (
     <div className="relative min-h-screen md:pt-10 pb-10 p-2 w-full mb-12 px-4">
       {showModal && (
@@ -297,8 +296,14 @@ function Advert() {
             <div className="Ccards">
               <img className="Cicon" src={ad.image} alt="advert" />
               <div className="Cheader">{ad.title}</div>
-              <div>{ad.description}</div>
-              <div className="flex flex-row py-5 gap-5">
+              {ad.description.length < 70 ? (
+                <div>{ad.description}</div>
+              ) : (
+                <div data-title={ad.description}>
+                  {ad.description.slice(0, 70)} ...
+                </div>
+              )}
+              <div className="flex flex-row py-3 gap-5">
                 {ad.status === "active" ? (
                   <div className="group">
                     <HiStatusOnline
@@ -313,12 +318,6 @@ function Advert() {
                     </div>
                   </div>
                 ) : (
-                  //   <img
-                  //     src={Active}
-                  //     alt="active"
-                  //     className="h-7 w-7 cursor-pointer"
-                  //     onClick={() => updateAdverts(ad._id, "inactive")}
-                  //   />
                   <div className="group">
                     <HiStatusOffline
                       size={30}
@@ -331,12 +330,6 @@ function Advert() {
                       Inactive
                     </div>
                   </div>
-                  //   <img
-                  //     src={Inactive}
-                  //     alt="inactive"
-                  //     className="h-7 w-7 cursor-pointer"
-                  //     onClick={() => updateAdverts(ad._id, "active")}
-                  //   />
                 )}
                 <div className="group">
                   <RiDeleteBinLine

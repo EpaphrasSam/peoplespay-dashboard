@@ -475,7 +475,7 @@ const roles: Route[] = [
       {
         path: "advert",
         icon: <RiAdvertisementLine className="mr-3 text-xl" />,
-        title: "Customers",
+        title: "Advert",
       },
     ],
   },
