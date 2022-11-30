@@ -55,21 +55,49 @@ export default function BroadCastMessage() {
     <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
       <PageHeader title="Broadcast Message" />
 
-      <div className="flex flex-col items-center justify-center sm:mx-auto w-full">
-        <div className="px-3 mb-6 md:mb-0">
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-            Select Broadcast Type
-          </label>
-          <div className="relative">
+      <div className="flex flex-col smm:items-start items-center justify-center sm:mx-auto w-full">
+        <div className="flex smm:flex-row flex-col smm:gap-12 gap-0 mb-6 md:mb-0">
+          <div className="flex flex-col">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+              Select Broadcast Type
+            </label>
+            <div className="relative">
+              <select
+                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-state"
+                name="target"
+                onChange={(e: any) => setType(e.target.value)}
+                value={type}
+              >
+                <option value="sms">Sms</option>
+                <option value="email">Email</option>
+              </select>
+              {/* <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div> */}
+            </div>
+            <div style={{ marginTop: "20px" }} />
+          </div>
+          <div className="flex flex-col">
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+              Select group
+            </label>
             <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
               name="target"
-              onChange={(e: any) => setType(e.target.value)}
-              value={type}
+              onChange={(e: any) => setTarget(e.target.value)}
+              value={target}
             >
-              <option value="sms">Sms</option>
-              <option value="email">Email</option>
+              <option value="AC">Active customers</option>
+              <option value="IC">Inactive customers</option>
+              <option value="AM">Active merchants</option>
             </select>
             {/* <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -81,43 +109,20 @@ export default function BroadCastMessage() {
               </svg>
             </div> */}
           </div>
-          <div style={{ marginTop: "20px" }} />
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-            Select group
-          </label>
-          <select
-            className="block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="grid-state"
-            name="target"
-            onChange={(e: any) => setTarget(e.target.value)}
-            value={target}
-          >
-            <option value="AC">Active customers</option>
-            <option value="IC">Inactive customers</option>
-            <option value="AM">Active merchants</option>
-          </select>
-          {/* <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg
-                className="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div> */}
-        </div>
 
-        <div style={{ marginTop: "20px" }} />
+          <div style={{ marginTop: "20px" }} />
+        </div>
         {type === "email" && (
-          <div>
-            <input
-              className="w-full px-4 py-2 text-sm border border-solid border-gray-300 rounded focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue- placeholder:text-gray-200"
-              placeholder="Enter Title"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
+          // <div>
+          <input
+            className="px-4 py-2 text-sm border border-solid border-gray-300 rounded focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue- placeholder:text-gray-200"
+            style={{ width: "300px" }}
+            placeholder="Enter Title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          // </div>
         )}
 
         <div className="mb-4  w-full">
@@ -150,8 +155,9 @@ export default function BroadCastMessage() {
         </div>
       </div>
       <button
-        className="uppercase rounded-md bg-red-800 text-white font-sans tracking-widest w-1/2 leading-tight px-12 py-4 mt-4 focus:shadow-lg focus:bg-red-900"
+        className="uppercase rounded-md bg-red-800 text-white font-sans tracking-widest leading-tight px-12 py-4 mt-4 focus:shadow-lg focus:bg-red-900 smm:float-right float-none"
         onClick={() => sendMessage()}
+        style={{ width: "300px" }}
       >
         {loading ? "Sending message..." : "Send"}
       </button>
