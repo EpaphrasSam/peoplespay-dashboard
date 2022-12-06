@@ -3,12 +3,16 @@ import { authSelector, signOut } from "../../state/auth.state";
 import { useSelector, useDispatch } from "react-redux";
 import SlideDrawer from "../sidebar/SideDrawer";
 import { useNavigate } from "react-router-dom";
+import { IoIosNotifications } from "react-icons/io";
+import NotificationDrawer from "../sidebar/NotificationDrawer";
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [notifyOpen, setnotifyOpen] = React.useState(false);
   const close = () => setDrawerOpen(false);
+  const closee = () => setnotifyOpen(false);
 
   const signout = () => {
     dispatch(signOut());
@@ -36,6 +40,7 @@ export default function Navbar() {
         signout={signout}
         user={user}
       />
+      <NotificationDrawer notifyopen={notifyOpen} close={closee} />
       <nav className="absolute top-0 left-0 w-full z-1 md:flex-row md:flex-nowrap md:justify-start flex items-center bg-white shadow-md md:h-5 ">
         <div className="pb-7 w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 md:pl-1 px-4">
           {/* Brand */}
@@ -74,6 +79,12 @@ export default function Navbar() {
           <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
             {user && (
               <>
+                <div style={{ paddingRight: "10px", cursor: "pointer" }}>
+                  <IoIosNotifications
+                    size={25}
+                    onClick={() => setnotifyOpen(true)}
+                  />
+                </div>
                 <span className="font-light uppercase">active</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

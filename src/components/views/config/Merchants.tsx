@@ -32,6 +32,12 @@ function MerchantsConfig() {
   const [showModal, setShowModal] = useState(false);
   const [merchant, setMerchant] = useState<any[]>([]);
 
+  if (showModal) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "visible";
+  }
+
   const getApps = async (id: string) => {
     try {
       approvedMerchants.filter((m) => {

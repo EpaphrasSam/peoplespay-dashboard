@@ -285,7 +285,6 @@ const MerchantDetails: React.FC = () => {
                   color="blue"
                   borderVisible
                   paddingWide
-                  // icon={<FcCancel />}
                 />
               </div>
             </div>
