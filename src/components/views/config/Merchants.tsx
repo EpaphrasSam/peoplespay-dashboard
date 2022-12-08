@@ -15,7 +15,7 @@ import useFetchMerchants from "./useFetchApprovedMerchants";
 import PageHeader from "../../header/PageHeader";
 import merchantsService from "../../../services/merchant.service";
 import { alertResponse, confirmAlert } from "../../sweetalert/SweetAlert";
-import MerchantDetailModal from "../../modal/MerchantDetailModal";
+import MerchantModal from "../../modal/MerchantDetailModal";
 import { CSVLink } from "react-csv";
 import { HiDownload } from "react-icons/hi";
 
@@ -73,7 +73,7 @@ function MerchantsConfig() {
           : "Yes, block merchant",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const res = await merchantsService.blockMerchant({
+          const res = await merchantsService.updateMerchant({
             id,
             data: {
               blocked: blocked ? "false" : "true",
@@ -168,7 +168,7 @@ function MerchantsConfig() {
           </CSVLink>
         </div>
       </div>
-      <MerchantDetailModal
+      <MerchantModal
         showModal={showModal}
         action={() => setShowModal(false)}
         merchant={merchant}

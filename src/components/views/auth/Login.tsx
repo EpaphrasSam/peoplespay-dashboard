@@ -22,6 +22,7 @@ function Login() {
   const sendOtp = async (email: string, data: any) => {
     try {
       const response = await transactionServices.sendEmailOTP();
+      console.log(response)
       if (!response.success) {
         await alertResponse({
           icon: "error",

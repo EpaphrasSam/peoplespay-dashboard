@@ -215,7 +215,7 @@ const approveMerchant = (body: any) =>
     body: JSON.stringify(body),
   }).then((res) => res.json());
 
-const blockMerchant = (body: any) =>
+const updateMerchant = (body: any) =>
   fetch(`${BASE_URL}/merchants/update`, {
     method: "PUT",
     headers: {
@@ -327,7 +327,7 @@ const merchantsService = {
   createMerchant,
   getDocuments,
   approveMerchant,
-  blockMerchant,
+  updateMerchant,
   getMerchantBank,
   // declineMerchants,
   getApps,
