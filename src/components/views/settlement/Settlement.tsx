@@ -78,7 +78,7 @@ export default function Users() {
     setFormData({
       ...formData,
       merchantId: merch.length !== 0 ? merch[0]._id : "",
-      accountType: merch.length !== 0 ? merch[0].type : "",
+      accountType: merch.length !== 0 ? merch[0].account_type : "",
       accountIssuer: merch.length !== 0 ? merch[0].account_issuer : "",
       accountIssuerName: merch.length !== 0 ? merch[0].account_issuer : "",
       accountNumber: merch.length !== 0 ? merch[0].account_number : "",
