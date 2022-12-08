@@ -125,6 +125,7 @@ const MerchantModal: FC<ModalProps> = ({ showModal, action, merchant }) => {
   const updateMerchantDetails = async () => {
     try {
       const data = await validate();
+      setLoading(true);
       confirmAlert({
         text: "This will update details of this merchant",
         confirmButtonText: "Yes, Update",
@@ -138,9 +139,11 @@ const MerchantModal: FC<ModalProps> = ({ showModal, action, merchant }) => {
             icon: res?.success ? "success" : "error",
             response: res.message,
           });
+          setLoading(false);
           if (res.success) return window.location.reload();
         }
       });
+      setLoading(false)
     } catch (err) {}
   };
 
