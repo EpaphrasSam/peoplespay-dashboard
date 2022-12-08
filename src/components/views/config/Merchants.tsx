@@ -126,7 +126,7 @@ function MerchantsConfig() {
 
   return (
     <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
-      <PageHeader title="Merchants Configurations" />
+      <PageHeader title="Approved Merchants" />
 
       <div className="flex flex-row justify-between items-center">
         {/**filters */}

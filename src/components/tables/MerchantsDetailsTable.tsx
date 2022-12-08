@@ -12,6 +12,7 @@ import { IoMdCheckmarkCircle } from "react-icons/io";
 import BlockReasonModal from "../modal/BlockReasonModal";
 import { alertResponse } from "../sweetalert/SweetAlert";
 import { useNavigate } from "react-router-dom";
+import { GrView } from "react-icons/gr";
 
 //const QRCode = require("qrcode.react");
 
@@ -226,13 +227,11 @@ const MerchantDetails: React.FC = () => {
         onChange={(e: any) => setReason(e.target.value)}
         cancel={() => setShowModal(false)}
       />
-      <div className="relative md:pt-28 pb-10 p-2 w-full mb-12 px-4">
+      <div className="relative pb-10 p-2 w-full mb-12 px-4">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
           <div className="rounded-t mb-0 px-4 py-3 border-0">
+            <h3 className="font-semibold text-lg text-blueGray-700">Details</h3>
             <div className="flex justify-between relative w-full px-4 max-w-full flex-1">
-              <h3 className="font-semibold text-lg text-blueGray-700">
-                Details
-              </h3>
               <div className="space-x-2">
                 {selected.submitted && (
                   <button
@@ -279,12 +278,14 @@ const MerchantDetails: React.FC = () => {
                     icon={<FcCancel />}
                   />
                 )}
+
                 <OutlinedButton
                   action={() => getUsers()}
                   value="View Users"
                   color="blue"
                   borderVisible
                   paddingWide
+                  icon={<GrView color="blue" />}
                 />
               </div>
             </div>

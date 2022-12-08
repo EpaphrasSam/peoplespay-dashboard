@@ -16,16 +16,17 @@ const NotificationDrawer: React.FC<AppProps> = ({ notifyopen, close }) => {
     <>
       {notifyopen && (
         <div
-          className="w-64 bg-white fixed top-0 md:1/4 right-0  overflow-auto"
+          className="bg-white fixed top-0 md:1/4 right-0  overflow-auto"
           style={{
             boxShadow: "1px 0px 7px rgba(0,0,0,0.5)",
             transform: "translateX(100%), transition:transform 0.3s ease-out",
             zIndex: 100,
+            width: "330px",
             minHeight: "50vh",
             maxHeight: "100vh",
           }}
         >
-          <div className="mt-6 mb-3 mr-2" style={{ marginLeft: "190px" }}>
+          <div className="mt-6 mb-3 mr-2" style={{ marginLeft: "280px" }}>
             <button onClick={(e) => close(e)}>
               <i className="fas fa-arrow-right bg-gray-100 hover:bg-gray-200 py-2 w-10 rounded" />
             </button>

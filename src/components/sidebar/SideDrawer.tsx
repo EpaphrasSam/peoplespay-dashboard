@@ -40,6 +40,7 @@ const SlideDrawer: React.FC<AppProps> = ({
             boxShadow: "1px 0px 7px rgba(0,0,0,0.5)",
             transform: "translateX(100%), transition:transform 0.3s ease-out",
             zIndex: 100,
+            width: "330px",
           }}
         >
           <div className="mt-6 mb-3" style={{ marginLeft: "250px" }}>
