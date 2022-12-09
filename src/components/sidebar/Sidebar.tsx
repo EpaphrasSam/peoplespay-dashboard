@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import MenuItem from "../dropdowns/MenuDropdown";
 import access, { Route } from "./Routes";
 import SlideDrawer from "./SideDrawer";
+import NotificationDrawer from "./NotificationDrawer";
 import { signOut } from "../../state/auth.state";
+import { IoIosNotifications } from "react-icons/io";
 
 export default function Sidebar() {
   const { user } = useSelector((state: any) => state.auth);
@@ -14,7 +16,9 @@ export default function Sidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [notifyOpen, setnotifyOpen] = React.useState(false);
   const close = () => setDrawerOpen(false);
+  const closee = () => setnotifyOpen(false);
 
   const signout = () => {
     dispatch(signOut());
@@ -95,6 +99,7 @@ export default function Sidebar() {
         signout={signout}
         user={user}
       />
+      <NotificationDrawer notifyopen={notifyOpen} close={closee} />
       <nav className="font-inter md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-lg bg-white flex flex-wrap  justify-between relative md:w-56 py-4 px-6 border-none scrollbar-thin scrollbar-thumb-pink scrollbar-track-red-300 overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full z-50">
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto ">
           {/* Toggler */}
@@ -125,6 +130,18 @@ export default function Sidebar() {
                 <div className="flex flex-row">
                   {user && (
                     <>
+                      <div
+                        style={{
+                          paddingRight: "10px",
+                          cursor: "pointer",
+                          paddingTop: "7px",
+                        }}
+                      >
+                        <IoIosNotifications
+                          size={25}
+                          onClick={() => setnotifyOpen(true)}
+                        />
+                      </div>
                       <span className="font-light pt-2 uppercase">active</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

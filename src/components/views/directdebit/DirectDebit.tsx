@@ -128,10 +128,12 @@ export default function DirectDebit(): any {
                           Amount
                         </label>
                         <input
+                          type="number"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           name="amount"
                           value={formData.amount}
                           onChange={handleChange}
+                          required
                         />
                       </div>
                       <div className="relative w-full mb-3">
@@ -164,6 +166,7 @@ export default function DirectDebit(): any {
                           name="description"
                           value={formData.description}
                           onChange={handleChange}
+                          required
                         ></textarea>
                       </div>
                     </div>

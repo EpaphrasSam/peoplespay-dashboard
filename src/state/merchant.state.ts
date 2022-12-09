@@ -10,7 +10,7 @@ interface StateModel {
     selected : any
     docx : any[]
     banks:any[],
-    apps:any[]
+    apps:any[],
 }
 
 const initialState:StateModel={
@@ -22,7 +22,7 @@ const initialState:StateModel={
     docx :[],
     banks:[],
     apps:[],
-    merchantName:''
+    merchantName:'',
 }
 
 
@@ -82,7 +82,7 @@ const state = createSlice(
             },
             setMerchantName:(state,action)=>{
                 state.merchantName=action.payload
-            }
+            },
         }
     }
 )

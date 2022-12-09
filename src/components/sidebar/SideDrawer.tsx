@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
+import { MdOutlineLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { RiLockPasswordLine, RiProfileLine } from "react-icons/ri";
+
 interface AppProps {
   drawerOpen: boolean;
   close: Function;
@@ -23,51 +25,102 @@ const SlideDrawer: React.FC<AppProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  if (drawerOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "visible";
+  }
+
   return (
     <>
       {drawerOpen && (
         <div
-          className="h-screen bg-white fixed top-0 w-full sm:w-1/3 md:1/4 right-0 z-50 overflow-auto"
+          className=" bg-white fixed top-0 md:1/4 right-0  overflow-hidden"
           style={{
             boxShadow: "1px 0px 7px rgba(0,0,0,0.5)",
             transform: "translateX(100%), transition:transform 0.3s ease-out",
+            zIndex: 100,
+            width: "330px",
           }}
         >
-          <div className="mt-10 mb-3 flex justify-between mx-5">
-            <h2 className="float-left lg:pl-28 font-bold text-2xl text-gray-500">
-              User Profile
-              <br />
-              <span className="pl-2 text-md text-gray-300 leading-tight font-light">
-                0 Notifications
-              </span>
-            </h2>
+          <div className="mt-6 mb-3" style={{ marginLeft: "250px" }}>
             <button onClick={(e) => close(e)}>
               <i className="fas fa-arrow-right bg-gray-100 hover:bg-gray-200 py-2 px- w-10 rounded" />
             </button>
           </div>
+
+          <hr className="text-gray-400 w-full mt-2" />
+
           <div className="flex flex-col items-center xl:flex-row xl:items-center flex-wrap sm:flex-nowrap mx-5 mt-3 space-x-auto">
-            <div className="relative bg-gray-100 w-32 h-32 rounded-lg">
-              <div>
-                <FaUser className="h-28 w-28 text-gray-400 py-1 mx-auto pt-2" />
-              </div>
-              <div className="absolute top-0 right-0 h-5 w-5 my-0 border-2 border-white rounded-full bg-green-400 z-2"></div>
-            </div>
-            {/**Person avatar */}
-            <div className="ml-5">
-              <h3 className="text-gray-600 text-xl font-bold">{name}</h3>
-              <div className="-ml-7 mt-3 text-gray-200 font-semibold text-2xl">
-                {acc_type}
-              </div>
-              <div className="mt-3 mb-3 inline-flex items-center space-x-1 float-left">
+            <div className="ml-5 flex flex-col">
+              <h3 className="text-gray-600 w-64 text-xl font-bold break-all">
+                {name}
+              </h3>
+
+              <div className="mt-3  items-center space-x-1 ">
                 {email && <i className="fa fa-envelope text-blue-400" />}
-                <span className="text-gray-300 text-lg">{email}</span>
+                <span
+                  className="text-gray-500 w-64 break-all"
+                  style={{ font: "15px" }}
+                >
+                  {email}
+                </span>
               </div>
-              <div className="ml-4 mt-3">
+              {/* <div className="-ml-7  w-64 break-all text-gray-500 font-semibold text-lg capitalize">
+                {acc_type}
+              </div> */}
+            </div>
+          </div>
+
+          <hr className="text-gray-400 w-full mt-2" />
+
+          <div className="flex flex-col gap-2 mt-3 mb-3">
+            <div className="flex flex-row ml-5">
+              <div className=" rounded mr-1 w-auto">
+                <RiProfileLine color="gray" size={20} className="mx-3 mt-4" />
+              </div>
+              <Link to="#">
+                <h3 className="pt-3 text-gray-600 text-lg font-bold hover:text-red-600">
+                  My Profile
+                </h3>
+              </Link>
+            </div>
+            <p className="ml-5  text-gray-400 text-md">
+              {/* <Link
+                to="/profile-settings"
+                onClick={(e) => close(e)}
+                className="hover:underline"
+              >
+                Account settings and more
+              </Link> */}
+
+              {/* <div className="ml-2 py-2 px-2 bg-red-100 text-red-500 hover:bg-red-300 rounded font-semibold">
+                  Change password
+                </div> */}
+              <div className="flex flex-row gap-2 ml-3">
+                <RiLockPasswordLine size={20} style={{ marginTop: "12px" }} />
+                <Link to={"/change-password"}>
+                  <h3 className="pt-3 ml-2 text-gray-600 text-lg font-bold hover:text-red-600">
+                    Change Password
+                  </h3>
+                </Link>
+              </div>
+            </p>
+
+            <hr className="text-gray-400 w-full mt-2" />
+
+            <div className="ml-9 mt-3 mb-4 ">
+              <div className="flex flex-row items-center gap-2">
+                <MdOutlineLogout
+                  size={20}
+                  color="gray"
+                  style={{ marginTop: "10px" }}
+                />
                 <button
-                  className={`px-10 py-3 ${
+                  className={`text-lg pt-2 ml-1 ${
                     user !== null
-                      ? "bg-blue-50 text-blue-400 hover:bg-blue-200"
-                      : "bg-pink text-white"
+                      ? "text-gray-600 hover:text-red-600"
+                      : "text-gray-600 hover:text-red-600"
                   } font-bold rounded-md`}
                   onClick={() =>
                     user !== null ? signout() : navigate("/login")
@@ -78,44 +131,16 @@ const SlideDrawer: React.FC<AppProps> = ({
               </div>
             </div>
           </div>
-          {/**hr */}
-          <hr className="text-gray-400 mx-auto w-5/6 mt-2" />
+          {/* <hr className="text-gray-400 mx-auto w-5/6 mt-2" /> */}
 
-          <div className="flex flex-col gap-2 mx-5 mt-3 mb-3 items-center ">
-            <div className="flex flex-row">
-              <div className="bg-gray-100 rounded mr-2 w-auto">
-                <i className="fas fa-address-card py-4 px-auto w-14 text-gray-500 " />
-              </div>
-              <h3 className="pt-3 text-gray-600 text-xl font-bold">
-                My Profile
-              </h3>
-            </div>
-            <p className="ml-5  text-gray-400 text-md">
-              <Link
-                to="/profile-settings"
-                onClick={(e) => close(e)}
-                className="hover:underline"
-              >
-                Account settings and more
-              </Link>
-              <Link to={"/change-password"}>
-                <div className="ml-2 py-2 px-2 bg-red-100 text-red-500 hover:bg-red-300 rounded font-semibold">
-                  Change password
-                </div>
-              </Link>
-            </p>
-          </div>
-
-          <hr className="text-gray-400 mx-auto w-5/6 mt-2" />
-
-          <div className="flex flex-row items-center justify-between mx-5 mt-3 mb-9">
+          {/* <div className="flex flex-row items-center justify-between mx-5 mt-3 mb-9">
             <h2 className="text-gray-800 text-xl font-bold mb-5">
               Recent Notifications
             </h2>
             <button className="text-gray-400 underline shadow-sm pb-5">
               Clear all
             </button>
-          </div>
+          </div> */}
 
           {/**activity level */}
           {/* <div className='flex flex-wrap mx-5 mt-3 bg-yellow-50 rounded-lg max-w-lg h-24 mb-5'>

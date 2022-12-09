@@ -15,7 +15,7 @@ import useFetchMerchants from "./useFetchApprovedMerchants";
 import PageHeader from "../../header/PageHeader";
 import merchantsService from "../../../services/merchant.service";
 import { alertResponse, confirmAlert } from "../../sweetalert/SweetAlert";
-import MerchantDetailModal from "../../modal/MerchantDetailModal";
+import MerchantModal from "../../modal/MerchantDetailModal";
 import { CSVLink } from "react-csv";
 import { HiDownload } from "react-icons/hi";
 
@@ -31,6 +31,12 @@ function MerchantsConfig() {
   const [category, setCategory] = useState("merchant");
   const [showModal, setShowModal] = useState(false);
   const [merchant, setMerchant] = useState<any[]>([]);
+
+  if (showModal) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "visible";
+  }
 
   const getApps = async (id: string) => {
     try {
@@ -67,7 +73,7 @@ function MerchantsConfig() {
           : "Yes, block merchant",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const res = await merchantsService.blockMerchant({
+          const res = await merchantsService.updateMerchant({
             id,
             data: {
               blocked: blocked ? "false" : "true",
@@ -120,7 +126,7 @@ function MerchantsConfig() {
 
   return (
     <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
-      <PageHeader title="Merchants Configurations" />
+      <PageHeader title="Approved Merchants" />
 
       <div className="flex flex-row justify-between items-center">
         {/**filters */}
@@ -162,7 +168,7 @@ function MerchantsConfig() {
           </CSVLink>
         </div>
       </div>
-      <MerchantDetailModal
+      <MerchantModal
         showModal={showModal}
         action={() => setShowModal(false)}
         merchant={merchant}
