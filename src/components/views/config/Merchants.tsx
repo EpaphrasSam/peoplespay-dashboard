@@ -18,6 +18,7 @@ import { alertResponse, confirmAlert } from "../../sweetalert/SweetAlert";
 import MerchantModal from "../../modal/MerchantDetailModal";
 import { CSVLink } from "react-csv";
 import { HiDownload } from "react-icons/hi";
+import Pagination from "../../pagination/Pagination";
 
 function MerchantsConfig() {
   const navigate = useNavigate();
@@ -52,7 +53,19 @@ function MerchantsConfig() {
 
   const getUsers = (id: string) => {
     try {
-      navigate("/merchants/all/onboarding/allusers", { state: id });
+      navigate("/merchants/all/merchant/allusers", { state: id });
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  const approvedDetails = (id: string) => {
+    try {
+      approvedMerchants.filter((m) => {
+        if (m?.merchant?._id === id) {
+          navigate("/merchants/all/approved/details", { state: m });
+        }
+      });
     } catch (err: any) {
       alert(err.message);
     }
@@ -99,15 +112,9 @@ function MerchantsConfig() {
     filterResults.length === 0 ? approvedMerchants : filterResults;
 
   //Get Current rows
-  const indexOfLastRow: number = currentIndex * rowsPerPage;
-  const indexOfFirstRow: number = indexOfLastRow - rowsPerPage;
-  const currentRows = results.slice(indexOfFirstRow, indexOfLastRow);
-
-  //buttonactions
-  const paginateFront = () => {
-    setCurrentIndex(currentIndex + 1);
-  };
-  const paginateBack = () => setCurrentIndex(currentIndex - 1);
+  const indexOfFirstRow: number = (currentIndex - 1) * rowsPerPage;
+  const indexOfLastRow: number = indexOfFirstRow + rowsPerPage;
+  const currentRows = results?.slice(indexOfFirstRow, indexOfLastRow);
 
   const pageRowsHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(parseInt(e.target.value));
@@ -125,7 +132,7 @@ function MerchantsConfig() {
   ];
 
   return (
-    <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
+    <div className="relative min-h-screen md:pt-10 pb-10 p-2 w-full mb-12 px-4 font-segoe">
       <PageHeader title="Approved Merchants" />
 
       <div className="flex flex-row justify-between items-center">
@@ -179,7 +186,7 @@ function MerchantsConfig() {
             <thead>
               <tr>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
-                  CreatedAt
+                  Date Created
                 </th>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-sm font-semibold  tracking-wider">
                   Name
@@ -203,6 +210,7 @@ function MerchantsConfig() {
                 <Spinner />
               ) : (
                 <MerchantsConfigTable
+                  approvedDetails={approvedDetails}
                   merchants={currentRows}
                   getApps={getApps}
                   blockMerchant={blockMerchant}
@@ -213,32 +221,16 @@ function MerchantsConfig() {
               )}
             </tbody>
           </table>
-          <div className="px-5 py-5 bg-white border-t flex flex-col sm:flex-row items-center sm:justify-between">
-            <span className="text-sm sm:text-sm text-gray-900">
-              Showing <span>{currentIndex * rowsPerPage - 10} </span> to{" "}
-              <span>{currentIndex * rowsPerPage}</span> of{" "}
-              <span>{approvedMerchants.length}</span> Entries
-            </span>
-            <div className="inline-flex mt-2 sm:mt-0">
-              {currentIndex === 1 ? (
-                <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed">
-                  Prev
-                </button>
-              ) : (
-                <button
-                  className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                  onClick={paginateBack}
-                >
-                  Prev
-                </button>
-              )}
-              <button
-                className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                onClick={paginateFront}
-              >
-                Next
-              </button>
-            </div>
+          <div className="my-7">
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentIndex}
+              totalCount={approvedMerchants?.length}
+              pageSize={rowsPerPage}
+              onPageChange={(page: React.SetStateAction<number>) =>
+                setCurrentIndex(page)
+              }
+            />
           </div>
         </div>
       </div>

@@ -169,7 +169,7 @@ function UserTransactions() {
       setLoading(true);
       const res = await ReportService?.dateFilter(startDate, endDate);
       const resReport = await ReportService?.summaryReport(startDate, endDate);
-      //const transactionResponse = await TransactionService.summary()
+      // const transactionResponse = await TransactionService.summary()
 
       const transactions = res.data.map((d: any) => new ReportModel(d));
       dispatch(setUserTransactions(transactions));
@@ -280,7 +280,7 @@ function UserTransactions() {
   };
 
   return (
-    <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
+    <div className="relative min-h-screen md:pt-7 pb-10 p-2 w-full mb-12 px-4">
       {/**page heading */}
       <motion.div
         initial="initial"
@@ -372,6 +372,7 @@ function UserTransactions() {
           </div>
         </div>
         {/**filter btn */}
+        <div className="pb-2">
         <OutlinedButton
           value={isloading ? <Loader /> : "Filter"}
           action={() => clickDateFilter()}
@@ -379,6 +380,7 @@ function UserTransactions() {
           paddingWide
           icon={<BiFilterAlt />}
         />
+        </div>
       </div>
       {/**end date */}
 

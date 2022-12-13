@@ -16,6 +16,7 @@ import { OutlinedButton } from "../../buttons/BasicButton";
 import { BiFilterAlt } from "react-icons/bi";
 import PageHeader from "../../header/PageHeader";
 import SettlementDetailModal from "../../../components/modal/SettlementDetailModal";
+import Pagination from "../../pagination/Pagination";
 
 function AllSettlements() {
   const group1Motion = {
@@ -78,15 +79,9 @@ function AllSettlements() {
     filterResults.length === 0 ? settlementHistory : filterResults;
 
   //Get Current Rows
-  const indexofLastRow: number = currentIndex * rowsPerPage;
-  const indexofFirstRow: number = indexofLastRow - rowsPerPage;
-  const currentRows = results.slice(indexofFirstRow, indexofLastRow);
-
-  //button actions
-  const paginateFront = () => {
-    setCurrentIndex(currentIndex + 1);
-  };
-  const paginateBack = () => setCurrentIndex(currentIndex - 1);
+  const indexOfFirstRow: number = (currentIndex-1) * rowsPerPage;
+  const indexOfLastRow: number = indexOfFirstRow + rowsPerPage;
+  const currentRows = results?.slice(indexOfFirstRow, indexOfLastRow); 
 
   const headers = [
     { label: "Date", key: "createdAt" },
@@ -102,7 +97,7 @@ function AllSettlements() {
   ];
 
   return (
-    <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4 font-segoe">
+    <div className="relative min-h-screen md:pt-7 pb-10 p-2 w-full mb-12 px-4 font-segoe">
       <SettlementDetailModal
         showModal={showModal}
         action={() => setShowModal(false)}
@@ -144,18 +139,20 @@ function AllSettlements() {
           </div>
 
           {/**filter btn */}
+          <div className="mb-2">
           <OutlinedButton
             value={"Filter"}
             action={() => {}}
             color="gray"
             icon={<BiFilterAlt />}
           />
+          </div>
         </div>
 
         {/**end date */}
 
         {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-5 gap-5">
+        <div className="my-2 flex sm:flex-row flex-col space-x-0 sm:space-x-3 gap-2">
           <div className="flex flex-row mb-1 sm:mb-0 gap-4">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
             {/* <ValueFilterSelector setFilter={setCategory} value={category} options={['name']}/> */}
@@ -237,45 +234,16 @@ function AllSettlements() {
                 )}
               </tbody>
             </table>
-            <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-              <span className="text-xs xs:text-sm text-gray-900">
-                Showing <span>{currentIndex * rowsPerPage - 10} </span> to{" "}
-                <span>
-                  {currentIndex * rowsPerPage < settlementHistory.length
-                    ? currentIndex * rowsPerPage
-                    : settlementHistory.length}
-                </span>{" "}
-                of <span>{settlementHistory.length}</span> settlements
-              </span>
-              <div className="inline-flex mt-2 xs:mt-0">
-                {currentIndex === 1 ? (
-                  <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed">
-                    Prev
-                  </button>
-                ) : (
-                  <button
-                    className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                    onClick={paginateBack}
-                  >
-                    Prev
-                  </button>
-                )}
-                {currentIndex * rowsPerPage === settlementHistory.length ? (
-                  <button
-                    className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                    onClick={paginateFront}
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                    onClick={paginateFront}
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
+            <div className="my-7">
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentIndex}
+                totalCount={settlementHistory?.length}
+                pageSize={rowsPerPage}
+                onPageChange={(page: React.SetStateAction<number>) =>
+                  setCurrentIndex(page)
+                }
+              />
             </div>
           </div>
         </div>

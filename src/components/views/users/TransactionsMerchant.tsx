@@ -321,6 +321,7 @@ function TransactionsMerchant() {
           </div>
         </div>
         {/**filter btn */}
+        <div className="pb-2">
         <OutlinedButton
           value={isloading ? <Loader /> : "Filter"}
           action={() => clickDateFilter()}
@@ -328,6 +329,7 @@ function TransactionsMerchant() {
           paddingWide
           icon={<BiFilterAlt />}
         />
+        </div>
       </div>
       {/**end date */}
 

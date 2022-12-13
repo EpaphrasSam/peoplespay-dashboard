@@ -18,6 +18,8 @@ import { BiFilterAlt } from "react-icons/bi";
 import RowNumberSelector from "../../buttons/RowNumberSelector";
 import elevyService from "../../../services/elevy.services";
 import PageHeader from "../../header/PageHeader";
+import Pagination from "../../pagination/Pagination";
+import SearchForm from "../../forms/SearchForm";
 
 function ElevyTransactions() {
   useFetchElevy();
@@ -26,6 +28,7 @@ function ElevyTransactions() {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [currentIndex, setCurrentIndex] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -62,16 +65,19 @@ function ElevyTransactions() {
     setRowsPerPage(parseInt(e.target.value));
   };
 
-  //Get Current Rows
-  const indexofLastRow: number = currentIndex * rowsPerPage;
-  const indexofFirstRow: number = indexofLastRow - rowsPerPage;
-  const currentRows = records.slice(indexofFirstRow, indexofLastRow);
+  const filterResults = records.filter((m:any) =>
+    m?.totalAmount
+      .toLowerCase()
+      .startsWith(searchQuery.toLowerCase())
+  );
 
-  //button actions
-  const paginateFront = () => {
-    setCurrentIndex(currentIndex + 1);
-  };
-  const paginateBack = () => setCurrentIndex(currentIndex - 1);
+  const results: any[] =
+    filterResults.length === 0 ? records : filterResults;
+  
+  //Get Current rows
+  const indexOfFirstRow: number = (currentIndex-1) * rowsPerPage;
+  const indexOfLastRow: number = indexOfFirstRow + rowsPerPage;
+  const currentRows = results?.slice(indexOfFirstRow, indexOfLastRow);
 
   const headers = [
     { label: "Date", key: "date" },
@@ -81,7 +87,7 @@ function ElevyTransactions() {
   ];
 
   return (
-    <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
+    <div className="relative min-h-screen md:pt-10 pb-10 p-2 w-full mb-12 px-4">
       {/**page heading */}
       <motion.div
         initial="initial"
@@ -117,12 +123,14 @@ function ElevyTransactions() {
               </div>
             </div>
             {/**filter btn */}
+            <div className="mb-2">
             <OutlinedButton
               value={loading ? <Loader /> : "Filter"}
               action={() => periodFilter()}
               color="gray"
               icon={<BiFilterAlt />}
             />
+            </div>
           </div>
           {/**end date */}
 
@@ -142,10 +150,17 @@ function ElevyTransactions() {
         {/**end date */}
 
         {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
+        <div className="my-2 ml-2 gap-2 flex sm:flex-row flex-col">
           <div className="flex flex-row mb-1 sm:mb-0">
             <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           </div>
+          <SearchForm
+              value={searchQuery}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setSearchQuery(e.target.value.trim())
+              }
+              placeholder={`Search total Amount ...`}
+            />
         </div>
       </motion.div>
 
@@ -191,45 +206,16 @@ function ElevyTransactions() {
                 )}
               </tbody>
             </table>
-            <div className="px-5 py-5 bg-white border-t flex flex-col  items-center justify-center">
-              <div className="text-md md:text-sm text-gray-900">
-                Showing <span>{currentIndex * rowsPerPage - 10} </span> to{" "}
-                <span>
-                  {currentIndex * rowsPerPage < records.length
-                    ? currentIndex * rowsPerPage
-                    : records.length}
-                </span>{" "}
-                of <span>{records.length}</span> records
-              </div>
-              <div className="inline-flex mt-2 md:mt-0">
-                {currentIndex === 1 ? (
-                  <button className="text-sm bg-gray-100 text-gray-800 py-2 px-4 rounded-l opacity-50 cursor-not-allowed">
-                    Prev
-                  </button>
-                ) : (
-                  <button
-                    className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-l"
-                    onClick={paginateBack}
-                  >
-                    Prev
-                  </button>
-                )}
-                {currentIndex * rowsPerPage === records.length ? (
-                  <button
-                    className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
-                    onClick={paginateFront}
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r"
-                    onClick={paginateFront}
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
+            <div className="my-7">
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentIndex}
+                totalCount={records?.length}
+                pageSize={rowsPerPage}
+                onPageChange={(page: React.SetStateAction<number>) =>
+                  setCurrentIndex(page)
+                }
+              />
             </div>
           </div>
         </div>

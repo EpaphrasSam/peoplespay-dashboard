@@ -93,8 +93,9 @@ export default function Users() {
 
   const loadMerchantsandIssuers = async () => {
     try {
+      const data:any = {'active': true}
       const [merchants, issuers] = await Promise.all([
-        MerchantsService.getMerchants(),
+        MerchantsService.getApprovedMerchantsDetails(data),
         AccountsService.getIssuers(),
       ]);
       if (!merchants.success && !issuers.success) {

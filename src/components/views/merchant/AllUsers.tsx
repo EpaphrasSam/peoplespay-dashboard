@@ -16,9 +16,10 @@ function AllUsers() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [showModal, setshowModal] = useState(false);
   const [isLoading, setisLoading] = useState(false);
-  const [users, setusers] = useState([]);
+  const [users, setusers] = useState<any>([]);
   const location = useLocation();
   const id = location.state;
+
   const admins: any = sessionStorage.getItem("PP-USER");
   const ad = JSON.parse(admins);
   const admin = ad._id;
@@ -141,7 +142,7 @@ function AllUsers() {
   const currentTableData = results?.slice(firstPageIndex, lastPageIndex);
 
   return (
-    <div className="relative md:pt-10 pb-10  w-full mb-12">
+    <div className="relative min-h-screen md:pt-10 pb-10  w-full mb-12">
       <>
         {showModal && (
           <div
@@ -222,7 +223,7 @@ function AllUsers() {
           </div>
         )}
       </>
-      <PageHeader title="Merchant's Users" />
+      <PageHeader title={`${users[0]?.merchantId?.merchant_tradeName} Users`} />
 
       <div className="flex flex-col md:flex-row md:justify-between">
         <div className="my-2 gap-2 flex sm:flex-row flex-col">
@@ -277,7 +278,7 @@ function AllUsers() {
               ) : (
                 Array.isArray(currentTableData) &&
                 currentTableData.map((s: any) => (
-                  <tr className="cursor-pointer">
+                  <tr>
                     <td className="text-left px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p className="text-gray-900 capitalize whitespace-no-wrap">
                         {s.name}

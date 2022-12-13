@@ -1,25 +1,30 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { MdReadMore } from "react-icons/md";
+import { AiFillEdit } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 import { FaRegEyeSlash, FaUser } from "react-icons/fa";
 //import {GrPowerReset} from 'react-icons/gr'
 import { IoIosApps } from "react-icons/io";
 
 type OptionProps = {
-  blockMerchant: Function;
-  isBlocked: boolean;
-  seeApps: Function;
-  seeDetails: Function;
-  viewUsers: Function;
+  blockMerchant?: () => void;
+  isBlocked?: boolean;
+  seeApps?: () => void;
+  seeDetails?: () => void;
+  viewUsers?: () => void;
+  approvedDetails?: () => void;
+  show?: boolean;
 };
 
 export default function MerchantConfigTableOptions({
+  approvedDetails,
   seeDetails,
   seeApps,
   blockMerchant,
   isBlocked,
   viewUsers,
+  show = true,
 }: OptionProps) {
   return (
     <div className="text-right">
@@ -50,56 +55,71 @@ export default function MerchantConfigTableOptions({
                     className={`${
                       active ? "bg-violet-500 text-blue-500" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    onClick={() => seeDetails()}
+                    onClick={approvedDetails}
                   >
                     <MdReadMore className="mr-2 h-5 w-5" aria-hidden="true" />
                     See Details
                   </button>
                 )}
               </Menu.Item>
+              {show && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? "bg-violet-500 text-blue-500" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      onClick={seeDetails}
+                    >
+                      <AiFillEdit className="mr-2 h-5 w-5" aria-hidden="true" />
+                      Edit Details
+                    </button>
+                  )}
+                </Menu.Item>
+              )}
+              {show && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? "bg-violet-500 text-blue-500" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      onClick={seeApps}
+                    >
+                      <IoIosApps className="mr-2 h-5 w-5" aria-hidden="true" />
+                      See Apps
+                    </button>
+                  )}
+                </Menu.Item>
+              )}
+              {show && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? "bg-violet-500 text-blue-500" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      onClick={blockMerchant}
+                    >
+                      <FaRegEyeSlash
+                        className="mr-2 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      {isBlocked ? "Unblock" : "Block Merchant"}
+                    </button>
+                  )}
+                </Menu.Item>
+              )}
               <Menu.Item>
                 {({ active }) => (
                   <button
                     className={`${
                       active ? "bg-violet-500 text-blue-500" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    onClick={() => seeApps()}
-                  >
-                    <IoIosApps className="mr-2 h-5 w-5" aria-hidden="true" />
-                    See Apps
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-violet-500 text-blue-500" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    onClick={() => {
-                      blockMerchant();
-                    }}
-                  >
-                    <FaRegEyeSlash
-                      className="mr-2 h-5 w-5"
-                      aria-hidden="true"
-                    />
-                    {isBlocked ? "Unblock" : "Block Merchant"}
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-violet-500 text-blue-500" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    onClick={() => {
-                      viewUsers();
-                    }}
+                    onClick={viewUsers}
                   >
                     <FaUser className="mr-2 h-5 w-5" aria-hidden="true" />
-                    Users
+                    View Users
                   </button>
                 )}
               </Menu.Item>

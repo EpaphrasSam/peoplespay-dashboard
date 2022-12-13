@@ -79,6 +79,22 @@ const getWalletTransactions = (id: string) =>
     },
   }).then((res) => res.json());
 
+const WalletTransactionsFilter = (
+  startDate: string,
+  endDate: string,
+  id: string
+) =>
+  fetch(
+    `${BASE_URL}/transactions/byadmin/users?id=${id}&start=${startDate}&end=${endDate}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-type": "Application/json",
+        Authorization: Utils.AuthToken(),
+      },
+    }
+  ).then((res) => res.json());
+
 const ReportService = {
   summaryReport,
   getTransactions,
@@ -88,5 +104,6 @@ const ReportService = {
   dateFilter,
   dateFilterCusMerc,
   getWalletTransactions,
+  WalletTransactionsFilter,
 };
 export default ReportService;

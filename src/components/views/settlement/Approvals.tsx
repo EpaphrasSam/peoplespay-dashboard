@@ -16,6 +16,7 @@ import { BiFilterAlt } from "react-icons/bi";
 import PageHeader from "../../header/PageHeader";
 import { alertResponse, confirmAlert } from "../../sweetalert/SweetAlert";
 import BlockReasonModal from "../../modal/BlockReasonModal";
+import Pagination from "../../pagination/Pagination";
 
 function AllSettlements() {
   const dispatch = useDispatch();
@@ -111,6 +112,21 @@ function AllSettlements() {
 
   const { pendingSettlements } = useSelector(accountsSelector);
 
+  const filterResults = pendingSettlements.filter((m:any) =>
+    m?.accountName
+      .toLowerCase()
+      .startsWith(searchQuery.toLowerCase())
+  );
+
+  const results: any[] =
+    filterResults.length === 0 ? pendingSettlements : filterResults;
+
+  //Get Current rows
+  const indexOfFirstRow: number = (currentIndex-1) * rowsPerPage;
+  const indexOfLastRow: number = indexOfFirstRow + rowsPerPage;
+  const currentRows = results?.slice(indexOfFirstRow, indexOfLastRow);
+
+
   const pageRowsHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(parseInt(e.target.value));
   };
@@ -118,14 +134,8 @@ function AllSettlements() {
   const transactionCategoryHandler = (e: ChangeEvent<HTMLSelectElement>) =>
     setTransactionCategory(e.target.value);
 
-  //button actions
-  const paginateFront = () => {
-    setCurrentIndex(currentIndex + 1);
-  };
-  const paginateBack = () => setCurrentIndex(currentIndex - 1);
-
   return (
-    <div className="font-segoe relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
+    <div className="font-segoe min-h-screen relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
       {/**block Reason */}
       <BlockReasonModal
         showModal={showModal}
@@ -163,6 +173,7 @@ function AllSettlements() {
           </div>
         </div>
         {/**filter btn */}
+        <div className="pb-2">
         <OutlinedButton
           value={"Filter"}
           action={() => {}}
@@ -170,6 +181,7 @@ function AllSettlements() {
           paddingWide
           icon={<BiFilterAlt />}
         />
+        </div>
       </div>
       {/**end date */}
       {/**filters */}
@@ -229,7 +241,7 @@ function AllSettlements() {
                 <Spinner />
               ) : (
                 <PendingSettlementsTable
-                  data={pendingSettlements}
+                  data={currentRows}
                   approve={approve}
                   setShowModal={setShowModal}
                   setSettlementId={setSettlementId}
@@ -237,46 +249,17 @@ function AllSettlements() {
               )}
             </tbody>
           </table>
-          <div className="px-5 py-5 bg-white border-t flex flex-col items-center md:justify-center">
-            <div className="text-md md:text-sm text-gray-900">
-              Showing <span>{currentIndex * rowsPerPage - 10} </span> to{" "}
-              <span>
-                {currentIndex * rowsPerPage < pendingSettlements.length
-                  ? currentIndex * rowsPerPage
-                  : pendingSettlements.length}
-              </span>{" "}
-              of <span>{pendingSettlements.length}</span> Settlements
+          <div className="my-7">
+              <Pagination
+                className="pagination-bar"
+                currentPage={currentIndex}
+                totalCount={pendingSettlements?.length}
+                pageSize={rowsPerPage}
+                onPageChange={(page: React.SetStateAction<number>) =>
+                  setCurrentIndex(page)
+                }
+              />
             </div>
-            <div className="inline-flex mt-2 md:mt-0">
-              {currentIndex === 1 ? (
-                <button className="text-sm bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l opacity-50 cursor-not-allowed">
-                  Prev
-                </button>
-              ) : (
-                <button
-                  className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                  onClick={paginateBack}
-                >
-                  Prev
-                </button>
-              )}
-              {currentIndex * rowsPerPage === pendingSettlements.length ? (
-                <button
-                  className="cursor-not-allowed text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                  onClick={paginateFront}
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                  onClick={paginateFront}
-                >
-                  Next
-                </button>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </div>

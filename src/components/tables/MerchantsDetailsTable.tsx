@@ -180,7 +180,7 @@ const MerchantDetails: React.FC = () => {
           text: "No merchant selected",
         });
       } else {
-        navigate("allusers", { state: selected._id });
+        navigate("/merchants/all/merchant/allusers", { state: selected._id });
       }
     } catch (err: any) {
       alert(err.message);
@@ -227,7 +227,7 @@ const MerchantDetails: React.FC = () => {
         onChange={(e: any) => setReason(e.target.value)}
         cancel={() => setShowModal(false)}
       />
-      <div className="relative pb-10 p-2 w-full mb-12 px-4">
+      <div className="relative pb-10 p-2 mb-12 px-4">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
           <div className="rounded-t mb-0 px-4 py-3 border-0">
             <h3 className="font-semibold text-lg text-blueGray-700">Details</h3>
@@ -279,14 +279,14 @@ const MerchantDetails: React.FC = () => {
                   />
                 )}
 
-                <OutlinedButton
+                {/* <OutlinedButton
                   action={() => getUsers()}
                   value="View Users"
                   color="blue"
                   borderVisible
                   paddingWide
                   icon={<GrView color="blue" />}
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -310,8 +310,9 @@ const MerchantDetails: React.FC = () => {
                     text-sm
                     leading-tight
                     rounded
-                    px-6
-                    ml-2
+                    px-4
+                    md:ml-2
+                    ml-0
                     py-3
                     focus:outline-none focus:ring-0
                     cursor-pointer
