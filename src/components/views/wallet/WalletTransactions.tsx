@@ -248,7 +248,7 @@ function WalletTransactions() {
           headers={headers}
           data={results}
           filename={"report.csv"}
-          className="py-1.5 px-1 bg-green-500 border-2 border-green-500 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2"
+          className="py-1.5 px-1.5 bg-green-500 border-2 border-green-500 text-white rounded hover:shadow outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-700 tracking-wide font-inter inline-flex items-center space-x-2"
         >
           <HiDownload />
           <span>{isLoading ? "Preparing..." : "Download Report"}</span>

@@ -37,83 +37,75 @@ function ApprovedMerchantsDetails() {
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Merchant ID
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?._id}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Merchant Trade Name
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.merchant_tradeName}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Email
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.email}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Registration Number
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.registrationNumber}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Line of Business
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.lineOfBusiness}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Location
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.location}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Phone
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.phone}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Tier Choice
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.tier_choice?.title}
                 </td>
               </tr>
               <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   Monthly Limit
                 </td>
-                <td className="border border-slate-300 px-6 py-3">
+                <td className="border border-slate-300 px-3 py-3 text-left">
                   {merchants.merchant?.tier_choice?.monthly_limit}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-slate-300 px-6 py-3 text-left">
-                  Documents Needed
-                </td>
-                <td className="border border-slate-300 px-6 py-3">
-                  {merchants.merchant?.tier_choice?.documents}
                 </td>
               </tr>
             </tbody>
