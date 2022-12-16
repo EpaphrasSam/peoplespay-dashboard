@@ -141,20 +141,20 @@ const MerchantDetails: React.FC = () => {
             }
           });
       }
-      return;
+      return window.location.reload;
     } catch (err: any) {
       alert(err.message);
     }
   };
 
-  const deleteMerchant = () => {
+  const deleteMerchant = async () => {
     try {
       if (selected._id === undefined) {
         swal.fire({
           text: "No merchant selected",
         });
       } else {
-        swal
+        await swal
           .fire({
             text: " Confirm merchant deletion",
             showDenyButton: true,
@@ -164,8 +164,8 @@ const MerchantDetails: React.FC = () => {
           .then((result: any) => {
             if (result.isConfirmed) {
               confirmDeleteMerchant();
-              return window.location.reload();
             }
+            return (window.location.href = "/merchants/all/onboarding");
           });
       }
     } catch (err: any) {
@@ -203,6 +203,7 @@ const MerchantDetails: React.FC = () => {
           : "Sorry, please check your internet and try again",
       });
       if (res.success) return setShowModal(false);
+      return window.location.reload;
     } catch (err) {}
   };
 

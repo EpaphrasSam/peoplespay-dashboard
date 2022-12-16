@@ -49,6 +49,8 @@ function Merchants() {
     }
   });
 
+  console.log(merchants);
+
   const merchantCategoryHandler = (e: ChangeEvent<HTMLSelectElement>) =>
     setMerchantCategory(e.target.value);
 
@@ -169,15 +171,15 @@ function Merchants() {
                     >
                       Company Name
                     </th>
-                    <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
+                    {/* <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
                       Submitted
-                    </th>
+                    </th> */}
                     <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left ">
                       Status
                     </th>
-                    <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
+                    {/* <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
                       Declined
-                    </th>
+                    </th> */}
                     <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
                       Action
                     </th>

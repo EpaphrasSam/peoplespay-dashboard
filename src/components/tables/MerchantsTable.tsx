@@ -24,7 +24,7 @@ const MerchantsTable: FC<AppProps> = ({ merchants }) => {
             {m.lineOfBusiness || m.category}  
         </td> */}
           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left">
-            {m?.submitted ? (
+            {/* {m?.submitted ? (
               <span className="relative inline-block px-3 py-1 font-semibold text-sgreen leading-tight tracking-wide">
                 <span
                   aria-hidden
@@ -40,9 +40,59 @@ const MerchantsTable: FC<AppProps> = ({ merchants }) => {
                 ></span>
                 <span className="relative">Not Submitted</span>
               </span>
+            )} */}
+            {m?.active === false &&
+              m?.submitted === false &&
+              m?.decline === false &&
+              m?.blocked === false && (
+                <span className="relative inline-block px-3 py-1 font-semibold text-red-500 leading-tight tracking-wide">
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 bg-gray-50 rounded-md"
+                  ></span>
+                  <span className="relative">Not Submitted</span>
+                </span>
+              )}
+            {m?.active === false && m?.submitted === true && (
+              <span className="relative inline-block px-3 py-1 font-semibold text-sgreen leading-tight tracking-wide">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 bg-gray-50 rounded-md"
+                ></span>
+                <span className="relative">Submitted</span>
+              </span>
+            )}
+            {m?.active === true &&
+              (m?.submitted === true || m?.submitted === false) &&
+              m?.blocked === false && (
+                <span className="relative inline-block px-3 py-1 font-semibold text-white leading-tight tracking-wide">
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 bg-sgreen rounded-md"
+                  ></span>
+                  <span className="relative"> Approved </span>
+                </span>
+              )}
+            {m?.blocked === true && (
+              <span className="relative inline-block px-3 py-1 font-semibold text-white leading-tight tracking-wide">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 bg-gray-500 rounded-md"
+                ></span>
+                <span className="relative"> Blocked</span>
+              </span>
+            )}
+            {m?.decline === true && (
+              <span className="relative inline-block px-3 py-1 font-semibold text-white leading-tight tracking-wide">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 bg-red-500 rounded-md"
+                ></span>
+                <span className="relative"> Declined </span>
+              </span>
             )}
           </td>
-          <td className="border-t-0 px-3 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+          {/* <td className="border-t-0 px-3 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
             {m.active ? (
               <span className="relative inline-block px-3 py-1 font-semibold text-white leading-tight tracking-wide">
                 <span
@@ -60,8 +110,8 @@ const MerchantsTable: FC<AppProps> = ({ merchants }) => {
                 <span className="relative">Pending Approval</span>
               </span>
             )}
-          </td>
-          <td className="border-t-0 px-3 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+          </td> */}
+          {/* <td className="border-t-0 px-3 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
             {m.decline ? (
               <span className="relative inline-block px-3 py-1 font-semibold text-white leading-tight tracking-wide">
                 <span
@@ -71,7 +121,7 @@ const MerchantsTable: FC<AppProps> = ({ merchants }) => {
                 <span className="relative"> Declined </span>
               </span>
             ) : null}
-          </td>
+          </td> */}
           <td className="flex flex-row hover:text-blue-400 border-t-0 px-3 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
             <MerchantConfigTableOptions
               show={false}
