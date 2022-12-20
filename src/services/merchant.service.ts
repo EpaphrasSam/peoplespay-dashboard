@@ -19,6 +19,16 @@ const getApprovedMerchants = () =>
     },
   }).then((res) => res.json());
 
+  const getApprovedMerchantsDetails = (active: any) =>
+  fetch(`${BASE_URL}/merchants/filter`, {
+    method: "POST",
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: Utils.AuthToken(),
+    },
+    body: JSON.stringify(active),
+  }).then((res) => res.json());
+
 const getActivities = () =>
   fetch(`${BASE_URL}/merchants/activities/get`, {
     method: "GET",
@@ -317,6 +327,7 @@ const merchantsService = {
   addUser,
   getMerchants,
   getApprovedMerchants,
+  getApprovedMerchantsDetails,
   getCategories,
   summary,
   // getMerchant,

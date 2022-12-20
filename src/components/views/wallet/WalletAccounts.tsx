@@ -40,7 +40,7 @@ function Wallets() {
         const transactions = res?.data?.map((d: any) => new ReportModel(d));
         dispatch(setWalletTransactions(transactions));
         dispatch(setCustomerName(name));
-        navigate("/wallets/transactions");
+        navigate("/wallets/transactions", { state: {id, name} });
       }
     } catch (err) {}
   };

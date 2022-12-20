@@ -30,19 +30,17 @@ export const UserInfo = ({
       rows={1}
       placeholder={value}
       readOnly={!editable}
-      className={` border-none outline-none py-0 px-0 placeholder-gray-500 focus:ring-0 resize-none 
-       scrollbar-none ${editable ? "cursor-text" : "cursor-default"}`}
-      title={editable ? "This can be edited" : ""}
+      className={`${
+        editable ? "cursor-text" : "cursor-default bg-gray-300"
+      } py-0 px-2 placeholder-gray-500 focus:ring-0 rounded resize-none 
+       scrollbar-none `}
       onChange={onChange}
     />
-    {editable && (
-      <div className="text-red-500 text-xs">This field can be edited</div>
-    )}
   </div>
 );
 
 const MerchantModal: FC<ModalProps> = ({ showModal, action, merchant }) => {
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     lineOfBusiness: "",
@@ -143,7 +141,7 @@ const MerchantModal: FC<ModalProps> = ({ showModal, action, merchant }) => {
           if (res.success) return window.location.reload();
         }
       });
-      setLoading(false)
+      setLoading(false);
     } catch (err) {}
   };
 
@@ -190,15 +188,6 @@ const MerchantModal: FC<ModalProps> = ({ showModal, action, merchant }) => {
                     }}
                   >
                     <h4 className="underline pb-3 text-pink">Basic Details</h4>
-                    <div className=" px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                      <button
-                        type="button"
-                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={toggleEdit}
-                      >
-                        {edit ? "Stop Editing" : "Edit"}
-                      </button>
-                    </div>
                   </div>
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <UserInfo
@@ -363,13 +352,22 @@ const MerchantModal: FC<ModalProps> = ({ showModal, action, merchant }) => {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   {edit && (
-                    <button
-                      type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={updateMerchantDetails}
-                    >
-                      {loading ? "Updating..." : "Update"}
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        className="w-full sm:mb-0 mb-2 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => action()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={updateMerchantDetails}
+                      >
+                        {loading ? "Updating..." : "Update"}
+                      </button>
+                    </>
                   )}
                   {!edit && (
                     <button

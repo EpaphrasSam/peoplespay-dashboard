@@ -169,7 +169,7 @@ function UserTransactions() {
       setLoading(true);
       const res = await ReportService?.dateFilter(startDate, endDate);
       const resReport = await ReportService?.summaryReport(startDate, endDate);
-      //const transactionResponse = await TransactionService.summary()
+      // const transactionResponse = await TransactionService.summary()
 
       const transactions = res.data.map((d: any) => new ReportModel(d));
       dispatch(setUserTransactions(transactions));
@@ -280,7 +280,7 @@ function UserTransactions() {
   };
 
   return (
-    <div className="relative md:pt-7 pb-10 p-2 w-full mb-12 px-4">
+    <div className="relative min-h-screen md:pt-7 pb-10 p-2 w-full mb-12 px-4">
       {/**page heading */}
       <motion.div
         initial="initial"
@@ -372,13 +372,15 @@ function UserTransactions() {
           </div>
         </div>
         {/**filter btn */}
-        <OutlinedButton
-          value={isloading ? <Loader /> : "Filter"}
-          action={() => clickDateFilter()}
-          color="gray"
-          paddingWide
-          icon={<BiFilterAlt />}
-        />
+        <div className="pb-2">
+          <OutlinedButton
+            value={isloading ? <Loader /> : "Filter"}
+            action={() => clickDateFilter()}
+            color="gray"
+            paddingWide
+            icon={<BiFilterAlt />}
+          />
+        </div>
       </div>
       {/**end date */}
 
@@ -423,20 +425,20 @@ function UserTransactions() {
         exit="exit"
         variants={group2Motion}
       >
-        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div className="-mx-4 sm:-mx-8 sm:px-4 px-0 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow-lg overflow-hidden font-segoe">
             <table className="min-w-full leading-normal">
               <thead className="text-sm text-gray-600">
                 <tr>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
-                    Description
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                     Date
                   </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  font-semibold tracking-wider">
-                    Transaction Time
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
+                    Description
                   </th>
+                  {/* <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  font-semibold tracking-wider">
+                    Transaction Time
+                  </th> */}
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                     Customer Name
                   </th>
@@ -459,7 +461,7 @@ function UserTransactions() {
                     Credit Status
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
-                    Pay_Acc_Type
+                    Account Type
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                     Actions

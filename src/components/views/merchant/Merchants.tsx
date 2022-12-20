@@ -49,6 +49,8 @@ function Merchants() {
     }
   });
 
+  console.log(merchants);
+
   const merchantCategoryHandler = (e: ChangeEvent<HTMLSelectElement>) =>
     setMerchantCategory(e.target.value);
 
@@ -62,22 +64,9 @@ function Merchants() {
   const lastPageIndex = firstPageIndex + rowsPerPage;
   const currentTableData = results?.slice(firstPageIndex, lastPageIndex);
 
-  const handleSelectedId: Function = async (id: string) => {
-    try {
-      const response = await MerchantsService.getMerchantDetail(id);
+  // const handleSelectedId: Function = async (id: string) => {
 
-      if (!response.success) {
-        throw alert(response.message);
-      } else if (response?.data === null) {
-        return alert("Merchant details is empty");
-      }
-      return dispatch(setSelected(response.data));
-    } catch (err: any) {
-      alert(err);
-    }
-  };
-
-  // console.log(merchants);
+  // };
 
   const unapprovedMerchants = merchants.filter((m) => m.submitted && !m.active);
 
@@ -92,7 +81,7 @@ function Merchants() {
   ];
 
   return (
-    <div className="relative md:pt-10 pb-10  w-full mb-12">
+    <div className="relative min-h-screen md:pt-10 pb-10  w-full mb-12">
       <PageHeader title="Merchants Onboarding" />
 
       {/**date picker */}
@@ -118,7 +107,7 @@ function Merchants() {
           </div>
         </div>
         {/**filter btn */}
-        <div className="pb-2">
+        <div className="pb-4">
           <OutlinedButton
             value={loading ? <Loader /> : "Filter"}
             action={() => {}}
@@ -127,7 +116,7 @@ function Merchants() {
           />
         </div>
       </div>
-      <div className="my-2 flex sm:flex-row flex-col pt-0 space-x-2 items-center mt-24 md:mt-0">
+      <div className="my-2 flex sm:flex-row flex-col pt-0 space-x-2 items-center">
         <div className="flex nn:flex-row flex-col mb-1 sm:mb-0  gap-4">
           <RowNumberSelector value={rowsPerPage} onChange={pageRowsHandler} />
           <div className="relative">
@@ -162,16 +151,10 @@ function Merchants() {
         </CSVLink>
       </div>
       <div className="flex sm:flex-row pt-4 flex-col">
-        <div className="w-full sm:w-6/12 mb-12 md:mb-0">
+        <div className="w-full mb-12 md:mb-0">
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
             <div className="rounded-t mb-0 px-4 py-3 border-0">
-              <div className="flex flex-wrap items-center">
-                <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                  <h3 className="font-semibold text-lg text-blueGray-700">
-                    All Merchants
-                  </h3>
-                </div>
-              </div>
+              <div className="flex flex-wrap items-center"></div>
             </div>
             <div className="block w-full overflow-x-auto">
               {/* Projects table */}
@@ -188,14 +171,17 @@ function Merchants() {
                     >
                       Company Name
                     </th>
-                    <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
+                    {/* <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
                       Submitted
-                    </th>
+                    </th> */}
                     <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left ">
                       Status
                     </th>
-                    <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
+                    {/* <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
                       Declined
+                    </th> */}
+                    <th className="px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left">
+                      Action
                     </th>
                   </tr>
                 </thead>
@@ -203,10 +189,7 @@ function Merchants() {
                   {loading ? (
                     <Spinner />
                   ) : (
-                    <MerchantsTable
-                      merchants={currentTableData}
-                      handleSelectedId={handleSelectedId}
-                    />
+                    <MerchantsTable merchants={currentTableData} />
                   )}
                 </tbody>
               </table>
@@ -224,9 +207,6 @@ function Merchants() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="w-full sm:w-6/12 ">
-          <MerchantDetailsTable />
         </div>
       </div>
     </div>

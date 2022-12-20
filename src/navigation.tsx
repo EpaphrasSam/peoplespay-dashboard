@@ -24,6 +24,9 @@ const Wallets = lazy(() => import("./components/views/wallet/WalletAccounts"));
 const OnboardingMerchants = lazy(
   () => import("./components/views/merchant/Merchants")
 );
+const MerchantsDetails = lazy(
+  () => import("./components/views/merchant/MerchantDetails")
+);
 const AllUsers = lazy(() => import("./components/views/merchant/AllUsers"));
 const PaidTransactions = lazy(
   () => import("./components/views/paid/PaidTransactions")
@@ -72,6 +75,9 @@ const ChangePasswordForm = lazy(
 );
 const ApprovedMerchants = lazy(
   () => import("./components/views/config/Merchants")
+);
+const ApprovedMerchantsDetails = lazy(
+  () => import("./components/views/config/ApprovedMerchantDetails")
 );
 const MerchantApps = lazy(
   () => import("./components/views/config/MerchantApps")
@@ -186,6 +192,10 @@ const Navigation = () => {
                       path="all/approved"
                       element={<ApprovedMerchants />}
                     />
+                    <Route
+                      path="all/approved/details"
+                      element={<ApprovedMerchantsDetails />}
+                    />
                     <Route path="apps" element={<MerchantApps />} />
                     <Route path="categories" element={<MerchantCategories />} />
                     <Route
@@ -198,7 +208,11 @@ const Navigation = () => {
                       element={<OnboardingMerchants />}
                     />
                     <Route
-                      path="all/onboarding/allusers"
+                      path="all/onboarding/details"
+                      element={<MerchantsDetails />}
+                    />
+                    <Route
+                      path="all/merchant/allusers"
                       element={<AllUsers />}
                     />
                     <Route path="add-documents" element={<AddDocuments />} />

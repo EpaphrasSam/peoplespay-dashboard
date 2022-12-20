@@ -9,6 +9,7 @@ type AppProps = {
   viewUsers: Function;
   setShowModal: Function;
   setMerchant: Function;
+  approvedDetails: Function;
 };
 
 const MerchantsConfigTable = ({
@@ -18,6 +19,7 @@ const MerchantsConfigTable = ({
   setMerchant,
   setShowModal,
   viewUsers,
+  approvedDetails,
 }: AppProps): JSX.Element => (
   <>
     {merchants.map((m: any) => (
@@ -68,6 +70,7 @@ const MerchantsConfigTable = ({
         <td className="text-left px-2 py-2 border-b border-gray-200 bg-white">
           <MerchantConfigTableOptions
             isBlocked={m?.merchant?.blocked}
+            approvedDetails={() => approvedDetails(m?.merchant._id)}
             seeDetails={() => {
               setShowModal(true);
               setMerchant(m);

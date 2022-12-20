@@ -1,16 +1,17 @@
 import React from 'react'
 import PageHeader from '../../header/PageHeader';
 import ReferalsTable from '../../tables/ReferalsTable';
+import Pagination from '../../pagination/Pagination';
 
 function Wallets(){
 
     return(
-        <div className="relative md:pt-10 pb-10 p-2 w-full mb-12 px-4">
+        <div className="relative min-h-screen md:pt-10 pb-10 p-2 w-full mb-12 px-4">
         <PageHeader title="Referrals" />
 
 {/**filters */}
-        <div className="my-2 flex sm:flex-row flex-col">
-            <div className="flex flex-row mb-1 sm:mb-0">
+        <div className="my-2 flex sm:flex-row flex-col gap-2">
+            <div className="flex flex-row mb-1 sm:mb-0 gap-2">
                 <div className="relative">
                         <select
                             className="h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
@@ -18,26 +19,26 @@ function Wallets(){
                             <option>10</option>
                             <option>20</option>
                         </select>
-                        <div
+                        {/* <div
                             className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                             </svg>
-                        </div>
+                        </div> */}
                 </div>
                 <div className="relative">
                     <select
-                        className="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                        className="h-full border-t border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>All</option>
                         <option>Active</option>
                         <option>Inactive</option>
                     </select>
-                    <div
+                    {/* <div
                         className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                         </svg>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="block relative">
@@ -83,7 +84,7 @@ function Wallets(){
                         <ReferalsTable/>
                     </tbody>
                 </table>
-                <div
+                {/* <div
                     className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                     <span className="text-xs xs:text-sm text-gray-900">
                         Showing 1 to 4 of 50 Entries
@@ -98,7 +99,7 @@ function Wallets(){
                             Next
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
      </div>

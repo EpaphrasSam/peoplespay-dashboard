@@ -20,6 +20,12 @@ const UserTransactionsTable = ({
       transactions.map((t) => (
         <tr className="cursor-pointer hover:bg-green-100 click:bg-green-200">
           <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
+            <p className="text-gray-900 whitespace-no-wrap">
+              {t.createdAt} <br />
+              {t.time}
+            </p>
+          </td>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
             <div className="flex items-center">
               <div className="ml-3">
                 <p className="text-gray-900 whitespace-no-wrap">
@@ -28,10 +34,7 @@ const UserTransactionsTable = ({
               </div>
             </div>
           </td>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
-            <p className="text-gray-900 whitespace-no-wrap">{t.createdAt}</p>
-          </td>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
+          {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-left">
             <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
               <span
                 aria-hidden
@@ -39,7 +42,7 @@ const UserTransactionsTable = ({
               ></span>
               <span className="relative">{t.time}</span>
             </span>
-          </td>
+          </td> */}
           <td className="px-5 py-5 border-b border-gray-200 bg-white  text-left">
             <p className="text-gray-900 whitespace-no-wrap uppercase">
               {t.customerName}

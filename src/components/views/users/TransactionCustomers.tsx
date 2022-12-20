@@ -317,13 +317,15 @@ function TransactionsCustomer() {
           </div>
         </div>
         {/**filter btn */}
-        <OutlinedButton
-          value={isloading ? <Loader /> : "Filter"}
-          action={() => clickDateFilter()}
-          color="gray"
-          paddingWide
-          icon={<BiFilterAlt />}
-        />
+        <div className="pb-2">
+          <OutlinedButton
+            value={isloading ? <Loader /> : "Filter"}
+            action={() => clickDateFilter()}
+            color="gray"
+            paddingWide
+            icon={<BiFilterAlt />}
+          />
+        </div>
       </div>
       {/**end date */}
 
@@ -368,20 +370,20 @@ function TransactionsCustomer() {
         exit="exit"
         variants={group2Motion}
       >
-        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div className="-mx-4 sm:-mx-8 sm:px-4 px-0 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow-lg overflow-hidden font-segoe">
             <table className="min-w-full leading-normal">
               <thead className="text-sm text-gray-600">
                 <tr>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
-                    Description
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                     Date
                   </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  font-semibold tracking-wider">
-                    Transaction Time
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
+                    Description
                   </th>
+                  {/* <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left  font-semibold tracking-wider">
+                    Transaction Time
+                  </th> */}
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                     Customer Name
                   </th>
@@ -404,7 +406,7 @@ function TransactionsCustomer() {
                     Credit Status
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
-                    Pay_Acc_Type
+                    Account Type
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left font-semibold tracking-wider">
                     Actions
